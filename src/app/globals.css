@@ -268,3 +268,143 @@
     transition-duration: 0s;
   }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   PRINT
+
+   A bakery menu is a thing people actually print: a church hall wanting a
+   dozen prices, an office comparing party trays, somebody's grandmother who
+   would rather hold paper. Printed as-is it came out with a sticky black
+   header, a dead search box, a fixed action bar and every decorative oven
+   burning through toner.
+
+   This strips it back to the case, in black on white, with the address and
+   the phone number at the top of the first page.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media print {
+  @page {
+    margin: 14mm 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10pt;
+  }
+
+  /* Chrome drops backgrounds by default, so nothing may depend on one to be legible. */
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  header,
+  footer,
+  .no-print,
+  nav[aria-label="Menu controls"],
+  .btn,
+  iframe,
+  svg {
+    display: none !important;
+  }
+
+  body {
+    padding-bottom: 0 !important;
+  }
+
+  .print-only {
+    display: block !important;
+    margin-bottom: 6mm;
+    border-bottom: 1px solid #000;
+    padding-bottom: 3mm;
+  }
+
+  .print-only p {
+    margin: 0 0 1mm;
+  }
+
+  /*
+    Tighten everything. Screen spacing put one item on the first sheet of paper, which
+    is a menu nobody would print twice. Two columns, small type, no section padding.
+  */
+  main > div {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  section[id] {
+    padding: 0 0 3mm !important;
+    break-inside: auto;
+  }
+
+  section[id] > ul {
+    columns: 2;
+    column-gap: 10mm;
+    border: 0 !important;
+  }
+
+  section[id] h2 {
+    font-size: 13pt !important;
+    margin: 3mm 0 1mm !important;
+  }
+
+  section[id] h3 {
+    font-size: 10pt !important;
+  }
+
+  li {
+    break-inside: avoid;
+    padding: 1mm 0 !important;
+    /* Unavailable rows are dimmed to 60% on screen. On paper that reads as a bad
+       photocopy; the "Back Saturday" badge already does the work. */
+    opacity: 1 !important;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  a[href^="http"]::after {
+    content: "";
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   A PHONE ON ITS SIDE
+
+   The hero measured 530px in a 390px landscape viewport, so the entire first
+   screen was hero and you scrolled before reaching anything useful.
+
+   Deliberately unlayered. The first attempt at this lived in @layer base and
+   did nothing at all: Tailwind's utilities layer outranks base, so pt-28 beat
+   it every time. Unlayered rules outrank every layer, which is what this needs.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (orientation: landscape) and (max-height: 560px) {
+  .hero-pad {
+    min-height: 0;
+    padding-top: 4.5rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .hero-pad h1 {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  .hero-pad p {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .hero-pad > div:last-child {
+    margin-top: 1.25rem;
+  }
+}
+

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink } from "@/components/Ui";
 import TodayBoard from "@/components/TodayBoard";
-import { site, fullAddress, mapsUrl, mapsEmbedUrl } from "@/data/site";
+import MapEmbed from "@/components/MapEmbed";
+import { site, fullAddress, mapsUrl } from "@/data/site";
 import { week, formatMinutes } from "@/data/hours";
 import { localNow } from "@/lib/time";
 
@@ -81,15 +82,7 @@ export default function VisitPage() {
           </div>
 
           <div>
-            <div className="overflow-hidden rounded-panel border border-awning/15">
-              <iframe
-                title={`Map to ${site.name}`}
-                src={mapsEmbedUrl}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="h-80 w-full sm:h-[26rem]"
-              />
-            </div>
+            <MapEmbed />
             <address className="mt-6 not-italic text-lg leading-relaxed text-awning/85">
               {site.address.street}
               <br />

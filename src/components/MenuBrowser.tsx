@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import MenuList from "./MenuList";
 import { statusFor } from "@/lib/availability";
 import { localNow, DAY_NAMES } from "@/lib/time";
+import {
+  getSearch,
+  getServerSearch,
+  hydratedStore,
+  setSearchParams,
+  subscribeToSearch,
+} from "@/lib/urlState";
 import type { MenuSection } from "@/data/menu";
 
 /**
@@ -27,9 +34,38 @@ import type { MenuSection } from "@/data/menu";
  */
 export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
   const now = useMemo(() => localNow(), []);
-  const [query, setQuery] = useState("");
-  const [todayOnly, setTodayOnly] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  /*
+    FILTER STATE LIVES IN THE URL.
+
+    Two reasons, one of them commercial. Somebody who filtered to today and sent the link
+    on was previously sending the unfiltered menu, and the browser's back button dropped
+    whatever they had set. And the bakery can post /menu?today=1 straight to Facebook,
+    which is exactly what their own old site sends people to Facebook for.
+
+    Read through useSyncExternalStore because the address bar is external state. Copying
+    it into useState inside an effect works, but it renders the wrong thing first and
+    then corrects itself, which is the flicker you see on sites that do it that way.
+  */
+  const search = useSyncExternalStore(subscribeToSearch, getSearch, getServerSearch);
+  const params = useMemo(() => new URLSearchParams(search), [search]);
+  const query = params.get("q") ?? "";
+  const todayOnly = params.get("today") === "1";
+
+  const setQuery = (value: string) => setSearchParams({ q: value });
+  const setTodayOnly = (value: boolean) => setSearchParams({ today: value ? "1" : null });
+
+  /*
+    The controls do nothing without JavaScript, so without it they are not rendered at
+    all. The jump chips below are plain anchors and keep working either way. Shipping a
+    dead search box is worse than shipping no search box.
+  */
+  const ready = useSyncExternalStore(
+    hydratedStore.subscribe,
+    hydratedStore.getSnapshot,
+    hydratedStore.getServerSnapshot,
+  );
 
   const navEl = useRef<HTMLElement>(null);
   const listEl = useRef<HTMLUListElement>(null);
@@ -112,6 +148,7 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
         className="sticky top-[var(--header-h)] z-30 border-b border-awning/10 bg-paper"
       >
         <div className="mx-auto max-w-6xl px-5 pt-3 sm:px-8">
+          {ready && (
           <div className="flex flex-wrap items-center gap-2">
             <div className="relative min-w-0 flex-1">
               <svg
@@ -137,7 +174,7 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
 
             <button
               type="button"
-              onClick={() => setTodayOnly((v) => !v)}
+              onClick={() => setTodayOnly(!todayOnly)}
               aria-pressed={todayOnly}
               className={`flex min-h-11 flex-none items-center gap-2 rounded-full border px-4 text-sm font-bold transition-colors ${
                 todayOnly
@@ -152,8 +189,9 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
               In the case today
             </button>
           </div>
+          )}
 
-          <p aria-live="polite" className="mt-2 text-xs text-awning/70">
+          <p aria-live="polite" className={`text-xs text-awning/70 ${ready ? "mt-2" : "pt-1"}`}>
             {filtering
               ? `Showing ${shown} of ${total}${todayOnly ? ` being made this ${DAY_NAMES[now.day]}` : ""}${q ? ` matching “${query.trim()}”` : ""}.`
               : `Everything they make. ${total} things.`}
@@ -172,7 +210,7 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
                 <li key={section.id} className="flex-none">
                   <a
                     href={`#${section.id}`}
-                    aria-current={active ? "true" : undefined}
+                    aria-current={active ? "location" : undefined}
                     className={`flex min-h-11 items-center whitespace-nowrap rounded-full px-3 transition-colors ${
                       active ? "bg-brick text-paper" : "text-awning/75 hover:text-brick"
                     }`}
@@ -205,10 +243,7 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
             </p>
             <button
               type="button"
-              onClick={() => {
-                setQuery("");
-                setTodayOnly(false);
-              }}
+              onClick={() => setSearchParams({ q: null, today: null })}
               className="btn btn-dark mt-6"
             >
               Show everything

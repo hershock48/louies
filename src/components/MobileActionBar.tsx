@@ -13,7 +13,7 @@ import { site, mapsUrl } from "@/data/site";
  */
 export default function MobileActionBar() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-gold/25 bg-night/95 backdrop-blur lg:hidden">
+    <div className="no-print fixed inset-x-0 bottom-0 z-40 border-t border-gold/25 bg-night/95 backdrop-blur lg:hidden">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-2 px-4 py-2">
         <a
           href={site.phoneHref}

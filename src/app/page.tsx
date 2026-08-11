@@ -35,7 +35,7 @@ export default function HomePage() {
           aria-hidden="true"
         />
 
-        <div className="relative mx-auto flex min-h-[74vh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 sm:px-8 sm:pb-20">
+        <div className="hero-pad relative mx-auto flex min-h-[74vh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 sm:px-8 sm:pb-20">
           <Eyebrow dark>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
           <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.35rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-tight">
             The lights are on at three.
