@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { ButtonLink } from "@/components/Ui";
 import CarouselOven from "@/components/CarouselOven";
+
+export const metadata: Metadata = {
+  title: "Page not found",
+};
 
 export default function NotFound() {
   return (

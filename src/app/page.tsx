@@ -22,7 +22,13 @@ export default function HomePage() {
           alt="Louie's Bakery on West Michigan Avenue in Marshall at night, lit sign over the awning"
           fill
           priority
-          sizes="100vw"
+          /*
+            Capped at 1200. The photograph is 1400px wide at source, and a bare 100vw
+            asked Next for 1920 on a desktop, which upscales invented detail into a
+            274KB file for an image sitting at 70% opacity behind a gradient.
+          */
+          sizes="(max-width: 1200px) 100vw, 1200px"
+          quality={60}
           /*
             Held at 45% rather than centred. The sign band sits about two fifths down
             the frame, and dead centre crops it out behind the headline on a wide

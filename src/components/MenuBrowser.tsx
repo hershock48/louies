@@ -35,6 +35,7 @@ import type { MenuSection } from "@/data/menu";
 export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
   const now = useMemo(() => localNow(), []);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [announced, setAnnounced] = useState<string | null>(null);
 
   /*
     FILTER STATE LIVES IN THE URL.
@@ -89,9 +90,29 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
       .filter((g) => g.items.length > 0);
   }, [sections, q, todayOnly, now]);
 
+  /*
+    The count is announced politely, and politely means once the typing stops. Wired
+    straight to `shown` it fired on every keystroke, so a screen reader read six counts
+    while somebody typed "pecan". Half a second of quiet is the whole fix.
+  */
   const shown = visible.reduce((n, g) => n + g.items.length, 0);
   const total = sections.reduce((n, s) => n + s.items.length, 0);
   const filtering = todayOnly || q.length > 0;
+
+  const summary = useMemo(
+    () =>
+      filtering
+        ? `Showing ${shown} of ${total}${todayOnly ? ` being made this ${DAY_NAMES[now.day]}` : ""}${
+            query.trim() ? ` matching \u201c${query.trim()}\u201d` : ""
+          }.`
+        : `Everything they make. ${total} things.`,
+    [filtering, shown, total, todayOnly, now.day, query],
+  );
+
+  useEffect(() => {
+    const id = setTimeout(() => setAnnounced(summary), 500);
+    return () => clearTimeout(id);
+  }, [summary]);
 
   /* Publish the controls' height so section scroll margins clear both sticky bars. */
   useEffect(() => {
@@ -168,8 +189,22 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search the case"
                 aria-label="Search the menu"
-                className="h-11 w-full rounded-full border border-awning/20 bg-paper-dim pl-9 pr-3 text-sm text-awning placeholder:text-awning/50 focus:border-brick focus:outline-none"
+                className="h-11 w-full rounded-full border border-awning/20 bg-paper-dim pl-9 pr-10 text-sm text-awning placeholder:text-awning/50 focus:border-brick focus:outline-none [&::-webkit-search-cancel-button]:hidden"
               />
+              {/* Firefox gives type=search no clear control at all, and a touch target
+                  beats a keyboard shortcut on a phone either way. */}
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-awning/60 hover:text-brick"
+                >
+                  <span className="sr-only">Clear search</span>
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+                  </svg>
+                </button>
+              )}
             </div>
 
             <button
@@ -191,10 +226,14 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
           </div>
           )}
 
-          <p aria-live="polite" className={`text-xs text-awning/70 ${ready ? "mt-2" : "pt-1"}`}>
-            {filtering
-              ? `Showing ${shown} of ${total}${todayOnly ? ` being made this ${DAY_NAMES[now.day]}` : ""}${q ? ` matching “${query.trim()}”` : ""}.`
-              : `Everything they make. ${total} things.`}
+          <p className={`text-xs text-awning/70 ${ready ? "mt-2" : "pt-1"}`}>{summary}</p>
+          {/*
+            Announced separately and half a second late. Wired to the visible line it
+            fired on every keystroke, so a screen reader read six counts while somebody
+            typed "pecan".
+          */}
+          <p aria-live="polite" className="sr-only">
+            {announced}
           </p>
         </div>
 

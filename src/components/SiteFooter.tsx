@@ -14,8 +14,8 @@ export default function SiteFooter() {
           <Image
             src="/louies-logo-cream.png"
             alt={site.name}
-            width={1050}
-            height={432}
+            width={220}
+            height={91}
             className="h-11 w-auto"
           />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-paper/75">{site.blurb}</p>

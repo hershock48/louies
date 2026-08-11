@@ -122,8 +122,8 @@ export default function SiteHeader() {
           <Image
             src="/louies-logo-cream.png"
             alt={site.name}
-            width={1050}
-            height={432}
+            width={220}
+            height={91}
             priority
             className="h-9 w-auto sm:h-10"
           />

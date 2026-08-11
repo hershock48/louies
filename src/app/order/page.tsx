@@ -5,7 +5,7 @@ import CarouselOven from "@/components/CarouselOven";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Order for Pickup",
+  title: "Order Ahead",
   description:
     "Build a dozen from the case, pick a time, and it will be boxed and waiting. Pies and photo cookies need a couple of days notice.",
 };

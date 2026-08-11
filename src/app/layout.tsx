@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, Newsreader } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
@@ -7,23 +7,50 @@ import StructuredData from "@/components/StructuredData";
 import MobileActionBar from "@/components/MobileActionBar";
 import { site, fullAddress } from "@/data/site";
 
+/*
+  Only the weights the site actually sets.
+
+  Fonts were 154KB on every page, more than the whole rest of the menu page put
+  together. Grepping the source: Archivo uses 400, 600, 700 and 800, and Newsreader is
+  set once, at its default weight, for the prose on the story page. 500, 300 and the
+  entire italic family were being shipped to every visitor and used by nothing.
+*/
 const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "600", "700", "800"],
   display: "swap",
 });
 
 const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
+  weight: ["400"],
   display: "swap",
 });
 
+/*
+  Where absolute URLs in the metadata point.
+
+  This was hardcoded to site.url, the bakery's own domain, so every link preview of the
+  spec build asked louies-bakery.com for an image it does not have. On Vercel this now
+  resolves to wherever it is actually deployed; site.url is the fallback and becomes
+  correct on the day the site is theirs.
+*/
+const origin = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : site.url;
+
+export const viewport: Viewport = {
+  // Paints the browser chrome on a phone to match the header instead of leaving a
+  // white bar above a black site.
+  themeColor: "#0b0705",
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(origin),
   title: {
     default: `${site.name} | Donuts and nut rolls in Marshall, Michigan since 1952`,
     template: `%s | ${site.name}`,
@@ -41,7 +68,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: site.url,
+    url: origin,
     siteName: site.name,
     title: `${site.name} | A Marshall tradition since 1952`,
     description:

@@ -4,7 +4,7 @@ import CallHint from "@/components/CallHint";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Ship It",
+  title: "Ship a Box",
   description:
     "Nut rolls, old pan toffee and pecan crisps, boxed in Marshall and sent anywhere. Baked Monday night, on the truck Tuesday.",
 };
