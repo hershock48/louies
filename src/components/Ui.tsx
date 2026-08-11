@@ -1,9 +1,22 @@
 import Link from "next/link";
 import CarouselOven from "./CarouselOven";
 
-/** The small gold label that sits above a heading. Their sign band, shrunk. */
-export function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="signage text-xs text-gold">{children}</p>;
+/**
+ * The small label that sits above a heading. Their sign band, shrunk.
+ *
+ * Two colours, and it matters. Gold on the night background measures 6.49 and reads
+ * exactly like the lettering on their awning. The same gold on cream measures 2.80,
+ * which fails AA badly for text this small, so on light sections it drops to brick at
+ * 8.28. Same idea, legible in both rooms.
+ */
+export function Eyebrow({
+  children,
+  dark = false,
+}: {
+  children: React.ReactNode;
+  dark?: boolean;
+}) {
+  return <p className={`signage text-xs ${dark ? "text-gold" : "text-brick"}`}>{children}</p>;
 }
 
 export function SectionHeading({
@@ -17,7 +30,7 @@ export function SectionHeading({
 }) {
   return (
     <>
-      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      {eyebrow && <Eyebrow dark={dark}>{eyebrow}</Eyebrow>}
       <h2
         className={`mt-3 font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl ${
           dark ? "text-paper" : "text-awning"
@@ -46,7 +59,7 @@ export function PageHero({
     <section className="grain grain-dark relative isolate overflow-hidden bg-night text-paper">
       <CarouselOven className="pointer-events-none absolute -right-20 -top-32 h-96 w-96 text-gold/10" />
       <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-        <Eyebrow>{eyebrow}</Eyebrow>
+        <Eyebrow dark>{eyebrow}</Eyebrow>
         <h1 className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
           {title}
         </h1>

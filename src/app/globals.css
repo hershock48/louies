@@ -61,8 +61,15 @@
     border-radius: 3px;
   }
 
+  /*
+    Fallbacks only, for the first paint before the two sticky bars measure themselves.
+    SiteHeader overwrites --header-h and MenuSubnav overwrites --subnav-h as soon as
+    they mount. These were wrong by 7px and by their whole height respectively, which
+    is exactly why neither is a hardcoded number any more.
+  */
   :root {
-    --header-h: 72px;
+    --header-h: 65px;
+    --subnav-h: 0px;
   }
 }
 

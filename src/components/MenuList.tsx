@@ -19,7 +19,11 @@ export default function MenuList({ section }: { section: MenuSection }) {
   const now = localNow();
 
   return (
-    <section id={section.id} className="scroll-mt-24 py-10 first:pt-0">
+    // Scroll margin is derived from the two sticky bars, not guessed. See MenuSubnav.
+    <section
+      id={section.id}
+      className="py-10 first:pt-0 scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)]"
+    >
       <h2 className="font-display text-2xl font-extrabold tracking-tight text-awning sm:text-3xl">
         {section.title}
       </h2>
@@ -51,7 +55,7 @@ export default function MenuList({ section }: { section: MenuSection }) {
                   <span className="ml-auto flex-none text-right text-sm tabular-nums text-awning/75">
                     <span className="font-semibold text-awning">{money(item.price)}</span>
                     {item.cash !== undefined && item.cash !== item.price && (
-                      <span className="text-awning/55"> card &middot; {money(item.cash)} cash</span>
+                      <span className="text-awning/70"> card &middot; {money(item.cash)} cash</span>
                     )}
                   </span>
                 )}

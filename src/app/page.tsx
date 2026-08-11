@@ -36,7 +36,7 @@ export default function HomePage() {
         />
 
         <div className="relative mx-auto flex min-h-[74vh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 sm:px-8 sm:pb-20">
-          <Eyebrow>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
+          <Eyebrow dark>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
           <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.35rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-tight">
             The lights are on at three.
             <br />
@@ -118,7 +118,7 @@ export default function HomePage() {
               sizes="(min-width: 768px) 384px, 90vw"
               className="rounded-panel border border-gold/25 object-cover"
             />
-            <p className="mt-3 text-center text-xs text-paper/50">
+            <p className="mt-3 text-center text-xs text-paper/65">
               Louis Bagi, who opened the place in November {site.established}.
             </p>
           </div>

@@ -58,7 +58,7 @@ export default function StoryPage() {
               sizes="(min-width: 768px) 700px, 90vw"
               className="w-full rounded-panel border border-awning/15"
             />
-            <figcaption className="mt-3 text-sm text-awning/60">
+            <figcaption className="mt-3 text-sm text-awning/70">
               Louie with a morning&rsquo;s worth of hot cross buns.
             </figcaption>
           </figure>
@@ -82,7 +82,7 @@ export default function StoryPage() {
               &ldquo;We just hope people come down and bring their kids so we can get the next
               generation enjoying our product.&rdquo;
             </p>
-            <footer className="mt-3 text-sm text-awning/60">
+            <footer className="mt-3 text-sm text-awning/70">
               {site.people.baker}, {site.people.bakerRole}
             </footer>
           </blockquote>
@@ -93,7 +93,7 @@ export default function StoryPage() {
       <section className="grain grain-dark relative isolate overflow-hidden bg-night text-paper">
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1fr_auto]">
           <div>
-            <Eyebrow>The oven</Eyebrow>
+            <Eyebrow dark>The oven</Eyebrow>
             <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
               Six shelves, turning all night.
             </h2>

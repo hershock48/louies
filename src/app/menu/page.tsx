@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MenuList from "@/components/MenuList";
+import MenuSubnav from "@/components/MenuSubnav";
 import { PageHero } from "@/components/Ui";
 import { sections } from "@/data/menu";
 
@@ -33,27 +34,14 @@ export default function MenuPage() {
       </section>
 
       {/* Jump links. A hundred items is a lot to scroll past on a phone. */}
-      <nav
-        aria-label="Menu sections"
-        className="sticky top-[var(--header-h)] z-30 border-b border-awning/10 bg-paper/95 backdrop-blur"
-      >
-        <ul className="mx-auto flex max-w-6xl gap-4 overflow-x-auto px-5 py-3 text-sm font-semibold sm:px-8">
-          {sections.map((s) => (
-            <li key={s.id} className="flex-none">
-              <a href={`#${s.id}`} className="whitespace-nowrap text-awning/70 hover:text-brick">
-                {s.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <MenuSubnav sections={sections} />
 
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         {sections.map((s) => (
           <MenuList key={s.id} section={s} />
         ))}
 
-        <p className="mt-12 max-w-2xl text-sm leading-relaxed text-awning/60">
+        <p className="mt-12 max-w-2xl text-sm leading-relaxed text-awning/70">
           Prices change and so do the seasons. If you are making a trip for one particular
           thing, ring ahead and someone will tell you honestly whether it is there.
         </p>

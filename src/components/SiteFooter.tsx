@@ -30,7 +30,7 @@ export default function SiteFooter() {
               {site.address.city}, {site.address.state} {site.address.zip}
             </a>
             <br />
-            <a href={site.phoneHref} className="mt-2 inline-block font-semibold hover:text-wheat">
+            <a href={site.phoneHref} className="mt-1 inline-flex min-h-6 items-center py-1 font-semibold hover:text-wheat">
               {site.phone}
             </a>
           </address>
@@ -48,24 +48,24 @@ export default function SiteFooter() {
 
         <div>
           <h2 className="signage text-xs text-gold">More</h2>
-          <ul className="mt-4 space-y-2 text-sm text-paper/85">
-            <li><Link href="/menu" className="hover:text-wheat">Menu</Link></li>
-            <li><Link href="/order" className="hover:text-wheat">Order for pickup</Link></li>
-            <li><Link href="/shop" className="hover:text-wheat">Ship a box</Link></li>
-            <li><Link href="/cookies" className="hover:text-wheat">Photo cookies</Link></li>
-            <li><Link href="/story" className="hover:text-wheat">Our story</Link></li>
-            <li><Link href="/visit" className="hover:text-wheat">Visit</Link></li>
+          <ul className="mt-4 text-sm text-paper/85">
+            <li><Link href="/menu" className="inline-block py-1.5 hover:text-wheat">Menu</Link></li>
+            <li><Link href="/order" className="inline-block py-1.5 hover:text-wheat">Order for pickup</Link></li>
+            <li><Link href="/shop" className="inline-block py-1.5 hover:text-wheat">Ship a box</Link></li>
+            <li><Link href="/cookies" className="inline-block py-1.5 hover:text-wheat">Photo cookies</Link></li>
+            <li><Link href="/story" className="inline-block py-1.5 hover:text-wheat">Our story</Link></li>
+            <li><Link href="/visit" className="inline-block py-1.5 hover:text-wheat">Visit</Link></li>
           </ul>
 
           <h2 className="signage mt-8 text-xs text-gold">Elsewhere</h2>
-          <ul className="mt-4 space-y-2 text-sm text-paper/85">
+          <ul className="mt-4 text-sm text-paper/85">
             <li>
-              <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-wheat">
+              <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" className="inline-block py-1.5 hover:text-wheat">
                 Facebook
               </a>
             </li>
             <li>
-              <a href={site.social.goldbelly} target="_blank" rel="noopener noreferrer" className="hover:text-wheat">
+              <a href={site.social.goldbelly} target="_blank" rel="noopener noreferrer" className="inline-block py-1.5 hover:text-wheat">
                 Goldbelly
               </a>
             </li>
