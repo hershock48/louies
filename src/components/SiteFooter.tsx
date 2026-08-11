@@ -50,7 +50,7 @@ export default function SiteFooter() {
           <h2 className="signage text-xs text-gold">More</h2>
           <ul className="mt-4 text-sm text-paper/85">
             <li><Link href="/menu" className="inline-block py-1.5 hover:text-wheat">Menu</Link></li>
-            <li><Link href="/order" className="inline-block py-1.5 hover:text-wheat">Order for pickup</Link></li>
+            <li><Link href="/order" className="inline-block py-1.5 hover:text-wheat">Order ahead</Link></li>
             <li><Link href="/shop" className="inline-block py-1.5 hover:text-wheat">Ship a box</Link></li>
             <li><Link href="/cookies" className="inline-block py-1.5 hover:text-wheat">Photo cookies</Link></li>
             <li><Link href="/story" className="inline-block py-1.5 hover:text-wheat">Our story</Link></li>

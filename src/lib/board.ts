@@ -21,6 +21,8 @@ export type Board = {
   today: BoardItem[];
   soon: BoardItem[];
   notice: BoardItem[];
+  /** What is always there. Carries the board on the five days with no specials. */
+  always: MenuItem[];
 };
 
 export function buildBoard(now: LocalNow = localNow()): Board {
@@ -44,5 +46,17 @@ export function buildBoard(now: LocalNow = localNow()): Board {
     }
   }
 
-  return { today, soon: soon.slice(0, 4), notice };
+  /*
+    The board looked thin on any day without a special, which is most of them: it said
+    "nothing unusual today" and left two thirds of the module empty. These are the
+    everyday items, the ones somebody deciding whether to drive over actually wants
+    named. No availability rules, marked popular, so they are in the case whenever the
+    door is open.
+  */
+  const always = sections
+    .flatMap((s) => s.items)
+    .filter((i) => !i.availability && i.popular)
+    .slice(0, 6);
+
+  return { today, soon: soon.slice(0, 4), notice, always };
 }

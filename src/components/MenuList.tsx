@@ -15,11 +15,19 @@ import { localNow } from "@/lib/time";
  * old menu and never once explained why, which reads as an error. Here the pair is
  * headed "card" and "cash" and the policy is stated once above the list.
  */
-export default function MenuList({ section }: { section: MenuSection }) {
+export default function MenuList({
+  section,
+  items,
+}: {
+  section: MenuSection;
+  /** Filtered subset from MenuBrowser. Falls back to the whole section. */
+  items?: MenuSection["items"];
+}) {
   const now = localNow();
+  const rows = items ?? section.items;
 
   return (
-    // Scroll margin is derived from the two sticky bars, not guessed. See MenuSubnav.
+    // Scroll margin is derived from the two sticky bars, not guessed. See MenuBrowser.
     <section
       id={section.id}
       className="py-10 first:pt-0 scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)]"
@@ -30,7 +38,7 @@ export default function MenuList({ section }: { section: MenuSection }) {
       {section.blurb && <p className="mt-2 max-w-2xl text-awning/70">{section.blurb}</p>}
 
       <ul className="mt-6 divide-y divide-awning/10 border-y border-awning/10">
-        {section.items.map((item) => {
+        {rows.map((item) => {
           const s = statusFor(item.availability, now);
           const dim = !s.today && !!item.availability;
 

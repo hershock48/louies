@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
+import CallHint from "@/components/CallHint";
 import { money } from "@/data/menu";
 import { site } from "@/data/site";
 
@@ -68,6 +69,7 @@ export default function CookiesPage() {
                     Call {site.phone}
                   </ButtonLink>
                 }
+                footnote={<CallHint />}
               >
                 <p>
                   For now, ring the shop and they will tell you how to get the picture to

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
+import CallHint from "@/components/CallHint";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -69,6 +70,7 @@ export default function ShopPage() {
                   </ButtonLink>
                 </>
               }
+              footnote={<CallHint />}
             >
               <p>
                 Boxes can be sent today either by calling the shop or through their

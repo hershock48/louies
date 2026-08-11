@@ -105,16 +105,20 @@ export function PhaseNote({
   heading,
   children,
   cta,
+  footnote,
 }: {
   heading: string;
   children: React.ReactNode;
   cta?: React.ReactNode;
+  /** Sits under the buttons. Used for the "is anybody there right now" line. */
+  footnote?: React.ReactNode;
 }) {
   return (
     <div className="rounded-panel border border-awning/15 bg-paper-dim p-6 sm:p-8">
       <h2 className="font-display text-xl font-bold text-awning">{heading}</h2>
       <div className="mt-3 space-y-3 text-awning/80">{children}</div>
       {cta && <div className="mt-6 flex flex-wrap gap-3">{cta}</div>}
+      {footnote}
     </div>
   );
 }

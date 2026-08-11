@@ -63,13 +63,24 @@
 
   /*
     Fallbacks only, for the first paint before the two sticky bars measure themselves.
-    SiteHeader overwrites --header-h and MenuSubnav overwrites --subnav-h as soon as
+    SiteHeader overwrites --header-h and MenuBrowser overwrites --subnav-h as soon as
     they mount. These were wrong by 7px and by their whole height respectively, which
     is exactly why neither is a hardcoded number any more.
   */
   :root {
     --header-h: 65px;
     --subnav-h: 0px;
+  }
+
+  /*
+    Room for the fixed mobile action bar. The bar measures 65px including its border, and
+    4rem left the studio credit sitting underneath it on the last line of the footer.
+    5.25rem clears it with a little air.
+  */
+  @media (max-width: 1023px) {
+    body {
+      padding-bottom: 5.25rem;
+    }
   }
 }
 

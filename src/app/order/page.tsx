@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
+import CallHint from "@/components/CallHint";
 import CarouselOven from "@/components/CarouselOven";
 import { site } from "@/data/site";
 
@@ -77,6 +78,7 @@ export default function OrderPage() {
                       </ButtonLink>
                     </>
                   }
+                  footnote={<CallHint />}
                 >
                   <p>
                     Until the box builder goes live, the fastest way to reserve a dozen, a

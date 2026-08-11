@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import MenuList from "@/components/MenuList";
-import MenuSubnav from "@/components/MenuSubnav";
+import MenuBrowser from "@/components/MenuBrowser";
 import { PageHero } from "@/components/Ui";
 import { sections } from "@/data/menu";
 
@@ -33,19 +32,8 @@ export default function MenuPage() {
         </div>
       </section>
 
-      {/* Jump links. A hundred items is a lot to scroll past on a phone. */}
-      <MenuSubnav sections={sections} />
+      <MenuBrowser sections={sections} />
 
-      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
-        {sections.map((s) => (
-          <MenuList key={s.id} section={s} />
-        ))}
-
-        <p className="mt-12 max-w-2xl text-sm leading-relaxed text-awning/70">
-          Prices change and so do the seasons. If you are making a trip for one particular
-          thing, ring ahead and someone will tell you honestly whether it is there.
-        </p>
-      </div>
     </>
   );
 }

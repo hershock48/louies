@@ -4,6 +4,7 @@ import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import StructuredData from "@/components/StructuredData";
+import MobileActionBar from "@/components/MobileActionBar";
 import { site, fullAddress } from "@/data/site";
 
 const archivo = Archivo({
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
+        <MobileActionBar />
         <StructuredData />
       </body>
     </html>

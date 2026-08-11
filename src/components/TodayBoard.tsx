@@ -1,3 +1,4 @@
+import Link from "next/link";
 import CarouselOven from "./CarouselOven";
 import { openState } from "@/lib/availability";
 import { buildBoard } from "@/lib/board";
@@ -55,16 +56,24 @@ export default function TodayBoard({ compact = false }: { compact?: boolean }) {
                   <li key={item.name} className="text-lg font-semibold">
                     {item.name}
                     {item.description && (
-                      <span className="block text-sm font-normal text-paper/65">{item.description}</span>
+                      <span className="block text-sm font-normal text-paper/70">{item.description}</span>
                     )}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="mt-3 text-paper/70">
-                Nothing unusual today. Which means fried cakes, nut rolls, long johns and
-                whatever came out of the oven at three this morning.
-              </p>
+              <>
+                <p className="mt-3 text-paper/75">
+                  No specials today, so it is the everyday case:
+                </p>
+                <ul className="mt-3 space-y-1">
+                  {board.always.map((item) => (
+                    <li key={item.name} className="text-lg font-semibold">
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
 
@@ -104,6 +113,20 @@ export default function TodayBoard({ compact = false }: { compact?: boolean }) {
             </>
           )}
         </div>
+
+        {/* The board answers "should I go". These are the two next steps from there.
+            Suppressed in compact mode, which only renders on Visit, where both links
+            would point at the page you are already on. */}
+        {!compact && (
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/menu" className="btn btn-primary">
+              See the whole case
+            </Link>
+            <Link href="/visit" className="btn btn-ghost">
+              Hours and directions
+            </Link>
+          </div>
+        )}
 
         {state.closure && (
           <p className="mt-8 rounded-panel border border-gold/25 bg-night/60 px-5 py-4 text-sm text-wheat">
