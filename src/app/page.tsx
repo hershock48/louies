@@ -1,0 +1,192 @@
+import Image from "next/image";
+import TodayBoard from "@/components/TodayBoard";
+import CarouselOven from "@/components/CarouselOven";
+import { ButtonLink, Eyebrow, SectionHeading } from "@/components/Ui";
+import { signatures, money } from "@/data/menu";
+import { site } from "@/data/site";
+
+/**
+ * Fifteen minutes. Long enough that the page is served from cache almost always,
+ * short enough that "open until 3pm" becomes "closed for the day" without anybody
+ * doing anything. The old site's July closure notice was still up in August.
+ */
+export const revalidate = 900;
+
+export default function HomePage() {
+  return (
+    <>
+      {/* ── The storefront at half past five ─────────────────────────────── */}
+      <section className="relative isolate overflow-hidden bg-night text-paper">
+        <Image
+          src="/photos/storefront-night.jpg"
+          alt="Louie's Bakery on West Michigan Avenue in Marshall at night, lit sign over the awning"
+          fill
+          priority
+          sizes="100vw"
+          /*
+            Held at 45% rather than centred. The sign band sits about two fifths down
+            the frame, and dead centre crops it out behind the headline on a wide
+            screen, which throws away the only photograph of the building we have.
+          */
+          className="object-cover object-[center_45%] opacity-70"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-night via-night/75 to-night/20"
+          aria-hidden="true"
+        />
+
+        <div className="relative mx-auto flex min-h-[74vh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 sm:px-8 sm:pb-20">
+          <Eyebrow>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
+          <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.35rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-tight">
+            The lights are on at three.
+            <br />
+            The door opens at 5:30.
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/85">
+            Nut rolls, fried cakes and pies, baked overnight on a carousel oven with six
+            revolving shelves. Same family, same recipes, same corner of Michigan Avenue
+            since {site.established}.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <ButtonLink href="/menu">See what they make</ButtonLink>
+            <ButtonLink href="/visit" variant="ghost">
+              Hours and directions
+            </ButtonLink>
+          </div>
+        </div>
+      </section>
+
+      {/* ── The board ────────────────────────────────────────────────────── */}
+      <TodayBoard />
+
+      {/* ── The nut roll ─────────────────────────────────────────────────── */}
+      <section className="grain relative isolate overflow-hidden bg-paper">
+        <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <div>
+              <SectionHeading eyebrow="The one they are known for">
+                A thousand nut rolls a day, and they still run out.
+              </SectionHeading>
+              <p className="mt-6 text-lg leading-relaxed text-awning/80">
+                A cinnamon roll, fried, iced, and buried under peanuts they roast in the
+                shop. It is the reason people drive in from three counties over and the
+                reason there is a line before the sun comes up.
+              </p>
+              <p className="mt-4 text-lg leading-relaxed text-awning/80">
+                One dollar eighty, cash. Buy two, because the second one never makes it
+                home.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <ButtonLink href="/order" variant="dark">
+                  Order a dozen for pickup
+                </ButtonLink>
+                <ButtonLink href="/shop" variant="dark">
+                  Send a box somewhere
+                </ButtonLink>
+              </div>
+            </div>
+
+            <ul className="grid gap-4 sm:grid-cols-2">
+              {signatures.map((item) => (
+                <li
+                  key={item.name}
+                  className="rounded-panel border border-awning/12 bg-paper-dim p-5"
+                >
+                  <h3 className="font-display text-lg font-bold text-awning">{item.name}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-awning/70">{item.description}</p>
+                  {item.cash !== undefined && (
+                    <p className="mt-3 text-sm font-semibold tabular-nums text-brick">
+                      {money(item.cash)} cash
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Louie ────────────────────────────────────────────────────────── */}
+      <section className="grain grain-dark relative isolate overflow-hidden bg-awning text-paper">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[0.9fr_1.1fr]">
+          <div className="relative mx-auto w-full max-w-sm">
+            <Image
+              src="/photos/louie-hot-cross-buns.jpg"
+              alt="Louis Bagi behind the counter with trays of hot cross buns"
+              width={1200}
+              height={1539}
+              sizes="(min-width: 768px) 384px, 90vw"
+              className="rounded-panel border border-gold/25 object-cover"
+            />
+            <p className="mt-3 text-center text-xs text-paper/50">
+              Louis Bagi, who opened the place in November {site.established}.
+            </p>
+          </div>
+
+          <div>
+            <SectionHeading eyebrow="Three generations" dark>
+              Louie bought the bakery in 1952 and worked in it until he was nearly ninety.
+            </SectionHeading>
+            <p className="mt-6 font-serif text-lg leading-relaxed text-paper/85">
+              His children ran it after him. His grandson {site.people.baker} runs it now,
+              with the same recipes written the way Louie wrote them, on the same corner,
+              in front of the same oven.
+            </p>
+            <p className="mt-4 font-serif text-lg leading-relaxed text-paper/85">
+              Seventy four years is a long time to keep getting up at two in the morning.
+            </p>
+            <div className="mt-8">
+              <ButtonLink href="/story" variant="ghost">
+                Read the whole story
+              </ButtonLink>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Three ways to get some ───────────────────────────────────────── */}
+      <section className="grain relative isolate bg-paper-dim">
+        <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <SectionHeading eyebrow="Three ways">Come in, order ahead, or send some.</SectionHeading>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {[
+              {
+                title: "Come in",
+                body: `Tuesday through Saturday, 5:30am to 3pm. Come early. The good stuff goes first and they do not bake a second round.`,
+                href: "/visit",
+                cta: "Hours and directions",
+              },
+              {
+                title: "Order ahead",
+                body: "Build a dozen, pick a time, and it will be boxed and waiting. Pies and photo cookies need a couple of days.",
+                href: "/order",
+                cta: "Order for pickup",
+              },
+              {
+                title: "Send a box",
+                body: `Baked Monday night, on the ${site.shipping.carrier} truck ${site.shipping.day}, on a porch somewhere Wednesday. Toffee and pecan crisps travel best.`,
+                href: "/shop",
+                cta: "Ship it",
+              },
+            ].map((card) => (
+              <div
+                key={card.title}
+                className="flex flex-col rounded-panel border border-awning/12 bg-paper p-6"
+              >
+                <CarouselOven className="h-14 w-14 text-brick/70" spin={false} />
+                <h3 className="mt-4 font-display text-xl font-bold text-awning">{card.title}</h3>
+                <p className="mt-2 flex-1 text-awning/75">{card.body}</p>
+                <div className="mt-5">
+                  <ButtonLink href={card.href} variant="dark">
+                    {card.cta}
+                  </ButtonLink>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
