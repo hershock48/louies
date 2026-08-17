@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import MenuList from "./MenuList";
 import { statusFor } from "@/lib/availability";
-import { localNow, DAY_NAMES } from "@/lib/time";
+import { DAY_NAMES, type LocalNow } from "@/lib/time";
 import {
   getSearch,
   getServerSearch,
@@ -32,8 +32,26 @@ import type { MenuSection } from "@/data/menu";
  * Filtering happens here rather than on the server so it is instant and keeps the page
  * static. localNow() reads America/Detroit on both sides, so server and client agree.
  */
-export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
-  const now = useMemo(() => localNow(), []);
+export default function MenuBrowser({
+  sections,
+  now,
+}: {
+  sections: MenuSection[];
+  /*
+    Passed in from the server rather than read here.
+
+    Calling localNow() on both sides looks equivalent and is not: the page is static
+    with a fifteen minute revalidate, so the server's HTML was produced at some earlier
+    moment and the client's first render happens now. Cross a day boundary, or an
+    opening time, and the two disagree about whether the cream horns are back tomorrow
+    or on Wednesday. React then throws a hydration mismatch, which is the uncaught
+    React #418 the studio auditor caught on this page.
+
+    One value, decided by the server, used by both renders. It is at most fifteen
+    minutes old, which is exactly what revalidate promises anyway.
+  */
+  now: LocalNow;
+}) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [announced, setAnnounced] = useState<string | null>(null);
 
@@ -290,7 +308,7 @@ export default function MenuBrowser({ sections }: { sections: MenuSection[] }) {
           </div>
         ) : (
           visible.map(({ section, items }) => (
-            <MenuList key={section.id} section={section} items={items} />
+            <MenuList key={section.id} section={section} items={items} now={now} />
           ))
         )}
 

@@ -4,7 +4,7 @@ import CarouselOven from "./CarouselOven";
 /**
  * The small label that sits above a heading. Their sign band, shrunk.
  *
- * Two colours, and it matters. Gold on the night background measures 6.49 and reads
+ * Two colors, and it matters. Gold on the night background measures 6.49 and reads
  * exactly like the lettering on their awning. The same gold on cream measures 2.80,
  * which fails AA badly for text this small, so on light sections it drops to brick at
  * 8.28. Same idea, legible in both rooms.

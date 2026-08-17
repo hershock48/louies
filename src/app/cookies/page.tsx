@@ -55,7 +55,7 @@ export default function CookiesPage() {
               </h2>
               <ul className="mt-4 space-y-2 text-awning/80">
                 <li>A clear photograph, taken close, in decent light.</li>
-                <li>Logos come out best as a single flat colour on white.</li>
+                <li>Logos come out best as a single flat color on white.</li>
                 <li>Two days notice, minimum. More at Christmas and graduation.</li>
                 <li>Order in dozens. They box neatly and travel across town well.</li>
               </ul>

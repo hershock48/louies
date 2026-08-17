@@ -30,8 +30,8 @@ export default function HomePage() {
           sizes="(max-width: 1200px) 100vw, 1200px"
           quality={60}
           /*
-            Held at 45% rather than centred. The sign band sits about two fifths down
-            the frame, and dead centre crops it out behind the headline on a wide
+            Held at 45% rather than centered. The sign band sits about two fifths down
+            the frame, and dead center crops it out behind the headline on a wide
             screen, which throws away the only photograph of the building we have.
           */
           className="object-cover object-[center_45%] opacity-70"

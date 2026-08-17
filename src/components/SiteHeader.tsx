@@ -68,7 +68,7 @@ export default function SiteHeader() {
   }, []);
 
   /*
-    Drawer keyboard behaviour. The audit found the old version failed both halves of
+    Drawer keyboard behavior. The audit found the old version failed both halves of
     this: Escape did nothing, and three presses of Tab walked straight out of the open
     overlay into the page behind it, where the focus ring was invisible under the
     drawer.

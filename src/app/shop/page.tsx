@@ -19,10 +19,10 @@ export const metadata: Metadata = {
  * rather than as the main event, and the homepage leads with the shop, not the truck.
  */
 export default function ShopPage() {
-  const travellers = [
+  const travelers = [
     {
       name: "Old Pan Toffee",
-      body: "The best traveller they make. Broken by hand, keeps for weeks, and arrives exactly as it left.",
+      body: "The best traveler they make. Broken by hand, keeps for weeks, and arrives exactly as it left.",
     },
     {
       name: "Pecan Crisps",
@@ -49,7 +49,7 @@ export default function ShopPage() {
           </SectionHeading>
 
           <ul className="mt-10 grid gap-6 md:grid-cols-3">
-            {travellers.map((t) => (
+            {travelers.map((t) => (
               <li key={t.name} className="rounded-panel border border-awning/12 bg-paper-dim p-6">
                 <h3 className="font-display text-xl font-bold text-awning">{t.name}</h3>
                 <p className="mt-2 text-awning/75">{t.body}</p>

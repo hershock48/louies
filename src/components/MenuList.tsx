@@ -1,6 +1,7 @@
-import { money, type MenuSection } from "@/data/menu";
+import { money } from "@/lib/money";
+import type { MenuSection } from "@/data/menu";
 import { statusFor } from "@/lib/availability";
-import { localNow } from "@/lib/time";
+import type { LocalNow } from "@/lib/time";
 
 /**
  * THE CASE, WRITTEN OUT
@@ -11,19 +12,21 @@ import { localNow } from "@/lib/time";
  * you when it is back, instead of hiding "(Wednesday only)" in a parenthesis you have
  * to notice. Nobody has to hold the rules in their head.
  *
- * Two: the cash price is labelled. Louie's printed two numbers on every line of the
+ * Two: the cash price is labeled. Louie's printed two numbers on every line of the
  * old menu and never once explained why, which reads as an error. Here the pair is
  * headed "card" and "cash" and the policy is stated once above the list.
  */
 export default function MenuList({
   section,
   items,
+  now,
 }: {
   section: MenuSection;
   /** Filtered subset from MenuBrowser. Falls back to the whole section. */
   items?: MenuSection["items"];
+  /** The server's clock, so badges match between the two renders. See MenuBrowser. */
+  now: LocalNow;
 }) {
-  const now = localNow();
   const rows = items ?? section.items;
 
   return (
@@ -43,7 +46,21 @@ export default function MenuList({
           const dim = !s.today && !!item.availability;
 
           return (
-            <li key={item.name} className={`py-4 ${dim ? "opacity-60" : ""}`}>
+            /*
+              NOT opacity.
+
+              Unavailable rows used to carry opacity-60, and opacity multiplies through
+              every child: a description already at text-awning/70 landed at an effective
+              0.42 alpha, which measures 2.52 against the paper. The studio auditor found
+              sixty of them on this page alone. The fix is at the pattern, not on the
+              element that got flagged, so the dimming is gone entirely. The badge already
+              says "Back Saturday", which is the actual information, and a tinted row
+              carries the difference visually without touching a single text contrast.
+            */
+            <li
+              key={item.name}
+              className={`px-3 py-4 ${dim ? "-mx-3 rounded-card bg-paper-dim/70" : ""}`}
+            >
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <h3 className="font-display text-lg font-bold text-awning">{item.name}</h3>
 

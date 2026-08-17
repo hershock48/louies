@@ -38,7 +38,7 @@ remembered to take down, cannot happen here. Closing is a date range, not a bann
 
 ## The palette came off their building
 
-Every colour token in `src/app/globals.css` was sampled from the night photograph of
+Every color token in `src/app/globals.css` was sampled from the night photograph of
 the storefront: the sky over the awning, the brick, the gold on the sign band, the lit
 tree. Nothing invented.
 

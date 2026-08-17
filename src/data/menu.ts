@@ -23,6 +23,9 @@
 
 import type { Availability } from "@/lib/availability";
 
+/** Re-exported so server code can keep importing it from here. */
+export { money } from "@/lib/money";
+
 export type MenuItem = {
   name: string;
   description?: string;
@@ -41,9 +44,6 @@ export type MenuSection = {
   blurb?: string;
   items: MenuItem[];
 };
-
-export const money = (cents: number) =>
-  `$${(cents / 100).toFixed(2)}`;
 
 /* The four items that carry the business. Used on the homepage. */
 export const signatures: MenuItem[] = [

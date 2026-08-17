@@ -4,6 +4,7 @@ import { PageHero } from "@/components/Ui";
 import { sections } from "@/data/menu";
 import { site, fullAddress } from "@/data/site";
 import { hoursSummary } from "@/data/hours";
+import { localNow } from "@/lib/time";
 
 export const revalidate = 900;
 
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
 };
 
 export default function MenuPage() {
+  // One clock, read on the server, handed to the client so hydration agrees.
+  const now = localNow();
+
   return (
     <>
       {/* Printed pages lose the header and the hero, so they get their own masthead. */}
@@ -56,7 +60,7 @@ export default function MenuPage() {
         </section>
       </div>
 
-      <MenuBrowser sections={sections} />
+      <MenuBrowser sections={sections} now={now} />
 
     </>
   );
