@@ -68,18 +68,26 @@ export default function HomePage() {
 
             Scale, then urgency, then the thing itself, then what to do about it.
           */}
+          {/*
+            Nine words. The 2026 hero guidance converges on "a few impactful words",
+            and the previous eleven-word version buried the punch in its second half.
+
+            The primary CTA deep links to /menu?today=1, which is the availability
+            engine doing the one thing no other bakery site can: showing what is
+            actually in the case right now. "See what we make" sent people to a list;
+            this sends them to today.
+          */}
           <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.35rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-tight">
             A thousand nut rolls a day.
             <br />
-            Most days they are gone by lunch.
+            Gone by lunch.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/85">
-            A cinnamon roll, fried, iced, and buried in peanuts we roast in the back. Come
-            early. When they are out they are out until tomorrow, and people drive a long
-            way to find that out the hard way.
+            A cinnamon roll, fried, iced, and buried in peanuts we roast in the back.
+            Come early. When they are out, they are out until tomorrow.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href="/menu">See what we make</ButtonLink>
+            <ButtonLink href="/menu?today=1">What&rsquo;s in the case today</ButtonLink>
             <ButtonLink href="/visit" variant="ghost">
               Hours and directions
             </ButtonLink>

@@ -149,9 +149,18 @@ artifact it is meant to be. The second is what is specific to this bakery.
 - [ ] Get the **original logo art**. The only file that exists is a 350x144 PNG.
 - [ ] Get the **unframed scan of the Louie photograph**. The copy in `public/photos`
       was shot through glass and has reflections across it.
-- [ ] **Photograph the bakery.** Half a morning: the case at open, the oven turning,
-      hands icing nut rolls, the peanut roaster, the line outside in the dark, Jason.
-      Two photographs cannot carry this site.
+- [ ] **Photograph the bakery.** Half a morning, and the shot list already exists:
+      WWMT's gallery for their feature is exactly the set this site needs, frame for
+      frame. Nut rolls close up, the carousel oven with Jason, pecan crisps, the cookie
+      printer, the morning customer flow, and Louie's Cardinals cap still hanging on his
+      original hook, which belongs at the top of the story page. Reference URLs, for the
+      shot list only, NOT for use (they are the station's photographs, not the
+      bakery's):
+      https://wwmt.com/features/exploring-michigan/exploring-michigan-louies-bakery-has-been-serving-marshall-for-nearly-75-years
+      The hero is deliberately capped until this happens: every 2026 source says the
+      product is the hero, and the only product photography that exists is not ours to
+      ship. Jason gave WWMT that interview, so asking the station to license the stills
+      is also worth one email.
 - [ ] **PLACEHOLDER** in `src/data/hours.ts`: the real closures for the year.
 - [ ] **PLACEHOLDER** in `src/data/menu.ts`, four unconfirmed facts: the pastry cash
       price that looks like a copy-paste from the donut hole row, whether ice cream is
