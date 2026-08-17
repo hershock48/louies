@@ -157,6 +157,9 @@ artifact it is meant to be. The second is what is specific to this bakery.
       price that looks like a copy-paste from the donut hole row, whether ice cream is
       still sold (their window says it is, the menu never did), whether birthday cakes
       are really gone, and small and large pecan rolls sharing a price.
+- [ ] **Tell the bakery the review quotes are on the homepage.** Three verbatim public
+      Tripadvisor reviews in `src/data/reviews.ts`, attributed to handle and platform,
+      which is the normal convention but is still their site and their call.
 - [ ] Decide what happens about **louiesbakery.com**, the unhyphenated spelling, which
       belongs to a different bakery and ranks for their name.
 

@@ -3,6 +3,7 @@ import TodayBoard from "@/components/TodayBoard";
 import CarouselOven from "@/components/CarouselOven";
 import { ButtonLink, Eyebrow, SectionHeading } from "@/components/Ui";
 import { signatures, money } from "@/data/menu";
+import { reviews } from "@/data/reviews";
 import { site } from "@/data/site";
 
 /*
@@ -53,22 +54,29 @@ export default function HomePage() {
         <div className="hero-pad relative mx-auto flex min-h-[74vh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 sm:px-8 sm:pb-20">
           <Eyebrow dark>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
           {/*
-            "The lights are on at three" used to live here and it was invented. Nothing
-            in any source says a baker starts at three. This one is Jason's, to WWMT,
-            about the carousel oven: "It takes so long to heat up. It's easier to just
-            turn it down to, like, 200 and let it sit, as opposed to try to build it
-            back up to 400 or 500."
+            THE HERO, THIRD ATTEMPT, AND THE FIRST ONE ABOUT THE DONUT.
 
-            So the oven has been warm, more or less continuously, since 1952. That is
-            true, it is surprising, and no other bakery can say it.
+            Attempt one, "the lights are on at three", was invented outright. Attempt
+            two, "the oven never really goes off", was true and sourced but it is a fact
+            about a machine. Nobody reads it and wants breakfast.
+
+            This one is built from what customers actually write, because that is where
+            the appetite is. The scale is Jason's, to WWMT: "We make around 1,000 a day,
+            and we sell them." The urgency is every other review on Tripadvisor, of
+            which the plainest is "I have to go in early to get nutty donuts, otherwise
+            there gone !!". The description is what a nut roll is.
+
+            Scale, then urgency, then the thing itself, then what to do about it.
           */}
           <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.35rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-tight">
-            The oven never really goes off.
+            A thousand nut rolls a day.
+            <br />
+            Most days they are gone by lunch.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/85">
-            It takes too long to bring back up, so we turn it down instead of turning it
-            off. Six revolving shelves, warm since {site.established}, and the door opens
-            at half past five.
+            A cinnamon roll, fried, iced, and buried in peanuts we roast in the back. Come
+            early. When they are out they are out until tomorrow, and people drive a long
+            way to find that out the hard way.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/menu">See what we make</ButtonLink>
@@ -88,16 +96,16 @@ export default function HomePage() {
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
               <SectionHeading eyebrow="The one we are known for">
-                A thousand nut rolls a day, and we still run out.
+                Everything here is about the nut roll.
               </SectionHeading>
               <p className="mt-6 text-lg leading-relaxed text-awning/80">
-                A cinnamon roll, fried, iced, and buried under peanuts we roast here.
-                Jason puts it plainly: everything is about the nut roll. It is our biggest
-                production item every day, we make around a thousand, and we sell them.
+                Jason&rsquo;s words, not ours: it is our biggest production item every
+                single day. Cinnamon roll, fried, iced, then rolled in peanuts we roast
+                ourselves, which is the part nobody else bothers with and the part you can
+                taste.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-awning/80">
-                One dollar eighty with cash. Buy two. The second one rarely makes it
-                home.
+                One dollar eighty with cash. Buy two. The second one rarely makes it home.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <ButtonLink href="/order" variant="dark">
@@ -126,6 +134,40 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
+        </div>
+      </section>
+
+      {/* ── What people say ──────────────────────────────────────────────── */}
+      {/*
+        The old site had a Testimonials page with nothing on it and a link out to
+        "772 MORE REVIEWS ON OUR FACEBOOK PAGE". Seventy four years of goodwill,
+        all of it hosted on somebody else's website. It belongs here.
+
+        Verbatim, including the reviewer's own title where it is better than the
+        quote, because "Best Damn Doughnuts Ever" is a person and "Excellent" is a
+        press release.
+      */}
+      <section className="grain grain-dark relative isolate overflow-hidden bg-ash text-paper">
+        <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+          <Eyebrow dark>What people say</Eyebrow>
+          <ul className="mt-8 grid gap-8 md:grid-cols-3">
+            {reviews.map((r) => (
+              <li key={r.who}>
+                <blockquote className="font-display text-xl font-bold leading-snug text-wheat sm:text-2xl">
+                  &ldquo;{r.quote}&rdquo;
+                </blockquote>
+                <p className="mt-3 text-sm text-paper/65">
+                  {r.title && (
+                    <>
+                      <span className="text-paper/80">{r.title}</span>
+                      <br />
+                    </>
+                  )}
+                  {r.who}, {r.where}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
