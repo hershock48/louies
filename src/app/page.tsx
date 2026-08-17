@@ -2,6 +2,7 @@ import Image from "next/image";
 import TodayBoard from "@/components/TodayBoard";
 import CarouselOven from "@/components/CarouselOven";
 import { ButtonLink, Eyebrow, SectionHeading } from "@/components/Ui";
+import Wordmark from "@/components/Wordmark";
 import { signatures, money } from "@/data/menu";
 import { reviews } from "@/data/reviews";
 import { site } from "@/data/site";
@@ -51,42 +52,29 @@ export default function HomePage() {
           aria-hidden="true"
         />
 
-        <div className="hero-pad relative mx-auto flex min-h-[74vh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 sm:px-8 sm:pb-20">
+        {/*
+          THE HERO IS THE LOGO NOW, per Kevin: photo behind, their mark overlaid
+          large, and the hat given a real entrance instead of only the quick header
+          landing. It falls for two seconds, swaying on the way down, and settles on
+          the B. The headline steps down a size because the wordmark carries the
+          weight.
+
+          The background is still the storefront, because it is the only photograph
+          we may ship. The slot is built for the nut roll close-up: when that photo
+          exists, swap the src on the Image above and this hero is finished. One
+          line. It is on the checklist.
+        */}
+        <div className="hero-pad relative mx-auto flex min-h-[78vh] max-w-6xl flex-col items-center justify-center px-5 pb-20 pt-24 text-center sm:px-8">
           <Eyebrow dark>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
-          {/*
-            THE HERO, THIRD ATTEMPT, AND THE FIRST ONE ABOUT THE DONUT.
-
-            Attempt one, "the lights are on at three", was invented outright. Attempt
-            two, "the oven never really goes off", was true and sourced but it is a fact
-            about a machine. Nobody reads it and wants breakfast.
-
-            This one is built from what customers actually write, because that is where
-            the appetite is. The scale is Jason's, to WWMT: "We make around 1,000 a day,
-            and we sell them." The urgency is every other review on Tripadvisor, of
-            which the plainest is "I have to go in early to get nutty donuts, otherwise
-            there gone !!". The description is what a nut roll is.
-
-            Scale, then urgency, then the thing itself, then what to do about it.
-          */}
-          {/*
-            Nine words. The 2026 hero guidance converges on "a few impactful words",
-            and the previous eleven-word version buried the punch in its second half.
-
-            The primary CTA deep links to /menu?today=1, which is the availability
-            engine doing the one thing no other bakery site can: showing what is
-            actually in the case right now. "See what we make" sent people to a list;
-            this sends them to today.
-          */}
-          <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.35rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-tight">
-            A thousand nut rolls a day.
-            <br />
-            Gone by lunch.
+          <Wordmark hero className="mt-7 h-[clamp(6.5rem,24vw,13.5rem)] drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]" />
+          <h1 className="mt-9 font-display text-[clamp(1.5rem,3.2vw,2.4rem)] font-extrabold leading-tight tracking-tight">
+            A thousand nut rolls a day. Gone by lunch.
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/85">
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-paper/85">
             A cinnamon roll, fried, iced, and buried in peanuts we roast in the back.
             Come early. When they are out, they are out until tomorrow.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <ButtonLink href="/menu?today=1">What&rsquo;s in the case today</ButtonLink>
             <ButtonLink href="/visit" variant="ghost">
               Hours and directions

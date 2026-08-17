@@ -552,6 +552,68 @@ a:focus-visible .lb-hat {
     appears in their artwork. Checked at both widths with the setting on.
   */
   .lb-hat,
+  .lb-mark--hero .lb-hat,
+  a:hover .lb-hat,
+  a:focus-visible .lb-hat {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   THE HERO ENTRANCE
+
+   The same hat, given the whole stage. It falls from well above the wordmark,
+   swaying as it comes, and the rotation alternates through the descent so it
+   reads as a leaf coming down rather than an elevator. The overshoot at 90% is
+   what makes the landing read as weight.
+
+   Delayed 350ms behind the header's own quick landing, so the two hats on the
+   homepage arrive on different schedules. Things arriving off-schedule read as
+   weather; things arriving together read as a slide transition.
+   ─────────────────────────────────────────────────────────────────────────── */
+.lb-mark--hero .lb-hat {
+  animation:
+    hat-fall 2000ms cubic-bezier(0.3, 0.75, 0.3, 1) 350ms both,
+    hat-breeze 6s ease-in-out 2350ms infinite;
+}
+
+@keyframes hat-fall {
+  0% {
+    transform: translateY(-320%) rotate(10deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  28% {
+    transform: translateY(-205%) rotate(-7deg);
+  }
+  52% {
+    transform: translateY(-98%) rotate(6deg);
+  }
+  76% {
+    transform: translateY(-20%) rotate(-3.5deg);
+  }
+  90% {
+    transform: translateY(2.5%) rotate(1.6deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+/*
+  LAST IN THE FILE, DELIBERATELY. The hero entrance selector above has the same
+  specificity as the reduced-motion kill switch inside the wordmark section, and it
+  appears later, so it was winning: under reduced motion the hat froze mid-fall at
+  translateY(-55px), verified by reading the computed transform rather than assuming.
+  The cascade breaks that tie by order, so the kill switch is restated here, after
+  every animation rule it must beat. Add hat rules ABOVE this block only.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .lb-hat,
+  .lb-mark--hero .lb-hat,
   a:hover .lb-hat,
   a:focus-visible .lb-hat {
     animation: none;

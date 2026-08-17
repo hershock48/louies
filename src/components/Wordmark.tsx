@@ -38,9 +38,22 @@ import { site } from "@/data/site";
  * with no transform, so a blocked script or reduced motion leaves the logo exactly as
  * drawn. See the reduced-motion block in globals.css.
  */
-export default function Wordmark({ className = "" }: { className?: string }) {
+export default function Wordmark({
+  className = "",
+  hero = false,
+}: {
+  className?: string;
+  /**
+   * The showpiece version for the homepage hero. Same two layers, same artwork; the
+   * difference is the hat's entrance. In the header it lands in 900ms because a person
+   * mid-navigation should not wait on a logo. In the hero it falls for two seconds,
+   * swaying as it comes down like a leaf, because there the logo IS the show and the
+   * hat landing on the B is the moment. Keyframes in globals.css under lb-mark--hero.
+   */
+  hero?: boolean;
+}) {
   return (
-    <span className={`lb-mark relative inline-block ${className}`}>
+    <span className={`lb-mark ${hero ? "lb-mark--hero" : ""} relative inline-block ${className}`}>
       <Image
         src="/louies-logo-word.png"
         alt={site.name}
