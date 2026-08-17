@@ -62,15 +62,35 @@ export default function Wordmark({
         priority
         className="h-full w-auto"
       />
-      <Image
-        src="/louies-logo-hat.png"
-        alt=""
-        aria-hidden="true"
-        width={220}
-        height={91}
-        priority
-        className="lb-hat absolute inset-0 h-full w-auto"
-      />
+      {/*
+        Three nested layers, one job each, because ONE ELEMENT CANNOT DO ALL THREE.
+        A transform is a single list and an element has a single transform-origin, so
+        composing fall, spin and sway on one node either snaps between origins or
+        multiplies the curves into each other. Split, each motion gets its own clean
+        curve and its own pivot:
+
+          .lb-hat-drop   translateY only. The fall and the landing bounce.
+          .lb-hat-spin   rotation during flight, about the hat's own centre
+                         (62.6% 20% of the canvas), because a tossed hat spins
+                         about its middle.
+          .lb-hat        the settle and the breeze, about the brim (62.6% 40.3%),
+                         because a landed hat rocks on what it sits on.
+
+        In the header the wrappers exist and do nothing; only the hero animates them.
+      */}
+      <span className="lb-hat-drop absolute inset-0 block">
+        <span className="lb-hat-spin absolute inset-0 block">
+          <Image
+            src="/louies-logo-hat.png"
+            alt=""
+            aria-hidden="true"
+            width={220}
+            height={91}
+            priority
+            className="lb-hat absolute inset-0 h-full w-auto"
+          />
+        </span>
+      </span>
     </span>
   );
 }

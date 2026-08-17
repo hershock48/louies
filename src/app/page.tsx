@@ -67,12 +67,27 @@ export default function HomePage() {
         <div className="hero-pad relative mx-auto flex min-h-[78vh] max-w-6xl flex-col items-center justify-center px-5 pb-20 pt-24 text-center sm:px-8">
           <Eyebrow dark>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
           <Wordmark hero className="mt-7 h-[clamp(6.5rem,24vw,13.5rem)] drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]" />
-          <h1 className="mt-9 font-display text-[clamp(1.5rem,3.2vw,2.4rem)] font-extrabold leading-tight tracking-tight">
-            A thousand nut rolls a day. Gone by lunch.
+          {/*
+            Hero copy, fifth and best version, and Kevin's angle: heritage.
+
+            The scarcity headline wanted a product photo behind it and we do not have
+            one. This one wants a 74-year-old storefront at night, which is exactly
+            the photograph we have. The heritage research says family bakeries win on
+            story; the conversion research says say one thing in a few words. This is
+            both. The appetite and the scarcity did not go away, they moved to the
+            subhead, so the hero still ends on "come early".
+
+            One antithesis, and it is this one. House rule: rationed.
+          */}
+          <h1 className="mt-9 font-display text-[clamp(1.55rem,3.4vw,2.6rem)] font-extrabold leading-tight tracking-tight">
+            A lot has changed since 1952.
+            <br />
+            The donuts haven&rsquo;t.
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-paper/85">
-            A cinnamon roll, fried, iced, and buried in peanuts we roast in the back.
-            Come early. When they are out, they are out until tomorrow.
+            We still make them the way Louie wrote them down: fried, iced, rolled in
+            peanuts we roast in the back. A thousand nut rolls a day, gone by lunch.
+            Come early.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <ButtonLink href="/menu?today=1">What&rsquo;s in the case today</ButtonLink>

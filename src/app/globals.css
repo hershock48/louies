@@ -561,44 +561,64 @@ a:focus-visible .lb-hat {
 }
 
 /* ───────────────────────────────────────────────────────────────────────────
-   THE HERO ENTRANCE
+   THE HERO ENTRANCE: A TOSSED HAT
 
-   The same hat, given the whole stage. It falls from well above the wordmark,
-   swaying as it comes, and the rotation alternates through the descent so it
-   reads as a leaf coming down rather than an elevator. The overshoot at 90% is
-   what makes the landing read as weight.
+   Version two, after the first read as segmented. The old version drove fall and
+   sway through one keyframe list on one element, and eight keyframes fighting one
+   easing curve is exactly why it stuttered: every waypoint restarts the
+   interpolation.
 
-   Delayed 350ms behind the header's own quick landing, so the two hats on the
-   homepage arrive on different schedules. Things arriving off-schedule read as
-   weather; things arriving together read as a slide transition.
+   Now each motion is one clean curve on its own layer:
+
+     .lb-hat-drop   the fall. One decelerating curve into a small bounce.
+     .lb-hat-spin   a single full rotation, decaying ease-out, about the hat's
+                    own centre. Most of the spin happens high up, the way a
+                    tossed hat actually behaves, and it arrives upright.
+     .lb-hat        already owns the settle-breeze, delayed until touchdown.
+
+   Composed, it is a toss: up out of frame somewhere, one lazy spin on the way
+   down, land on the B, rock in the breeze. Header hats do none of this; these
+   selectors are scoped to .lb-mark--hero.
    ─────────────────────────────────────────────────────────────────────────── */
-.lb-mark--hero .lb-hat {
-  animation:
-    hat-fall 2000ms cubic-bezier(0.3, 0.75, 0.3, 1) 350ms both,
-    hat-breeze 6s ease-in-out 2350ms infinite;
+.lb-mark--hero .lb-hat-drop {
+  animation: hat-toss-drop 1700ms cubic-bezier(0.34, 0.18, 0.22, 1) 350ms both;
+  will-change: transform;
 }
 
-@keyframes hat-fall {
+.lb-mark--hero .lb-hat-spin {
+  transform-origin: 62.6% 20%;
+  animation: hat-toss-spin 1700ms cubic-bezier(0.2, 0.55, 0.27, 1) 350ms both;
+  will-change: transform;
+}
+
+.lb-mark--hero .lb-hat {
+  animation: hat-breeze 6s ease-in-out 2050ms infinite;
+}
+
+@keyframes hat-toss-drop {
   0% {
-    transform: translateY(-320%) rotate(10deg);
+    transform: translateY(-340%);
     opacity: 0;
   }
-  10% {
+  9% {
     opacity: 1;
   }
-  28% {
-    transform: translateY(-205%) rotate(-7deg);
+  78% {
+    transform: translateY(0%);
   }
-  52% {
-    transform: translateY(-98%) rotate(6deg);
-  }
-  76% {
-    transform: translateY(-20%) rotate(-3.5deg);
-  }
-  90% {
-    transform: translateY(2.5%) rotate(1.6deg);
+  88% {
+    transform: translateY(-5.5%);
   }
   100% {
+    transform: none;
+  }
+}
+
+@keyframes hat-toss-spin {
+  from {
+    transform: rotate(-360deg);
+  }
+  to {
     transform: none;
   }
 }
@@ -613,7 +633,11 @@ a:focus-visible .lb-hat {
 */
 @media (prefers-reduced-motion: reduce) {
   .lb-hat,
+  .lb-hat-drop,
+  .lb-hat-spin,
   .lb-mark--hero .lb-hat,
+  .lb-mark--hero .lb-hat-drop,
+  .lb-mark--hero .lb-hat-spin,
   a:hover .lb-hat,
   a:focus-visible .lb-hat {
     animation: none;
