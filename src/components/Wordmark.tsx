@@ -1,0 +1,63 @@
+import Image from "next/image";
+import { site } from "@/data/site";
+
+/**
+ * THE LOGO, WITH THE HAT DOING SOMETHING.
+ *
+ * Their mark is a brush script with a chef's toque set over the B of Bakery. Two things
+ * made this worth animating rather than leaving flat.
+ *
+ * One, it is the most human thing they own. Every roundup of 2026 design trends lands
+ * on some version of the same idea, that hand-drawn and handwritten marks are the
+ * pushback against AI-smoothed design. Louie's has had one since 1952 and the old site
+ * used it as a static header image and nothing else.
+ *
+ * Two, the toque is a SEPARATE CONNECTED COMPONENT in their artwork. It does not touch
+ * the wordmark at any point. So it can be lifted out and moved without redrawing a
+ * single line of their logo, which is the difference between animating their mark and
+ * animating a tracing of it. glaze.md is emphatic about that distinction and the reason
+ * it is emphatic is a donut that got redrawn from scratch while the real one sat in the
+ * repo.
+ *
+ * Split with scipy.ndimage.label: component 1, x527-788, y0-174 on the 1050x432 canvas.
+ * The two layers are the same canvas size so they stack with no positioning maths.
+ *
+ * The motion, in the order it happens:
+ *
+ *   1. The hat drops in and settles, once, on load. It arrives from above with a little
+ *      rotation and overshoots slightly before it sits, so it reads as being set down
+ *      on the B rather than sliding into a slot.
+ *   2. Then a slow sway, six seconds a cycle, about a degree and a half. Wind, not a
+ *      metronome. Long enough that you notice it only if you look.
+ *   3. On hover it tips, the way somebody tips their hat.
+ *
+ * It rocks on the middle of its brim, 62.6% across and 40.3% down, because a pivot
+ * anywhere else makes it spin about its own middle and lift off the letter.
+ *
+ * The un-animated state is the finished state: both layers are in their final position
+ * with no transform, so a blocked script or reduced motion leaves the logo exactly as
+ * drawn. See the reduced-motion block in globals.css.
+ */
+export default function Wordmark({ className = "" }: { className?: string }) {
+  return (
+    <span className={`lb-mark relative inline-block ${className}`}>
+      <Image
+        src="/louies-logo-word.png"
+        alt={site.name}
+        width={220}
+        height={91}
+        priority
+        className="h-full w-auto"
+      />
+      <Image
+        src="/louies-logo-hat.png"
+        alt=""
+        aria-hidden="true"
+        width={220}
+        height={91}
+        priority
+        className="lb-hat absolute inset-0 h-full w-auto"
+      />
+    </span>
+  );
+}

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Wordmark from "./Wordmark";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import OpenPill from "./OpenPill";
@@ -119,14 +119,7 @@ export default function SiteHeader() {
     >
       <div ref={barEl} className="mx-auto flex max-w-6xl items-center gap-3 px-5 py-3 sm:px-8">
         <Link href="/" className="flex-none" aria-label={`${site.name}, home`}>
-          <Image
-            src="/louies-logo-cream.png"
-            alt={site.name}
-            width={220}
-            height={91}
-            priority
-            className="h-9 w-auto sm:h-10"
-          />
+<Wordmark className="h-9 sm:h-10" />
         </Link>
 
         {/* Open or closed, on every page, without scrolling. */}

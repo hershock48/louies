@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import Wordmark from "./Wordmark";
 import GlazedPlate from "./GlazedPlate";
 import CopyrightYear from "./CopyrightYear";
 import { site, mapsUrl } from "@/data/site";
@@ -10,13 +10,7 @@ export default function SiteFooter() {
     <footer className="grain grain-dark relative isolate border-t border-gold/25 bg-night text-paper">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 sm:py-16 md:grid-cols-3">
         <div>
-          <Image
-            src="/louies-logo-cream.png"
-            alt={site.name}
-            width={220}
-            height={91}
-            className="h-11 w-auto"
-          />
+<Wordmark className="h-11" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-paper/75">{site.blurb}</p>
         </div>
 

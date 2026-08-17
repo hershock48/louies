@@ -464,3 +464,98 @@
   }
 }
 
+/* ───────────────────────────────────────────────────────────────────────────
+   THE WORDMARK, AND THE HAT ON IT
+
+   Pairs with components/Wordmark. Two stacked layers of their own artwork, the
+   toque lifted out as its own connected component, so nothing here redraws
+   anything they own.
+
+   Deliberately unlayered, for the same reason the landscape hero rule is: an
+   earlier version of that rule sat in @layer base and Tailwind's utilities beat
+   it silently.
+   ─────────────────────────────────────────────────────────────────────────── */
+.lb-mark {
+  line-height: 0;
+}
+
+.lb-hat {
+  /* Middle of the brim. Measured off the alpha channel, not guessed: any other
+     pivot spins the hat about its own middle and lifts it off the B. */
+  transform-origin: 62.6% 40.3%;
+  /* Set once and once only: the hat lands, then it sways. Both run from here so
+     the resting state is the drawn position and every keyframe departs from it. */
+  animation:
+    hat-land 900ms cubic-bezier(0.2, 0.9, 0.25, 1.08) both,
+    hat-breeze 6s ease-in-out 900ms infinite;
+  will-change: transform;
+}
+
+@keyframes hat-land {
+  from {
+    transform: translateY(-38%) rotate(-9deg);
+    opacity: 0;
+  }
+  55% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/*
+  A degree and a half, six seconds a cycle, and the two halves are not mirror
+  images: it leans a touch further one way and pauses longer at the far end, so
+  it reads as air moving rather than a pendulum.
+*/
+@keyframes hat-breeze {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(1.5deg) translateY(-1%);
+  }
+  62% {
+    transform: rotate(-0.9deg);
+  }
+  80% {
+    transform: rotate(0.4deg);
+  }
+}
+
+/* Tip of the hat. The header mark is a link, so this is a real affordance and not
+   only decoration. */
+a:hover .lb-hat,
+a:focus-visible .lb-hat {
+  animation: hat-tip 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes hat-tip {
+  0% {
+    transform: none;
+  }
+  40% {
+    transform: translateY(-11%) rotate(-13deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+    Not `animation: none` and hope. The hat's resting position IS its drawn
+    position, so removing every animation leaves the complete logo exactly as it
+    appears in their artwork. Checked at both widths with the setting on.
+  */
+  .lb-hat,
+  a:hover .lb-hat,
+  a:focus-visible .lb-hat {
+    animation: none;
+    transform: none;
+  }
+}
+
