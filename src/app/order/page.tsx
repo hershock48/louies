@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
 import CallHint from "@/components/CallHint";
 import CarouselOven from "@/components/CarouselOven";
-import { site } from "@/data/site";
+import OrderForm from "@/components/OrderForm";
 
 export const metadata: Metadata = {
   title: "Order Ahead",
@@ -18,7 +18,13 @@ export const metadata: Metadata = {
  * deliberately not a "coming soon" splash. A customer who lands here still leaves
  * knowing how to get a dozen nut rolls on Saturday morning.
  */
-export default function OrderPage() {
+export default async function OrderPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+
   const steps = [
     {
       n: "1",
@@ -66,24 +72,23 @@ export default function OrderPage() {
               </ol>
 
               <div className="mt-10">
+                <OrderForm error={error === "missing"} />
+              </div>
+
+              <div className="mt-8">
                 <PhaseNote
-                  heading="Ordering online is on the way"
+                  heading="Paying online is still to come"
                   cta={
-                    <>
-                      <ButtonLink href={site.phoneHref} variant="dark">
-                        Call {site.phone}
-                      </ButtonLink>
-                      <ButtonLink href="/menu" variant="dark">
-                        See the case
-                      </ButtonLink>
-                    </>
+                    <ButtonLink href="/menu" variant="dark">
+                      See the case
+                    </ButtonLink>
                   }
                   footnote={<CallHint />}
                 >
                   <p>
-                    Until the box builder goes live, the fastest way to reserve a dozen, a
-                    pie or a party tray is a phone call to the shop. Ring during opening
-                    hours and someone will write it down.
+                    The form above sends what you want to the bakery and they ring you back
+                    to confirm. Picking twelve from the case and paying for them here, with
+                    a pickup time you choose, is the next round of work.
                   </p>
                 </PhaseNote>
               </div>

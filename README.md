@@ -75,6 +75,8 @@ src/data/menu.ts       the full case, with availability rules
 src/lib/time.ts        America/Detroit, via Intl, no date library
 src/lib/availability.ts  the engine
 src/lib/board.ts       what the homepage board shows
+src/lib/mail.ts        SMTP, and the honest behavior when it is unconfigured
+src/app/api/order      the form endpoint, a plain POST with a 303 back
 ```
 
 ## Still to build
@@ -96,9 +98,12 @@ artifact it is meant to be. The second is what is specific to this bakery.
       every route. Also run at 320 and 768: zero.
 - [x] Zero console errors, zero 4xx, on every route.
 - [x] `grep -rn PLACEHOLDER` returns three hits, all of them on the list below.
-- [ ] Every form actually submitted and confirmed arriving in a real inbox. **No forms
-      exist yet.** Ordering, shipping and photo cookies all route to the telephone, and
-      say so on the page.
+- [~] Every form actually submitted and confirmed arriving in a real inbox. **The order
+      form exists and was submitted end to end with JavaScript disabled**, landing on
+      `/order/received?state=logged` with the full payload in the server log. Delivery
+      is unconfirmed because SMTP is unset: set `SMTP_*` and `ORDER_TO` in Vercel and
+      send one real test. Until then the confirmation page says plainly that nobody has
+      been notified and gives the phone number.
 - [x] No remote data source to verify. The site holds no live data.
 - [x] Every heading, button and body run measured for contrast, not glanced at.
 - [x] Checked at 320, 390, 768 and 1440.
@@ -107,26 +112,33 @@ artifact it is meant to be. The second is what is specific to this bakery.
       The search and today filter are not rendered at all rather than rendered dead.
 - [x] Keyboard: focus visible on every interactive element, skip link first in tab
       order, mobile drawer traps focus and closes on Escape.
-- [ ] LCP under 2.5s and CLS under 0.1 on a throttled mobile profile. **Measured on
-      desktop only: LCP 176ms, no layout shift observed. Not yet measured throttled.**
-- [ ] Total JavaScript under 150KB compressed. **Currently 180KB on `/` and 183KB on
-      `/menu`.** 12KB of that is this site's own code; the remaining 171KB is the
-      Next 16 and React 19 runtime. Not reachable without changing framework or
-      dropping the client components behind the header status and the menu filters.
+- [x] LCP under 2.5s and CLS under 0.1 on a throttled mobile profile. Measured at 390px
+      on Slow 4G with a 4x CPU slowdown, median of three runs:
+      `/` **2280ms / 0.000**, `/menu` **828ms / 0.018**, `/story` **824ms / 0.000**.
+      The homepage has only 220ms of headroom and its LCP element is the hero
+      photograph, so anything added to that image spends the margin.
+- [ ] Total JavaScript under 150KB compressed. **180KB on `/`, 184KB on `/menu`,
+      181KB on `/order`.** Not reachable on this stack: a stock Next 16.3.0 and React
+      19.2.8 app containing one `<h1>` and zero client components was built and
+      measured at **168KB compressed**, which is already 18KB over the budget before a
+      line of site code exists. This site adds 12 to 16KB on top of that floor. The
+      budget appears to predate Next 15; worth raising against `launch.md` rather than
+      against this repo.
 - [x] Every route has its own title and meta description, including the 404.
-- [ ] `og:image` absolute on an origin that serves it. **Resolves to the deployment
-      via `VERCEL_PROJECT_PRODUCTION_URL`, so it is only correct once deployed.**
-      Verify it on the deployed URL.
+- [ ] `og:image` absolute on an origin that serves it. Resolves to the deployment via
+      `VERCEL_PROJECT_PRODUCTION_URL`, so it is only correct once deployed. **Fetch it
+      on the deployed URL and confirm a 200.**
 - [x] Canonical points at louies-bakery.com, never a `.vercel.app` host.
 - [x] `Bakery` structured data, a `LocalBusiness` subtype, with hours and address.
 - [x] `sitemap.xml` and `robots.txt` present, and this host is `noindex`.
 - [ ] HTTPS enforced. Vercel's job, confirm after deploy.
 - [x] `npm audit`: 0 vulnerabilities.
-- [x] No secret in the repo. `.env.example` is the authority and lists what phases
-      two and three will need.
+- [x] No secret in the repo. `.env.example` is the authority: `SMTP_HOST`, `SMTP_PORT`,
+      `SMTP_USER`, `SMTP_PASS` and `ORDER_TO` are what the order form needs, and Kevin
+      sets them in the Vercel dashboard.
 - [x] Studio credit placed, plate ground computed with `plate.mjs`, wording is
-      "Concept build by" because this is a spec build. **The bakery has not been told
-      it is there.**
+      "Double Dipped by" on Kevin's call, diverging from brand.md's "Concept build by"
+      for a spec build. **The bakery has not been told it is there.**
 - [x] README written.
 
 ### Specific to Louie's
@@ -134,8 +146,6 @@ artifact it is meant to be. The second is what is specific to this bakery.
 - [ ] **Remove the noindex.** Both halves: `src/app/robots.ts` and the `X-Robots-Tag`
       in `next.config.ts`. They exist because this is a spec build serving a real
       business's content from a hostname that is not theirs.
-- [ ] **Change the credit line to "Double Dipped by"** on the day this is bought.
-      brand.md reserves the donut line for work that has been paid for.
 - [ ] Get the **original logo art**. The only file that exists is a 350x144 PNG.
 - [ ] Get the **unframed scan of the Louie photograph**. The copy in `public/photos`
       was shot through glass and has reflections across it.
@@ -166,6 +176,13 @@ artifact it is meant to be. The second is what is specific to this bakery.
   off the right edge of a 390px screen.
 - **Unavailable menu rows must not use `opacity`.** It multiplies through every child
   and took 60 rows below AA. The badge carries the meaning; the row is tinted instead.
+- **The order form is a server component posting to a route handler.** No client
+  JavaScript is involved on the way in, which is why it works with scripting off. Do
+  not "improve" it into a fetch with a spinner without keeping a working no-JS path.
+- **When SMTP is unset the form still succeeds and logs the whole payload**, and the
+  confirmation page says nobody was notified. Do not replace that with a generic
+  thank-you: a stub that says "we got it" while sending nowhere is the specific thing
+  glaze.md forbids.
 - **The landscape hero rule is deliberately outside `@layer`.** In `@layer base`
   Tailwind's utilities beat it and it did nothing.
 

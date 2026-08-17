@@ -86,14 +86,15 @@ export default function SiteFooter() {
         improvisation: the ground came from plate.mjs and the values sit next to the
         palette in globals.css.
 
-        "Concept build by" rather than the usual "Double Dipped by". brand.md reserves
-        the donut line for work that has been bought, and this is a spec build nobody
-        has paid for yet. It becomes "Double Dipped by" on the day it is theirs, which
-        is on the checklist in the README.
+        "Double Dipped by", on Kevin's call. brand.md reserves the donut line for work
+        that has been bought and gives spec builds "Concept build by", so this is a
+        deliberate divergence from the written rule rather than an oversight: he wants
+        the bakery seeing the real line. Noted here because the next person reading
+        brand.md will otherwise think this is a mistake and correct it back.
 
         The bakery's copyright stays in their own bar above. Only the credit moves.
       */}
-      <GlazedPlate line="Concept build by" />
+      <GlazedPlate line="Double Dipped by" />
     </footer>
   );
 }
