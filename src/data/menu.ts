@@ -50,7 +50,7 @@ export const signatures: MenuItem[] = [
   {
     name: "Nut Roll",
     description:
-      "The one people drive here for. A cinnamon fried roll under icing and a heavy coat of peanuts, roasted in the shop. They make about a thousand a day and still sell out.",
+      "The one people drive here for. A cinnamon fried roll under icing and a heavy coat of peanuts we roast ourselves. About a thousand a day, and we still sell out.",
     price: 189,
     cash: 180,
     popular: true,
@@ -58,7 +58,7 @@ export const signatures: MenuItem[] = [
   {
     name: "Pecan Crisp",
     description:
-      "An original recipe from 1952, still made the way Louie wrote it down.",
+      "Our original recipe from 1952, still made the way Louie wrote it down.",
     price: 210,
     cash: 200,
     popular: true,
@@ -84,11 +84,11 @@ export const sections: MenuSection[] = [
   {
     id: "donuts",
     title: "Donuts and Rolls",
-    blurb: "Fried through the night and out front by half past five.",
+    blurb: "Fried before dawn and out front by half past five.",
     items: [
       {
         name: "Nut Roll",
-        description: "Cinnamon roll, fried, iced, and covered in peanuts they roast themselves.",
+        description: "Cinnamon roll, fried, iced, and covered in peanuts we roast ourselves.",
         price: 189,
         cash: 180,
         popular: true,
@@ -162,7 +162,7 @@ export const sections: MenuSection[] = [
     items: [
       {
         name: "Cream Horn",
-        description: "Wednesdays, or ring ahead and they will make them.",
+        description: "Wednesdays, or ring ahead and we will make them.",
         price: 289,
         cash: 275,
         availability: { days: [3], byOrder: true },
@@ -176,7 +176,7 @@ export const sections: MenuSection[] = [
       },
       {
         name: "Buzz Bomb",
-        description: "Their name, their pastry. Fall through early spring.",
+        description: "Our name, our pastry. Fall through early spring.",
         price: 394,
         cash: 375,
         availability: { season: "fall-winter" },
@@ -199,7 +199,7 @@ export const sections: MenuSection[] = [
       {
         name: "Photo Cookies",
         description:
-          "Any photo or logo printed on the cookie, at no extra charge. Two days notice.",
+          "Any photo or logo printed on the cookie, at no extra charge. Give us two days.",
         price: 368,
         cash: 350,
         availability: { leadDays: 2 },

@@ -123,7 +123,7 @@ export default function MenuBrowser({
         ? `Showing ${shown} of ${total}${todayOnly ? ` being made this ${DAY_NAMES[now.day]}` : ""}${
             query.trim() ? ` matching \u201c${query.trim()}\u201d` : ""
           }.`
-        : `Everything they make. ${total} things.`,
+        : `Everything we make. ${total} things.`,
     [filtering, shown, total, todayOnly, now.day, query],
   );
 
@@ -295,8 +295,8 @@ export default function MenuBrowser({
             <p className="font-display text-xl font-bold text-awning">Nothing matches that.</p>
             <p className="mx-auto mt-2 max-w-md text-awning/75">
               {todayOnly
-                ? "Try turning off the today filter. Plenty of what they make is seasonal or only on certain days."
-                : "Try a shorter word, or ring the shop and ask. They will know."}
+                ? "Try turning off the today filter. Plenty of what we make is seasonal or only on certain days."
+                : "Try a shorter word, or ring the shop and ask. We will know."}
             </p>
             <button
               type="button"

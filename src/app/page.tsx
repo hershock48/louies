@@ -52,18 +52,26 @@ export default function HomePage() {
 
         <div className="hero-pad relative mx-auto flex min-h-[74vh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 sm:px-8 sm:pb-20">
           <Eyebrow dark>Marshall, Michigan &middot; Est. {site.established}</Eyebrow>
+          {/*
+            "The lights are on at three" used to live here and it was invented. Nothing
+            in any source says a baker starts at three. This one is Jason's, to WWMT,
+            about the carousel oven: "It takes so long to heat up. It's easier to just
+            turn it down to, like, 200 and let it sit, as opposed to try to build it
+            back up to 400 or 500."
+
+            So the oven has been warm, more or less continuously, since 1952. That is
+            true, it is surprising, and no other bakery can say it.
+          */}
           <h1 className="mt-4 max-w-4xl font-display text-[clamp(2.35rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-tight">
-            The lights are on at three.
-            <br />
-            The door opens at 5:30.
+            The oven never really goes off.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/85">
-            Nut rolls, fried cakes and pies, baked overnight on a carousel oven with six
-            revolving shelves. Same family, same recipes, same corner of Michigan Avenue
-            since {site.established}.
+            It takes too long to bring back up, so we turn it down instead of turning it
+            off. Six revolving shelves, warm since {site.established}, and the door opens
+            at half past five.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href="/menu">See what they make</ButtonLink>
+            <ButtonLink href="/menu">See what we make</ButtonLink>
             <ButtonLink href="/visit" variant="ghost">
               Hours and directions
             </ButtonLink>
@@ -79,16 +87,16 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <SectionHeading eyebrow="The one they are known for">
-                A thousand nut rolls a day, and they still run out.
+              <SectionHeading eyebrow="The one we are known for">
+                A thousand nut rolls a day, and we still run out.
               </SectionHeading>
               <p className="mt-6 text-lg leading-relaxed text-awning/80">
-                A cinnamon roll, fried, iced, and buried under peanuts they roast in the
-                shop. It is the reason people drive in from three counties over and the
-                reason there is a line before the sun comes up.
+                A cinnamon roll, fried, iced, and buried under peanuts we roast here.
+                Jason puts it plainly: everything is about the nut roll. It is our biggest
+                production item every day, we make around a thousand, and we sell them.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-awning/80">
-                One dollar eighty, cash. Buy two, because the second one never makes it
+                One dollar eighty with cash. Buy two. The second one rarely makes it
                 home.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
@@ -143,12 +151,12 @@ export default function HomePage() {
               Louie bought the bakery in 1952 and worked in it until he was nearly ninety.
             </SectionHeading>
             <p className="mt-6 font-serif text-lg leading-relaxed text-paper/85">
-              His children ran it after him. His grandson {site.people.baker} runs it now,
-              with the same recipes written the way Louie wrote them, on the same corner,
-              in front of the same oven.
+              His children ran it after him. His grandson {site.people.baker} runs it now.
+              &ldquo;There are pictures of me as a little child in this place,&rdquo; he
+              says. &ldquo;So, yeah, I&rsquo;ve been here my entire life.&rdquo;
             </p>
             <p className="mt-4 font-serif text-lg leading-relaxed text-paper/85">
-              Seventy four years is a long time to keep getting up at two in the morning.
+              Same recipes, same corner, same oven.
             </p>
             <div className="mt-8">
               <ButtonLink href="/story" variant="ghost">
@@ -168,19 +176,19 @@ export default function HomePage() {
             {[
               {
                 title: "Come in",
-                body: `Tuesday through Saturday, 5:30am to 3pm. Come early. The good stuff goes first and they do not bake a second round.`,
+                body: `Tuesday through Saturday, 5:30am to 3pm. Come early. The good stuff goes first and we do not bake a second round.`,
                 href: "/visit",
                 cta: "Hours and directions",
               },
               {
                 title: "Order ahead",
-                body: "Build a dozen, pick a time, and it will be boxed and waiting. Pies and photo cookies need a couple of days.",
+                body: "Tell us what you want and we will ring you back to confirm. Pies and photo cookies need a couple of days.",
                 href: "/order",
                 cta: "Order for pickup",
               },
               {
                 title: "Send a box",
-                body: `Baked Monday night, on the ${site.shipping.carrier} truck ${site.shipping.day}, on a porch somewhere Wednesday. Toffee and pecan crisps travel best.`,
+                body: `Baked Monday night, on the ${site.shipping.carrier} truck ${site.shipping.day}, on a porch somewhere Wednesday. Our toffee and pecan crisps travel best.`,
                 href: "/shop",
                 cta: "Ship it",
               },

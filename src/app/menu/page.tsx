@@ -56,9 +56,9 @@ export default function MenuPage() {
 
       <div className="no-print">
         <PageHero
-          eyebrow="What they make"
+          eyebrow="What we make"
           title="The case, written out."
-          intro="Baked through the night, out front by half past five, and gone when it is gone. Anything that is only made on certain days says so on the line."
+          intro="Baked before dawn, out front by half past five, and gone when it is gone. Anything we only make on certain days says so on the line."
         />
 
       {/* The cash policy, explained once, in plain words. The old menu printed two
@@ -67,8 +67,8 @@ export default function MenuPage() {
           <div className="mx-auto max-w-6xl px-5 py-6 sm:px-8">
             <p className="text-sm leading-relaxed text-awning/80">
             <strong className="font-semibold text-awning">Two prices on every line.</strong>{" "}
-            Card processing costs the bakery money, so they pass the saving on when you pay
-            cash. The first number is the card price. The second is what you pay with cash.
+            Card processing costs us money, so we pass the saving on when you pay cash.
+            The first number is the card price. The second is what you pay with cash.
           </p>
           </div>
         </section>

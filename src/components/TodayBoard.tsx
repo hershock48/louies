@@ -91,7 +91,7 @@ export default function TodayBoard({ compact = false }: { compact?: boolean }) {
                     ))}
                   </ul>
                 ) : (
-                  <p className="mt-3 text-paper/70">Everything they make is available right now.</p>
+                  <p className="mt-3 text-paper/70">Everything we make is available right now.</p>
                 )}
               </div>
 

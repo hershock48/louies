@@ -31,7 +31,7 @@ export default function CookiesPage() {
       <PageHero
         eyebrow="No extra charge"
         title="Any picture you like, printed on a cookie."
-        intro={`${money(350)} each with cash, the same as any other decorated cookie. Give them two days and they will put almost anything on it.`}
+        intro={`${money(350)} each with cash, the same as any other decorated cookie. Give us two days and we will put almost anything on it.`}
       />
 
       <section className="grain relative isolate bg-paper">
@@ -72,8 +72,8 @@ export default function CookiesPage() {
                 footnote={<CallHint />}
               >
                 <p>
-                  For now, ring the shop and they will tell you how to get the picture to
-                  them and when it can be ready.
+                  For now, ring the shop and we will tell you how to get the picture to us
+                  and when it can be ready.
                 </p>
                 <p>
                   Sending the image straight from this page, with the two day lead time

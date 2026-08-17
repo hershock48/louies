@@ -22,7 +22,7 @@ export default function ShopPage() {
   const travelers = [
     {
       name: "Old Pan Toffee",
-      body: "The best traveler they make. Broken by hand, keeps for weeks, and arrives exactly as it left.",
+      body: "The best traveler we make. Broken by hand, keeps for weeks, and arrives exactly as it left.",
     },
     {
       name: "Pecan Crisps",
@@ -45,7 +45,7 @@ export default function ShopPage() {
       <section className="grain relative isolate bg-paper">
         <div className="relative mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
           <SectionHeading eyebrow="What travels well">
-            Some things ship better than others, and they will tell you which.
+            Some things ship better than others, and we will tell you which.
           </SectionHeading>
 
           <ul className="mt-10 grid gap-6 md:grid-cols-3">
@@ -73,8 +73,8 @@ export default function ShopPage() {
               footnote={<CallHint />}
             >
               <p>
-                Boxes can be sent today either by calling the shop or through their
-                Goldbelly listing. Ordering straight from this page is next on the list.
+                Boxes can go out today, either by calling the shop or through our Goldbelly
+                listing. Ordering straight from this page is next on the list.
               </p>
             </PhaseNote>
 

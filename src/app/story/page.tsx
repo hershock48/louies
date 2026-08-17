@@ -36,16 +36,18 @@ export default function StoryPage() {
             </p>
             <p>
               He kept it there for fifty years. Louie worked in this building into his late
-              eighties and died in 2002, by which point his children were running it, and by
-              now his grandson is. {site.people.baker} is the {site.people.bakerRole} and the
-              third generation of the family to do this job on this corner.
+              eighties and died in 2002 at eighty-eight, by which point his children were
+              running it, and by now his grandson is. {site.people.baker} is our
+              {site.people.bakerRole} and the third generation of this family to do this job
+              on this corner. He grew up in the building: there are photographs of him as a
+              small child standing in it.
             </p>
             <p>
-              What has not changed is the part customers can taste. The recipes are the ones
-              Louie wrote down. The pecan crisp has been made the same way since the year he
-              opened. The nut roll, which is the thing most people come for, is still a
-              cinnamon roll that gets fried, iced and covered in peanuts roasted in the back.
-              They make about a thousand of them a day and are regularly out before lunch.
+              What has not changed is the part you can taste. The recipes are the ones Louie
+              wrote down. The pecan crisp has been made the same way since the year he opened.
+              The nut roll, which is what most people come for, is still a cinnamon roll that
+              gets fried, iced and covered in peanuts we roast in the back. We make about a
+              thousand a day and we are regularly out before lunch.
             </p>
           </div>
 
@@ -65,22 +67,27 @@ export default function StoryPage() {
 
           <div className="space-y-6 font-serif text-lg leading-relaxed text-awning/85">
             <p>
-              The work starts in the middle of the night. Bakers come in on shifts and load a
+              The work happens before the town is awake. Bakers come in on shifts and load a
               carousel oven with six revolving shelves, a machine most customers have never
               seen and would probably stand and watch if they could. By the time the door
               opens at half past five there is usually a line on the sidewalk.
             </p>
             <p>
-              None of this is complicated. It is simply a family that has got up in the dark
-              for seventy four years to put fried cakes in a case by breakfast, in a town
-              that would notice immediately if they stopped.
+              None of this is complicated. It is a family that has got up in the dark for
+              seventy four years to put fried cakes in a case by breakfast, in a town that
+              would notice immediately if we stopped.
             </p>
           </div>
 
           <blockquote className="mt-12 border-l-2 border-gold pl-6">
+            {/*
+              Jason's line to WWMT, kept whole. The self-correction is the best thing in it
+              and sanding it out, which an earlier draft did, turns a real person into a
+              press release.
+            */}
             <p className="font-display text-2xl font-bold leading-snug text-awning">
-              &ldquo;We just hope people come down and bring their kids so we can get the next
-              generation enjoying our product.&rdquo;
+              &ldquo;We just hope people come down and bring their kids so that we can get the
+              next generation addicted. I mean, <em>enjoying</em> our product.&rdquo;
             </p>
             <footer className="mt-3 text-sm text-awning/70">
               {site.people.baker}, {site.people.bakerRole}
@@ -100,8 +107,14 @@ export default function StoryPage() {
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper/80">
               A carousel oven works like a Ferris wheel. Shelves come round in turn, the
               baker loads and pulls as they pass, and nothing sits in a hot spot. It is how
-              this bakery has always turned out a whole morning&rsquo;s worth of bread and rolls
+              we have always turned out a whole morning&rsquo;s worth of bread and rolls
               before the town is awake.
+            </p>
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-paper/80">
+              It is also almost never switched off. In Jason&rsquo;s words: &ldquo;It takes so
+              long to heat up. It&rsquo;s easier to just turn it down to, like, 200 and let it
+              sit, as opposed to try to build it back up to 400 or 500.&rdquo; Which means the
+              oven on this corner has been warm, give or take, since 1952.
             </p>
             <div className="mt-8">
               <ButtonLink href="/visit" variant="ghost">

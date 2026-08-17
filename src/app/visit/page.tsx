@@ -34,7 +34,7 @@ export default function VisitPage() {
   return (
     <>
       <PageHero
-        eyebrow="Find them"
+        eyebrow="Find us"
         title="144 W. Michigan Ave, Marshall."
         intro="Downtown, on the north side of the street, under the brown awning. If there is a line on the sidewalk before six in the morning, you are in the right place."
       />
@@ -74,7 +74,7 @@ export default function VisitPage() {
             </dl>
 
             <p className="mt-6 text-awning/75">
-              They bake one round. When something is gone it is gone until tomorrow, so the
+              We bake one round. When something is gone it is gone until tomorrow, so the
               earlier you come the better the case looks.
             </p>
 

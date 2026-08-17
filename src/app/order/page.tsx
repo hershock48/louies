@@ -29,7 +29,7 @@ export default async function OrderPage({
     {
       n: "1",
       title: "Fill the box",
-      body: "Twelve from the case, in any combination. Only what is actually being made that day can go in, so nobody orders cream horns on a Thursday.",
+      body: "Twelve from the case, in any combination. Only what we are actually making that day can go in, so nobody orders cream horns on a Thursday.",
     },
     {
       n: "2",
@@ -48,7 +48,7 @@ export default async function OrderPage({
       <PageHero
         eyebrow="Order ahead"
         title="Build a dozen and skip the line."
-        intro="They bake one round a night and the case empties in the order people arrive. Ordering ahead means yours is set aside before the door opens."
+        intro="We bake one round and the case empties in the order people arrive. Ordering ahead means yours is set aside before the door opens."
       />
 
       <section className="grain relative isolate bg-paper">
@@ -86,7 +86,7 @@ export default async function OrderPage({
                   footnote={<CallHint />}
                 >
                   <p>
-                    The form above sends what you want to the bakery and they ring you back
+                    The form above sends what you want straight to us and we ring you back
                     to confirm. Picking twelve from the case and paying for them here, with
                     a pickup time you choose, is the next round of work.
                   </p>
@@ -110,7 +110,7 @@ export default async function OrderPage({
                 </li>
                 <li>
                   <strong className="font-semibold text-awning">Cream horns.</strong> Made
-                  Wednesdays, or any day if you ask nicely and give them warning.
+                  Wednesdays, or any day if you ask nicely and give us warning.
                 </li>
                 <li>
                   <strong className="font-semibold text-awning">Party trays and buns.</strong>{" "}

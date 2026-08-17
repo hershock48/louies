@@ -23,10 +23,10 @@ export default function OrderForm({ error }: { error?: boolean }) {
       action="/api/order"
       className="scroll-mt-[calc(var(--header-h)+1rem)] rounded-panel border border-awning/15 bg-paper-dim p-6 sm:p-8"
     >
-      <h2 className="font-display text-xl font-bold text-awning">Tell them what you want</h2>
+      <h2 className="font-display text-xl font-bold text-awning">Tell us what you want</h2>
       <p className="mt-2 text-awning/80">
-        For a dozen, a pie, a party tray or a tin of photo cookies. It goes straight to the
-        bakery and someone will ring you back to confirm the time and the price.
+        For a dozen, a pie, a party tray or a tin of photo cookies. It comes straight to
+        us and we will ring you back to confirm the time and the price.
       </p>
 
       {error && (
@@ -92,7 +92,7 @@ export default function OrderForm({ error }: { error?: boolean }) {
           className={field}
         />
         <p className="mt-1 text-xs text-awning/65">
-          Pies and photo cookies need a couple of days. They bake Tuesday to Saturday.
+          Pies and photo cookies need a couple of days. We bake Tuesday to Saturday.
         </p>
       </div>
 

@@ -13,7 +13,7 @@ export const site = {
   shortName: "Louie's",
   tagline: "A Marshall tradition since 1952.",
   blurb:
-    "Fried cakes, nut rolls and pies, baked overnight and out front by 5:30 in the morning. Same family, same recipes, same corner of Michigan Avenue since 1952.",
+    "Fried cakes, nut rolls and pies, out front by 5:30 in the morning. Same family, same recipes, same corner of Michigan Avenue since 1952.",
   established: 1952,
 
   /** Their current domain. The hyphen is painted on the window. See the README. */
@@ -40,7 +40,7 @@ export const site = {
   /** Tripadvisor, August 2026. #3 of 34 restaurants in Marshall, #1 bakery. */
   reviews: { rating: 4.4, count: 99 },
 
-  /** From the WWMT feature. The number that says everything about this place. */
+  /** From Jason, to WWMT: "We make around 1,000 a day, and we sell them." */
   nutRollsPerDay: 1000,
 
   people: {
