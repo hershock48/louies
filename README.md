@@ -87,24 +87,87 @@ src/lib/board.ts       what the homepage board shows
 
 ## Before this goes live
 
-- [ ] **Remove the noindex.** Both halves: the rule in `src/app/robots.ts` and the
-      `X-Robots-Tag` header in `next.config.ts`. They exist because this is a spec build
-      serving a real business's content from a hostname that is not theirs.
-- [ ] Get the **original logo art**. The only file that exists is a 350x144 PNG. Somebody
-      has the real one from a shirt order or a sign shop.
-- [ ] Get the **unframed scan of the Louie photograph**. The copy in `public/photos` was
-      shot through glass and has reflections across it.
+The first list is `glaze/launch.md`'s definition of done, copied in as the handover
+artifact it is meant to be. The second is what is specific to this bakery.
+
+### Done, per launch.md
+
+- [x] Zero accessibility violations from `glaze/scripts/audit.mjs` at 390 and 1440 on
+      every route. Also run at 320 and 768: zero.
+- [x] Zero console errors, zero 4xx, on every route.
+- [x] `grep -rn PLACEHOLDER` returns three hits, all of them on the list below.
+- [ ] Every form actually submitted and confirmed arriving in a real inbox. **No forms
+      exist yet.** Ordering, shipping and photo cookies all route to the telephone, and
+      say so on the page.
+- [x] No remote data source to verify. The site holds no live data.
+- [x] Every heading, button and body run measured for contrast, not glanced at.
+- [x] Checked at 320, 390, 768 and 1440.
+- [x] Reduced motion produces a complete page.
+- [x] JavaScript off: every nav link works and the menu still renders all 61 items.
+      The search and today filter are not rendered at all rather than rendered dead.
+- [x] Keyboard: focus visible on every interactive element, skip link first in tab
+      order, mobile drawer traps focus and closes on Escape.
+- [ ] LCP under 2.5s and CLS under 0.1 on a throttled mobile profile. **Measured on
+      desktop only: LCP 176ms, no layout shift observed. Not yet measured throttled.**
+- [ ] Total JavaScript under 150KB compressed. **Currently 180KB on `/` and 183KB on
+      `/menu`.** 12KB of that is this site's own code; the remaining 171KB is the
+      Next 16 and React 19 runtime. Not reachable without changing framework or
+      dropping the client components behind the header status and the menu filters.
+- [x] Every route has its own title and meta description, including the 404.
+- [ ] `og:image` absolute on an origin that serves it. **Resolves to the deployment
+      via `VERCEL_PROJECT_PRODUCTION_URL`, so it is only correct once deployed.**
+      Verify it on the deployed URL.
+- [x] Canonical points at louies-bakery.com, never a `.vercel.app` host.
+- [x] `Bakery` structured data, a `LocalBusiness` subtype, with hours and address.
+- [x] `sitemap.xml` and `robots.txt` present, and this host is `noindex`.
+- [ ] HTTPS enforced. Vercel's job, confirm after deploy.
+- [x] `npm audit`: 0 vulnerabilities.
+- [x] No secret in the repo. `.env.example` is the authority and lists what phases
+      two and three will need.
+- [x] Studio credit placed, plate ground computed with `plate.mjs`, wording is
+      "Concept build by" because this is a spec build. **The bakery has not been told
+      it is there.**
+- [x] README written.
+
+### Specific to Louie's
+
+- [ ] **Remove the noindex.** Both halves: `src/app/robots.ts` and the `X-Robots-Tag`
+      in `next.config.ts`. They exist because this is a spec build serving a real
+      business's content from a hostname that is not theirs.
+- [ ] **Change the credit line to "Double Dipped by"** on the day this is bought.
+      brand.md reserves the donut line for work that has been paid for.
+- [ ] Get the **original logo art**. The only file that exists is a 350x144 PNG.
+- [ ] Get the **unframed scan of the Louie photograph**. The copy in `public/photos`
+      was shot through glass and has reflections across it.
 - [ ] **Photograph the bakery.** Half a morning: the case at open, the oven turning,
       hands icing nut rolls, the peanut roaster, the line outside in the dark, Jason.
       Two photographs cannot carry this site.
-- [ ] Fill in **real closures** for the year in `src/data/hours.ts`.
-- [ ] Settle the four **NEEDS CONFIRMATION** items at the foot of `src/data/menu.ts`:
-      the pastry cash price, whether ice cream is still sold, whether birthday cakes are
-      really gone, and the identical small and large pecan roll prices.
-- [ ] Confirm the **studio credit** in the footer with the bakery. It is one element to
-      delete if they would rather not have it.
+- [ ] **PLACEHOLDER** in `src/data/hours.ts`: the real closures for the year.
+- [ ] **PLACEHOLDER** in `src/data/menu.ts`, four unconfirmed facts: the pastry cash
+      price that looks like a copy-paste from the donut hole row, whether ice cream is
+      still sold (their window says it is, the menu never did), whether birthday cakes
+      are really gone, and small and large pecan rolls sharing a price.
 - [ ] Decide what happens about **louiesbakery.com**, the unhyphenated spelling, which
       belongs to a different bakery and ranks for their name.
+
+## Traps, named
+
+- **`/`, `/menu` and `/visit` are `force-dynamic` on purpose.** Their content depends
+  on the time in Marshall. glaze.md: route caching and time do not mix, because ISR
+  regeneration is request-triggered and a quiet site's cached page ages indefinitely.
+  Putting `revalidate` back will serve somebody "open until 3pm" at nine at night.
+- **The copyright year is a client component.** `new Date()` in a server component of
+  a static page freezes at build time. The four static routes would show last year.
+- **`money()` lives in `src/lib/money.ts`, not with the menu data.** `MenuList` is a
+  client component, and importing it from `data/menu.ts` pulls all 61 items into the
+  browser bundle where the same data already arrives in the server payload.
+- **`OpenPill` sets no display utility.** Callers pass `hidden lg:flex`. Adding
+  `inline-flex` inside the component silently beat `hidden` and pushed the hamburger
+  off the right edge of a 390px screen.
+- **Unavailable menu rows must not use `opacity`.** It multiplies through every child
+  and took 60 rows below AA. The badge carries the meaning; the row is tinted instead.
+- **The landscape hero rule is deliberately outside `@layer`.** In `@layer base`
+  Tailwind's utilities beat it and it did nothing.
 
 ## Credits
 

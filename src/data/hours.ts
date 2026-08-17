@@ -46,7 +46,7 @@ export type Closure = {
  * daily board explains why and when they are back, and the menu stops promising
  * things nobody can buy.
  *
- * NEEDS CONFIRMATION: the bakery's real 2026 and 2027 closures. The entry below is
+ * PLACEHOLDER: the bakery's real 2026 and 2027 closures. The entry below is
  * the shape, taken from the summer break they posted last year.
  */
 export const closures: Closure[] = [

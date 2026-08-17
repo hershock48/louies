@@ -4,8 +4,8 @@
  * One place for everything about the business. Sourced from louies-bakery.com,
  * their Goldbelly listing, the WWMT feature, and the Choose Marshall directory.
  *
- * Anything marked NEEDS CONFIRMATION is a real question for the bakery, not a
- * guess we should quietly ship.
+ * Anything marked PLACEHOLDER is a real question for the bakery, not a guess we
+ * should quietly ship. Every one is on the checklist in the README.
  */
 
 export const site = {

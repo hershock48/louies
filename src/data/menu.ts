@@ -348,7 +348,8 @@ export const sections: MenuSection[] = [
 ];
 
 /**
- * NEEDS CONFIRMATION, all of it flagged for Jason before launch:
+ * PLACEHOLDER: four unconfirmed facts, all flagged for Jason before launch and
+ * all on the checklist in the README.
  *
  * 1. The old menu printed "PASTRIES / DANISH ROLLS $2.10 cash discount $0.60". The 60
  *    cents is the donut hole price from the row above, so the cash price here is set to

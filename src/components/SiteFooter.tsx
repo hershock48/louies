@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import GlazedCredit from "./GlazedCredit";
+import GlazedPlate from "./GlazedPlate";
+import CopyrightYear from "./CopyrightYear";
 import { site, mapsUrl } from "@/data/site";
 import { hoursSummary } from "@/data/hours";
 
 export default function SiteFooter() {
-  const year = new Date().getFullYear();
-
   return (
     <footer className="grain grain-dark relative isolate border-t border-gold/25 bg-night text-paper">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 sm:py-16 md:grid-cols-3">
@@ -76,15 +75,25 @@ export default function SiteFooter() {
       <div className="border-t border-gold/15">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 py-6 text-xs text-paper/55 sm:flex-row sm:px-8">
           <p>
-            &copy; {year} {site.name}. Baking on Michigan Avenue since {site.established}.
+            &copy; <CopyrightYear />{site.name}. Baking on Michigan Avenue since {site.established}.
           </p>
-          {/*
-            The studio credit. "Double Dipped" is the bakery line, and this is the room it
-            was written for. Removing it is deleting this one element.
-          */}
-          <GlazedCredit line="Double Dipped by" />
         </div>
       </div>
+
+      {/*
+        The signature plate, last child of the footer and outside the max-width
+        container so the drip edge is full bleed. brand.md's procedure, not an
+        improvisation: the ground came from plate.mjs and the values sit next to the
+        palette in globals.css.
+
+        "Concept build by" rather than the usual "Double Dipped by". brand.md reserves
+        the donut line for work that has been bought, and this is a spec build nobody
+        has paid for yet. It becomes "Double Dipped by" on the day it is theirs, which
+        is on the checklist in the README.
+
+        The bakery's copyright stays in their own bar above. Only the credit moves.
+      */}
+      <GlazedPlate line="Concept build by" />
     </footer>
   );
 }

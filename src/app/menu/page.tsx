@@ -6,7 +6,21 @@ import { site, fullAddress } from "@/data/site";
 import { hoursSummary } from "@/data/hours";
 import { localNow } from "@/lib/time";
 
-export const revalidate = 900;
+/*
+  RENDERED PER REQUEST, NOT CACHED.
+
+  This page's content depends on what time it is in Marshall: whether the door is
+  open, what is in the case today, what comes back tomorrow. glaze.md names this
+  exact trap. ISR regeneration is request-triggered, so `revalidate = 900` does not
+  mean "at most fifteen minutes old", it means "at most fifteen minutes old on a busy
+  site". On a quiet one the cached copy ages indefinitely, and a bakery in a town of
+  seven thousand is a quiet site. Somebody arriving at nine at night would have been
+  served a page generated that morning, cheerfully saying open until 3pm.
+
+  The pages are small and hold no remote data, so per-request costs almost nothing
+  and is the only version that is actually true.
+*/
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Menu",
