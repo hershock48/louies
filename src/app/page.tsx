@@ -84,10 +84,14 @@ export default function HomePage() {
             <br />
             The donuts haven&rsquo;t.
           </h1>
+          {/*
+            One sentence, per Kevin. The description, the thousand-a-day and "come
+            early" all live two scrolls down in the nut roll section, so the hero
+            saying them too was the page repeating itself. Eleven words under a
+            two-line headline, and the next thing you read is the board.
+          */}
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-paper/85">
-            We still make them the way Louie wrote them down: fried, iced, rolled in
-            peanuts we roast in the back. A thousand nut rolls a day, gone by lunch.
-            Come early.
+            We still make them the way Louie wrote them down.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <ButtonLink href="/menu?today=1">What&rsquo;s in the case today</ButtonLink>
