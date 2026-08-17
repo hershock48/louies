@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { site } from "@/data/site";
 
 /**
@@ -54,12 +53,24 @@ export default function Wordmark({
 }) {
   return (
     <span className={`lb-mark ${hero ? "lb-mark--hero" : ""} relative inline-block ${className}`}>
-      <Image
-        src="/louies-logo-word.png"
+      {/*
+        Plain <img>, on purpose, twice over. These are SVGs, so there is no
+        responsive variant for next/image to generate and no optimizer pass to
+        route through; and the traced files are resolution-independent, which is
+        the entire point of them. The PNGs they replace were a 350x144 source
+        being asked for 432px of height on a retina hero: blurry at every size
+        that mattered. Traced per the house method, 8x upscale with slight blur,
+        threshold picked by rendering candidates and diffing against the original
+        alpha, threshold 128 winning for both layers.
+      */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- SVG, optimizer has nothing to add */}
+      <img
+        src="/louies-logo-word.svg"
         alt={site.name}
         width={220}
         height={91}
-        priority
+        loading="eager"
+        fetchPriority="high"
         className="h-full w-auto"
       />
       {/*
@@ -80,13 +91,15 @@ export default function Wordmark({
       */}
       <span className="lb-hat-drop absolute inset-0 block">
         <span className="lb-hat-spin absolute inset-0 block">
-          <Image
-            src="/louies-logo-hat.png"
+          {/* eslint-disable-next-line @next/next/no-img-element -- SVG, optimizer has nothing to add */}
+          <img
+            src="/louies-logo-hat.svg"
             alt=""
             aria-hidden="true"
             width={220}
             height={91}
-            priority
+            loading="eager"
+            fetchPriority="high"
             className="lb-hat absolute inset-0 h-full w-auto"
           />
         </span>
