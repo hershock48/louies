@@ -114,8 +114,8 @@ artifact it is meant to be. The second is what is specific to this bakery.
       order, mobile drawer traps focus and closes on Escape.
 - [x] LCP under 2.5s and CLS under 0.1 on a throttled mobile profile. Measured at 390px
       on Slow 4G with a 4x CPU slowdown, median of three runs:
-      `/` **2280ms / 0.000**, `/menu` **828ms / 0.018**, `/story` **824ms / 0.000**.
-      The homepage has only 220ms of headroom and its LCP element is the hero
+      `/` **2116ms / 0.000**, `/menu` **828ms / 0.018**, `/story` **796ms / 0.000**.
+      The homepage has under 400ms of headroom and its LCP element is the hero
       photograph, so anything added to that image spends the margin.
 - [ ] Total JavaScript under 150KB compressed. **180KB on `/`, 184KB on `/menu`,
       181KB on `/order`.** Not reachable on this stack: a stock Next 16.3.0 and React
@@ -195,11 +195,18 @@ artifact it is meant to be. The second is what is specific to this bakery.
   confirmation page says nobody was notified. Do not replace that with a generic
   thank-you: a stub that says "we got it" while sending nowhere is the specific thing
   glaze.md forbids.
+- **`deviceSizes` stops at 1920 on purpose.** Next's default ladder ends at 3840, and a
+  1440px screen at 2x rounds the hero's request up to it, so every retina desktop was
+  being sold a quarter of a megabyte of upscaled photograph. Put 3840 back only when a
+  source exists that can fill it.
 - **The landscape hero rule is deliberately outside `@layer`.** In `@layer base`
   Tailwind's utilities beat it and it did nothing.
 
 ## Credits
 
-Photographs from Louie's Bakery's own Goldbelly listing. History from the WWMT feature
+Photographs from Louie's Bakery's own Goldbelly listing, at the full size the listing
+holds: the storefront is 2400x1800 there and the site now uses it rather than the 1400px
+copy it started with. That listing carries no product photography, which is why the hero
+is still the building and not a nut roll. History from the WWMT feature
 "Louie's Bakery has been serving Marshall for nearly 75 years", the Choose Marshall
 directory, and the bakery's own copy.

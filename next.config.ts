@@ -14,6 +14,26 @@ const nextConfig: NextConfig = {
       on a phone, for 15KB. 60 is the floor.
     */
     qualities: [60, 75],
+
+    /*
+      The ladder stops at 1920.
+
+      A 1440px desktop at 2x wants 2400 real pixels for the hero, and the browser takes
+      the next candidate up. By default that is 3840, so Next was upscaling the source
+      to 3840 and shipping a quarter of a megabyte of invented detail behind a gradient.
+      Removing it makes the browser take the largest rendition that actually exists.
+
+      1920 rather than 2048, measured the same way the quality floor was: rendered at
+      display size, dimmed to the 70% the hero sits at, composited on the night
+      background and diffed against a full 2048 rendition. 1920 is 3.69/255 away and
+      48KB lighter; the 1200 rendition is 6.90/255 away, which is over the threshold
+      this site already established as visible on a phone, so the ladder cannot stop
+      any lower than this.
+
+      Safe to keep short because the site has three photographs, all the bakery's own,
+      none anywhere near 4K. Add the larger rungs back when a source can fill them.
+    */
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
   },
   /*
     THE HOST SPLIT, per glaze/proposal.md. The pitch host serves the proposal at its

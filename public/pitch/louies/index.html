@@ -145,12 +145,38 @@ nav a:hover{color:var(--pink-d)}
 
 /* demo cta */
 .demo{background:linear-gradient(135deg,#201712,#3A2416);color:#F6EFE4;border-radius:18px;padding:32px;margin:22px 0;text-align:center}
+/*
+  text-indent pays back the trailing letter-space. Centred type with .3em of tracking
+  carries an empty .3em after its last character, and the browser centres the box
+  including that space, so the words sit half a space left of centre. Everything else
+  in this block is centred on the same axis, which is what made it read as crooked.
+*/
 .demo .k{color:var(--green)}
+.demo-cta .k{text-indent:.3em}
 .demo h3{color:#fff;margin:10px 0 8px;font-size:1.4rem}
-.demo p{color:#D8CBBA;font-size:.98rem;max-width:34em;margin:0 auto 20px}
+/*
+  margin:0 auto, and NOT overridden inline. This paragraph is a 34em block inside a
+  centred parent: with margin:0 the block pins to the left edge and only its text
+  centres, which put this line visibly off-axis from the eyebrow and the button above
+  it. The auto margins centre the block itself.
+*/
+.demo p{color:#D8CBBA;font-size:.98rem;max-width:34em;margin:0 auto}
 .demo a{display:inline-block;background:var(--pink-d);color:#fff;font-family:var(--sans);font-weight:700;font-size:.82rem;box-shadow:0 6px 16px -6px rgba(206,54,114,.55);
- letter-spacing:.09em;text-transform:uppercase;padding:15px 30px;border-radius:999px;text-decoration:none;transition:all .18s}
+ letter-spacing:.09em;text-transform:uppercase;padding:15px 30px;border-radius:999px;text-decoration:none;transition:all .18s;
+ max-width:100%;text-indent:.09em;box-sizing:border-box}
 .demo a:hover{background:var(--green);color:var(--ink);transform:translateY(-2px)}
+/*
+  On a phone the address is nearly as wide as the card, and an inline-block that
+  outgrows its line does not centre, it overflows to the right: the button was sitting
+  13px off the axis with its shadow running under the card's edge. Smaller type and
+  tighter padding put it back inside, which matters because this is the one button in
+  the whole letter we are asking anyone to press, and this is the screen we are asking
+  them to press it on.
+*/
+@media(max-width:430px){
+ .demo{padding:26px 18px}
+ .demo a{font-size:.72rem;padding:14px 20px;letter-spacing:.06em;text-indent:.06em}
+}
 
 /* steps */
 .step{display:flex;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}
@@ -325,10 +351,10 @@ footer .gmark{height:78px;width:auto}
  <h2>What we built.</h2>
  <p>Not what we would build. What we built, on our own time, before asking you for anything, because showing beats describing.</p>
 
- <div class="demo">
+ <div class="demo demo-cta">
   <div class="k">The demo is live right now</div>
   <h3 style="margin-top:8px"><a href="/demo" target="_blank" rel="noopener">louies.glazedweb.com/demo</a></h3>
-  <p style="margin:0">Open it on your phone. That is where your customers are.</p>
+  <p>Open it on your phone. That is where your customers are.</p>
  </div>
 
  <h3>What is in it</h3>

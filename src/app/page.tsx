@@ -34,9 +34,13 @@ export default function HomePage() {
           fill
           priority
           /*
-            Capped at 1200. The photograph is 1400px wide at source, and a bare 100vw
-            asked Next for 1920 on a desktop, which upscales invented detail into a
+            Capped at 1200. A bare 100vw asked Next for 1920 on a desktop and shipped a
             274KB file for an image sitting at 70% opacity behind a gradient.
+
+            The source is now the bakery's full-resolution original from their Goldbelly
+            listing, 2048 wide, rather than the 1400px copy: same photograph, but the
+            copy was being upscaled on every retina screen. The srcset ladder is capped
+            to 2048 in next.config.ts to match.
           */
           sizes="(max-width: 1200px) 100vw, 1200px"
           quality={60}
