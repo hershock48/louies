@@ -124,7 +124,7 @@ export default function HomePage() {
                 taste.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-awning/80">
-                One dollar eighty with cash. Buy two. The second one rarely makes it home.
+                Buy two. The second one rarely makes it home.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <ButtonLink href="/order" variant="dark">
@@ -144,9 +144,9 @@ export default function HomePage() {
                 >
                   <h3 className="font-display text-lg font-bold text-awning">{item.name}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-awning/70">{item.description}</p>
-                  {item.cash !== undefined && (
+                  {item.price !== undefined && (
                     <p className="mt-3 text-sm font-semibold tabular-nums text-brick">
-                      {money(item.cash)} cash
+                      {money(item.price)}
                     </p>
                   )}
                 </li>

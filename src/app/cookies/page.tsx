@@ -13,7 +13,10 @@ export const metadata: Metadata = {
 /**
  * The most commercially interesting product Louie's makes, and on the old site it was
  * one line inside a hundred-line price list: "PHOTO COOKIES $3.68 cash discount $3.50,
- * custom logos or photos at no additional cost, 2-day advance notice required".
+ * custom logos or photos at no additional cost, 2-day advance notice required". The
+ * cash figure is dropped everywhere on this site: Square is the register now and the
+ * discount is gone. $3.68 is the card price from that list and needs Jason's
+ * confirmation like every other number here.
  *
  * No new equipment, no new skill, and it reaches customers a bakery does not normally
  * get: offices, weddings, showers, teams, real estate closings. It earns a page.
@@ -31,7 +34,7 @@ export default function CookiesPage() {
       <PageHero
         eyebrow="No extra charge"
         title="Any picture you like, printed on a cookie."
-        intro={`${money(350)} each with cash, the same as any other decorated cookie. Give us two days and we will put almost anything on it.`}
+        intro={`${money(368)} each, the same as any other decorated cookie. Give us two days and we will put almost anything on it.`}
       />
 
       <section className="grain relative isolate bg-paper">
@@ -84,12 +87,7 @@ export default function CookiesPage() {
               <div className="mt-8 rounded-panel border border-awning/15 bg-awning p-6 text-paper sm:p-8">
                 <h2 className="font-display text-xl font-bold">The price</h2>
                 <p className="mt-3 text-3xl font-extrabold tabular-nums text-wheat">
-                  {money(368)}{" "}
-                  <span className="text-base font-semibold text-paper/70">card</span>
-                </p>
-                <p className="mt-1 text-3xl font-extrabold tabular-nums text-wheat">
-                  {money(350)}{" "}
-                  <span className="text-base font-semibold text-paper/70">cash</span>
+                  {money(368)}
                 </p>
                 <p className="mt-4 text-sm text-paper/75">
                   Per cookie, whatever the picture. The printing genuinely does not cost

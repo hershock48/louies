@@ -97,7 +97,7 @@ artifact it is meant to be. The second is what is specific to this bakery.
 - [x] Zero accessibility violations from `glaze/scripts/audit.mjs` at 390 and 1440 on
       every route. Also run at 320 and 768: zero.
 - [x] Zero console errors, zero 4xx, on every route.
-- [x] `grep -rn PLACEHOLDER` returns three hits, all of them on the list below.
+- [x] `grep -rn PLACEHOLDER` returns five hits, all of them on the list below.
 - [~] Every form actually submitted and confirmed arriving in a real inbox. **The order
       form exists and was submitted end to end with JavaScript disabled**, landing on
       `/order/received?state=logged` with the full payload in the server log. Delivery
@@ -162,10 +162,14 @@ artifact it is meant to be. The second is what is specific to this bakery.
       ship. Jason gave WWMT that interview, so asking the station to license the stills
       is also worth one email.
 - [ ] **PLACEHOLDER** in `src/data/hours.ts`: the real closures for the year.
-- [ ] **PLACEHOLDER** in `src/data/menu.ts`, four unconfirmed facts: the pastry cash
-      price that looks like a copy-paste from the donut hole row, whether ice cream is
-      still sold (their window says it is, the menu never did), whether birthday cakes
-      are really gone, and small and large pecan rolls sharing a price.
+- [ ] **PLACEHOLDER** in `src/data/menu.ts`, and the first one is the whole price list.
+      **Get Jason's current Square prices.** The bakery moved to Square and dropped the
+      cash discount (Kevin, from the shop). Every figure on this site is the card price
+      from their published list, carried across as the single price, which is the
+      closest honest guess and still a guess. Then the four smaller ones: whether ice
+      cream is still sold (their window says it is, the menu never did), whether
+      birthday cakes are really gone, small and large pecan rolls sharing a price, and
+      the pastry row that borrowed the donut hole's sixty cents.
 - [ ] **Tell the bakery the review quotes are on the homepage.** Three verbatim public
       Tripadvisor reviews in `src/data/reviews.ts`, attributed to handle and platform,
       which is the normal convention but is still their site and their call.
@@ -180,6 +184,10 @@ artifact it is meant to be. The second is what is specific to this bakery.
   Putting `revalidate` back will serve somebody "open until 3pm" at nine at night.
 - **The copyright year is a client component.** `new Date()` in a server component of
   a static page freezes at build time. The four static routes would show last year.
+- **There is one price per item, on purpose.** Their published menu prints a card price
+  and a cash price on every line. Square is the register now and the discount is gone,
+  so a second number would be describing a way of charging that no longer happens. Do
+  not reintroduce `cash` on `MenuItem`.
 - **`money()` lives in `src/lib/money.ts`, not with the menu data.** `MenuList` is a
   client component, and importing it from `data/menu.ts` pulls all 61 items into the
   browser bundle where the same data already arrives in the server payload.

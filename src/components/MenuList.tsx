@@ -12,9 +12,10 @@ import type { LocalNow } from "@/lib/time";
  * you when it is back, instead of hiding "(Wednesday only)" in a parenthesis you have
  * to notice. Nobody has to hold the rules in their head.
  *
- * Two: the cash price is labeled. Louie's printed two numbers on every line of the
- * old menu and never once explained why, which reads as an error. Here the pair is
- * headed "card" and "cash" and the policy is stated once above the list.
+ * Two: one price per row. Their published list prints two numbers on every line, a
+ * card price and a cash price, and never explains either. The bakery has since moved
+ * to Square and dropped the cash discount, so the second number now describes a way of
+ * charging that no longer happens. One number, and it is the one you pay.
  */
 export default function MenuList({
   section,
@@ -79,9 +80,6 @@ export default function MenuList({
                 {item.price !== undefined && (
                   <span className="ml-auto flex-none text-right text-sm tabular-nums text-awning/75">
                     <span className="font-semibold text-awning">{money(item.price)}</span>
-                    {item.cash !== undefined && item.cash !== item.price && (
-                      <span className="text-awning/70"> card &middot; {money(item.cash)} cash</span>
-                    )}
                   </span>
                 )}
               </div>

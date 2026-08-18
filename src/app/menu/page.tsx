@@ -49,8 +49,7 @@ export default function MenuPage() {
           {hoursSummary.map((h) => `${h.label}: ${h.value}`).join(" \u00b7 ")}
         </p>
         <p>
-          Prices shown are card prices. The lower figure is the cash price. Some items are
-          only made on certain days or in certain seasons, as noted.
+          Some items are only made on certain days or in certain seasons, as noted.
         </p>
       </div>
 
@@ -61,17 +60,10 @@ export default function MenuPage() {
           intro="Baked before dawn, out front by half past five, and gone when it is gone. Anything we only make on certain days says so on the line."
         />
 
-      {/* The cash policy, explained once, in plain words. The old menu printed two
-          prices on every row and never said why, which reads as a mistake. */}
-        <section className="border-b border-awning/10 bg-paper-dim">
-          <div className="mx-auto max-w-6xl px-5 py-6 sm:px-8">
-            <p className="text-sm leading-relaxed text-awning/80">
-            <strong className="font-semibold text-awning">Two prices on every line.</strong>{" "}
-            Card processing costs us money, so we pass the saving on when you pay cash.
-            The first number is the card price. The second is what you pay with cash.
-          </p>
-          </div>
-        </section>
+      {/* This strip used to explain the two prices on every row. The bakery is on Square
+          now and the cash discount is gone, so there is one number per line and nothing
+          to explain. Deleted rather than reworded: a band of text that says "prices are
+          prices" is worse than the whitespace. */}
       </div>
 
       <MenuBrowser sections={sections} now={now} />
