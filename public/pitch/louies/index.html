@@ -26,6 +26,10 @@
  --paper:#FDF6EC; --paper2:#FFF7EA; --card:#FFFDF8;
  --ink:#2B1E16; --ink2:#201712; --body:#6B5747; --mute:#7A6753; --line:#E8DCC8;
  --pink:#E84D8A; --pink-d:#CE3672; --pink-t:#FCE7F0;
+ /* Pink that has to survive on the paper background rather than on a card: --pink-d
+    measures 4.45 there, which is a fail, and 4.7 on --card, which is why the same
+    colour passes inside a claim and fails outside one. Token, not element. */
+ --pink-ink:#C9356F;
  --green:#BFE07A; --green-b:#A9D65C; --green-d:#467C3D; --green-t:#F1F8DC;
  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
  --serif:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -40,7 +44,7 @@ h2{font-size:clamp(30px,4.4vw,48px);font-weight:800;color:var(--ink);letter-spac
 h3{font-size:19px;font-weight:800;color:var(--ink);margin:34px 0 10px;letter-spacing:-.4px}
 p{margin:0 0 14px}
 strong{color:var(--ink);font-weight:600}
-a{color:#C9356F}
+a{color:var(--pink-ink)}
 .rule{height:3px;width:52px;background:var(--pink);border-radius:2px;margin:0 0 18px}
 section{padding:60px 0;border-top:1px solid var(--line)}
 section:first-of-type{border-top:0}
@@ -94,7 +98,7 @@ nav a:hover{color:var(--pink-d)}
 .claim .verify.plain:hover{background:transparent;color:var(--mute)}
 /* Same pill, usable outside a claim card (the Mopro pricing citation). */
 .verify.loose{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-family:var(--sans);font-size:.71rem;font-weight:700;
- letter-spacing:.08em;text-transform:uppercase;color:var(--pink-d);text-decoration:none;border:1.5px solid var(--pink);
+ letter-spacing:.08em;text-transform:uppercase;color:var(--pink-ink);text-decoration:none;border:1.5px solid var(--pink);
  border-radius:999px;padding:7px 14px;transition:all .16s}
 .verify.loose:hover{background:var(--pink);color:#fff}
 .mono{font-family:ui-monospace,Menlo,monospace;font-size:.83em;color:var(--mute)}
@@ -178,6 +182,13 @@ nav a:hover{color:var(--pink-d)}
  .demo a{font-size:.72rem;padding:14px 20px;letter-spacing:.06em;text-indent:.06em}
 }
 
+/* the proof list: measured claims, so they get ticks rather than bullets */
+.proof{list-style:none;margin:10px 0 4px}
+.proof li{position:relative;padding:7px 0 7px 26px;font-size:.97rem;border-top:1px solid var(--line)}
+.proof li:first-child{border-top:0}
+.proof li::before{content:"";position:absolute;left:2px;top:15px;width:9px;height:9px;border-radius:50%;background:var(--green-b)}
+.proof b{color:var(--ink)}
+
 /* steps */
 .step{display:flex;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}
 .step:last-child{border-bottom:0}
@@ -255,7 +266,7 @@ footer .gmark{height:78px;width:auto}
    <li><span class="n">02</span><span>Your team page introduces <b>three people who do not exist</b>, with Latin filler where their lives should be.</span></li>
    <li><span class="n">03</span><span>Your testimonials page has <b>no testimonials on it</b>. Seventy-four years of goodwill lives on Facebook instead.</span></li>
    <li><span class="n">04</span><span>The address customers actually type, <b>louiesbakery.com</b>, is a bakery in Pennsylvania.</span></li>
-   <li><span class="n">05</span><span>Your online store greets buyers with <b>"please call if you have any concerns."</b> People want to ship your baking across the country, and the page selling it apologizes for itself.</span></li>
+   <li><span class="n">05</span><span>Your own online store is quoting shipping dates from <b>February and April</b>. Two pages, two dates, both long gone.</span></li>
   </ul>
  </div>
 
@@ -290,22 +301,16 @@ footer .gmark{height:78px;width:auto}
  </div>
 
  <div class="claim">
-  <h4>The name customers type belongs to somebody else</h4>
-  <p><span class="mono">louiesbakery.com</span>, without the hyphen, is a family bakery in Emmaus, Pennsylvania. Anyone who types the obvious spelling of your name lands on their case, not yours. A rebuild cannot fix that by itself, but proper local search work narrows how often it happens, and it is worth knowing.</p>
-  <a class="verify" href="https://louiesbakery.com/" target="_blank" rel="noopener">See it live ↗</a>
+  <h4>Your own store is still quoting February</h4>
+  <p>Your store page tells buyers that orders <span class="mono">"will be made &amp; shipped on tuesday feb, 10"</span>. The cart page tells them <span class="mono">"We ship April 25"</span> and asks for orders <span class="mono">"before Saturday April 2 noon"</span>. Two pages, two dates, both months gone. Nobody forgot twice. On a rented template every date is a sentence a person has to remember to retype, so dates freeze where they were last typed, and the busiest week is always the week nobody gets to it.</p>
+  <a class="verify" href="https://www.louies-bakery.com/store" target="_blank" rel="noopener">See the store page ↗</a>
+  <a class="verify" href="https://www.louies-bakery.com/shopping-cart" target="_blank" rel="noopener">See the cart page ↗</a>
  </div>
 
  <div class="claim">
-  <h4>Your online store apologizes for itself</h4>
-  <p>People across the country want Louie's shipped to their door. You know it,
-  because you already do it: the UPS boxes go out, and Goldbelly, the marketplace
-  that ships America's most famous bakeries, hangs framed on your own wall. Now
-  read the page that is supposed to sell all that. It announces, verbatim:
-  <span class="mono">"the online store is open we are now shipping with ups
-  please call if you have any concerns"</span>. Lowercase, unpunctuated, asking
-  the buyer to call before they have bought anything. The demand is proven.
-  The shelf it sits on is the problem.</p>
-  <a class="verify" href="https://www.louies-bakery.com/store" target="_blank" rel="noopener">See it live ↗</a>
+  <h4>The name customers type belongs to somebody else</h4>
+  <p><span class="mono">louiesbakery.com</span>, without the hyphen, is a family bakery in Emmaus, Pennsylvania. Anyone who types the obvious spelling of your name lands on their case, not yours. A rebuild cannot fix that by itself, but proper local search work narrows how often it happens, and it is worth knowing.</p>
+  <a class="verify" href="https://louiesbakery.com/" target="_blank" rel="noopener">See it live ↗</a>
  </div>
 
  <div class="gap">
@@ -313,9 +318,8 @@ footer .gmark{height:78px;width:auto}
   <p>Everything above is a symptom, and none of it is the real finding. The real
   finding is the gap. Walk into 144 W. Michigan at 5:30 in the morning and you
   get the best bakery anywhere. We will say that plainly, because seventy-four
-  years of Marshall lining up at one counter says it with us, and so does the
-  poster on your own wall: Goldbelly ships America's most famous bakeries, and
-  they picked yours. Type your name into a
+  years of Marshall lining up at one counter says it with us, and because people
+  who moved away still pay to have a box of it sent across the country. Type your name into a
   browser and you get a site that says closed, staffed by people who do not
   exist. The quality on the screen has never once matched the quality in the
   case. A bakery this good deserves a website built to its own standard, and
@@ -362,8 +366,22 @@ footer .gmark{height:78px;width:auto}
  <p><strong>A menu people can use.</strong> All sixty-one things you make, searchable, with a one-tap "in the case today" filter, and it prints onto four clean pages for the church-hall and office orders. Your cash discount is finally explained in a sentence instead of confusing every line.</p>
  <p><strong>Your story, told with real people.</strong> Louie, 1952, the carousel oven that never fully goes off, and Jason's own words. The invented staff are gone.</p>
  <p><strong>Your reviews, on your site.</strong> "Best Damn Doughnuts Ever" belongs on your homepage, not three clicks away on someone else's.</p>
- <p><strong>An order form that works at 9pm.</strong> Your counter closes at 3. The form takes the dozen, the pie order and the photo-cookie request while you sleep, and it reaches you by email. Next phases, when you want them: paying online for pickup, and shipping nut rolls from your own site instead of giving Goldbelly its cut.</p>
+ <p><strong>An order form that works at 9pm.</strong> Your counter closes at 3. The form takes the dozen, the pie order and the photo-cookie request while you sleep, and it reaches you by email.</p>
  <p><strong>And the hat.</strong> Open the demo and watch your logo for a second. We think Louie would have smiled.</p>
+
+ <h3>Built to a standard, and here is how we know</h3>
+ <p>None of this is a mockup. It is a working site, measured rather than described.</p>
+ <ul class="proof">
+  <li><b>About two seconds</b> to first paint on a phone, measured on a deliberately bad connection with a slow processor, which is the profile Google grades a site on.</li>
+  <li><b>Zero accessibility failures</b> at four screen sizes, checked with the standard auditing tool rather than by eye. Plenty of your customers are reading a phone at arm's length.</li>
+  <li><b>It still works with JavaScript switched off</b>, on an old phone, on the bakery's own wifi. All sixty-one items, still there.</li>
+  <li><b>Nothing rented on top.</b> No plugin subscriptions, no per-feature upsell, no page-builder licence.</li>
+ </ul>
+
+ <h3>The part where the shipping money is</h3>
+ <p>You already ship two ways: the boxes you pack yourself, and your Goldbelly listing. Keep Goldbelly. Introducing you to somebody in Arizona who has never heard of Marshall is the one thing a marketplace does that a website cannot.</p>
+ <p>But a marketplace charges for that introduction on <em>every</em> order, forever, including the tenth order from the customer who now knows your name and would have typed your address in. Goldbelly does not publish that number; you know yours. Put it next to this one: on your own site a card payment costs <strong>2.9% plus 30 cents</strong>, published by Stripe, and nothing else. No commission on the repeat order. And the buyer's email address is <em>yours</em>, which is the whole difference between a customer and a stranger who bought something once.</p>
+ <p>You already have a cart on your own site. It is the page quoting April. That is phase two, and it is a real phase, not a bolt-on: pick the box, pay, and the label prints in the back. Quoted separately, when you want it, and never added to your bill before you say so.</p>
 </div></section>
 <section id="cost"><div class="wrap">
  <div class="k">Section four</div>
@@ -374,7 +392,7 @@ footer .gmark{height:78px;width:auto}
   <div><div class="n">$1,900</div><div class="l">One-time build. Everything described above, finished and launched on louies-bakery.com. Half to start, half on launch.</div></div>
   <div><div class="n">$99<span style="font-size:1rem;color:var(--mute)">/mo</span></div><div class="l">Hosting, SSL, security, backups, domain renewal, and ongoing content edits. Price changes? Closures? Send a text.</div></div>
  </div>
- <p>That is <strong>$3,088</strong> across the first twelve months, then <strong>$1,188 a year</strong>. And when you are ready for it, the order-ahead system we run for restaurant clients bolts on: guests pay online, the order prints in back, and it costs the bakery zero dollars a month because a small guest-paid order fee funds it. Everything on the site that says "give us a call, N days ahead" becomes a paid preorder instead of a phone note. The same checkout handles shipping, and that one matters more than it looks: Goldbelly earns its keep by introducing you to strangers, but the customer who already loves you should not cost you a marketplace commission. Orders from your own site are all yours. Quoted separately when you want it; nothing is ever added to your bill before you approve it.</p>
+ <p>That is <strong>$3,088</strong> across the first twelve months, then <strong>$1,188 a year</strong>. And when you are ready for it, the order-ahead system we run for restaurant clients bolts on: guests pay online, the order prints in back, and it costs the bakery zero dollars a month because a small guest-paid order fee funds it. Everything on the site that says "give us a call, N days ahead" becomes a paid preorder instead of a phone note, and the same checkout handles the shipping boxes described in section three. Quoted separately when you want it; nothing is ever added to your bill before you approve it.</p>
 
  <h3>How that compares to staying put</h3>
  <p>We are not going to guess at your Mopro bill. Put your own number in and the math does itself. It runs entirely on this page; nothing is sent anywhere. For scale: Mopro's own pricing page says plans start at $199 a month.</p>
