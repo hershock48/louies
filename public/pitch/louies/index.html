@@ -92,6 +92,11 @@ nav a:hover{color:var(--pink-d)}
 .claim .verify:hover{background:var(--pink);color:#fff}
 .claim .verify.plain{border-color:var(--line);color:var(--mute);cursor:default}
 .claim .verify.plain:hover{background:transparent;color:var(--mute)}
+/* Same pill, usable outside a claim card (the Mopro pricing citation). */
+.verify.loose{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-family:var(--sans);font-size:.71rem;font-weight:700;
+ letter-spacing:.08em;text-transform:uppercase;color:var(--pink-d);text-decoration:none;border:1.5px solid var(--pink);
+ border-radius:999px;padding:7px 14px;transition:all .16s}
+.verify.loose:hover{background:var(--pink);color:#fff}
 .mono{font-family:ui-monospace,Menlo,monospace;font-size:.83em;color:var(--mute)}
 
 /* calculator */
@@ -327,10 +332,11 @@ footer .gmark{height:78px;width:auto}
   <div><div class="n">$1,900</div><div class="l">One-time build. Everything described above, finished and launched on louies-bakery.com. Half to start, half on launch.</div></div>
   <div><div class="n">$99<span style="font-size:1rem;color:var(--mute)">/mo</span></div><div class="l">Hosting, SSL, security, backups, domain renewal, and ongoing content edits. Price changes? Closures? Send a text.</div></div>
  </div>
- <p>That is <strong>$3,088</strong> across the first twelve months, then <strong>$1,188 a year</strong>. Online payment for pickup orders and ship-it-yourself are quoted separately when you want them, and nothing is ever added to your bill before you approve it.</p>
+ <p>That is <strong>$3,088</strong> across the first twelve months, then <strong>$1,188 a year</strong>. And when you are ready for it, the order-ahead system we run for restaurant clients bolts on: guests pay online, the order prints in back, and it costs the bakery zero dollars a month because a small guest-paid order fee funds it. Everything on the site that says "give us a call, N days ahead" becomes a paid preorder instead of a phone note. Quoted separately when you want it; nothing is ever added to your bill before you approve it.</p>
 
  <h3>How that compares to staying put</h3>
- <p>We are not going to guess at your Mopro bill. Put your own number in and the math does itself. It runs entirely on this page; nothing is sent anywhere.</p>
+ <p>We are not going to guess at your Mopro bill. Put your own number in and the math does itself. It runs entirely on this page; nothing is sent anywhere. For scale: Mopro's own pricing page says plans start at $199 a month.</p>
+ <a class="verify loose" href="https://www.mopro.com/pricing" target="_blank" rel="noopener">Mopro's pricing page &#8599;</a>
 
  <div class="calc">
   <div class="inputrow">
