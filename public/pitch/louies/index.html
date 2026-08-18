@@ -240,7 +240,8 @@ footer .gmark{height:78px;width:auto}
   <span class="bw">glazed<span>web</span></span>
  </a>
  <nav>
-  <a href="#found">Findings</a><a href="#own">Ownership</a><a href="#build">The site</a><a href="#cost">Cost</a><a href="#next">Next</a>
+  <a href="#found">Findings</a><a href="#own">Ownership</a><a href="#build">The site</a><a href="#ship">Shipping</a>
+ <a href="#cost">Cost</a><a href="#next">Next</a>
  </nav>
 </div></header>
 <div class="hero" id="top"><div class="wrap">
@@ -378,15 +379,41 @@ footer .gmark{height:78px;width:auto}
   <li><b>Nothing rented on top.</b> No plugin subscriptions, no per-feature upsell, no page-builder licence.</li>
  </ul>
 
- <h3>The part where the shipping money is</h3>
+</div></section>
+<section id="ship"><div class="wrap">
+ <div class="k">Section four</div>
+ <div class="rule"></div>
+ <h2>The part where the money is.</h2>
  <p>You already ship two ways: the boxes you pack yourself, and your Goldbelly listing. Keep Goldbelly. Introducing you to somebody in Arizona who has never heard of Marshall is the one thing a marketplace does that a website cannot.</p>
  <p>But a marketplace charges for that introduction on <em>every</em> order, forever, including the tenth order from the customer who now knows your name and would have typed your address in. Goldbelly does not publish that number; you know yours. Put it next to this one: on your own site a card payment costs about <strong>2.9% plus 30 cents</strong>, the same order of money you already hand Square at the counter, and nothing else. No commission on the repeat order. And the buyer's email address is <em>yours</em>, which is the whole difference between a customer and a stranger who bought something once.</p>
  <p>Here is the size of it, in your own numbers. Your Goldbelly listing sells five things, and a dozen Classic Nut Rolls is <strong>$75.95 delivered</strong>. That same dozen is roughly <strong>$23</strong> at the prices on your menu. The difference is the tin, the freight and the marketplace's share, and today not one dollar of it is yours to set. Sell that dozen from your own page and whatever is left after the box and the truck is a decision you get to make: keep it, or hand some back and win the second order.</p>
  <p>The demand is not theoretical either. The two reviews on that listing are the same customer in Tucson, Arizona, buying twice, and what she wrote about is the packing: <span class="mono">"Not one cookie broke!"</span> Somebody 1,700 miles away is a repeat customer of a bakery whose own website does not mention that it ships.</p>
+ <h3>What the middle is holding, in your numbers</h3>
+ <p>Only you know what Goldbelly pays you on a box, so this asks for it and does the rest. It runs on this page and sends nothing anywhere.</p>
+
+ <div class="calc">
+  <div class="inputrow">
+   <label for="boxes">Boxes you ship in a month</label>
+   <input id="boxes" type="number" inputmode="decimal" min="0" step="1" placeholder="e.g. 20">
+  </div>
+  <div class="inputrow" style="margin-top:14px">
+   <label for="payout">What you receive on a $75.95 dozen</label>
+   <div class="money"><span>$</span><input id="payout" type="number" inputmode="decimal" min="0" step="1" placeholder="e.g. 45"><em>per box</em></div>
+  </div>
+  <div class="out" id="sout">
+   <div class="bars">
+    <div class="bar stay"><div class="lab"><span>What your customers pay in a year</span><b id="payN">&ndash;</b></div><div class="track"><div class="fill" id="payB" style="width:0"></div></div></div>
+    <div class="bar us"><div class="lab"><span>What reaches the bakery</span><b id="keepN">&ndash;</b></div><div class="track"><div class="fill" id="keepB" style="width:0"></div></div></div>
+   </div>
+   <div class="verdict" id="sverdict"></div>
+   <p class="calcnote" id="snote"></p>
+  </div>
+ </div>
+
  <p>You already have a cart on your own site. It is the page quoting April. That is phase two, and it is a real phase, not a bolt-on: pick the box, pay, and the label prints in the back. The box page in the demo already lists all five, tins and fritters and the pumpkin cookies that come back in the fall. Quoted separately, when you want it, and never added to your bill before you say so.</p>
 </div></section>
 <section id="cost"><div class="wrap">
- <div class="k">Section four</div>
+ <div class="k">Section five</div>
  <div class="rule"></div>
  <h2>What it costs.</h2>
 
@@ -394,7 +421,22 @@ footer .gmark{height:78px;width:auto}
   <div><div class="n">$1,900</div><div class="l">One-time build. Everything described above, finished and launched on louies-bakery.com. Half to start, half on launch.</div></div>
   <div><div class="n">$99<span style="font-size:1rem;color:var(--mute)">/mo</span></div><div class="l">Hosting, SSL, security, backups, domain renewal, and ongoing content edits. Price changes? Closures? Send a text.</div></div>
  </div>
- <p>That is <strong>$3,088</strong> across the first twelve months, then <strong>$1,188 a year</strong>. And when you are ready for it, the order-ahead system we run for restaurant clients bolts on: guests pay online, the order prints in back, and it costs the bakery zero dollars a month because a small guest-paid order fee funds it. Everything on the site that says "give us a call, N days ahead" becomes a paid preorder instead of a phone note, and the same checkout handles the shipping boxes described in section three. Quoted separately when you want it; nothing is ever added to your bill before you approve it.</p>
+ <p>That is <strong>$3,088</strong> across the first twelve months, then <strong>$1,188 a year</strong>. That price is the website: everything in section three, finished, launched and yours.</p>
+
+ <div class="demo" style="text-align:left;background:var(--card);color:var(--body);border:2px solid var(--green)">
+  <div class="k" style="color:var(--green-d)">Only if you want it</div>
+  <h3 style="color:var(--ink);margin-top:8px">The online store: <span style="white-space:nowrap">$600</span> once, <span style="white-space:nowrap">$51 a month</span></h3>
+  <p style="color:var(--body);margin:0 0 12px">Section four's argument, built. It is a separate line because it is separate work, and because plenty of bakeries decide they would rather not pack boxes. Say no and nothing else on this page changes.</p>
+  <ul class="proof" style="margin-top:4px">
+   <li><b>Your five boxes on your own site</b>, at prices you set rather than a marketplace's.</li>
+   <li><b>Card checkout.</b> The money lands in your account, minus the card fee, the same way the counter works.</li>
+   <li><b>Shipping handled.</b> A live rate or a flat rate you choose, and every order prints a packing slip and a label.</li>
+   <li><b>Orders reach you by email</b> and the customer gets a confirmation with a tracking number, without anybody typing one.</li>
+   <li><b>The customer's name and email are yours.</b> That is the part that pays for itself twice.</li>
+   <li><b>99&cent; an order, paid by the customer at checkout.</b> Not by you, and it does not grow when December does.</li>
+  </ul>
+  <p style="color:var(--body);margin:14px 0 0"><strong>Site and store together: $2,500 to build, $150 a month.</strong> Your Goldbelly listing stays exactly where it is, doing the job it is good at.</p>
+ </div>
 
  <h3>How that compares to staying put</h3>
  <p>We are not going to guess at your Mopro bill. Put your own number in and the math does itself. It runs entirely on this page; nothing is sent anywhere. For scale: Mopro's own pricing page says plans start at $199 a month.</p>
@@ -422,7 +464,7 @@ footer .gmark{height:78px;width:auto}
  </div>
 </div></section>
 <section id="next"><div class="wrap">
- <div class="k">Section five</div>
+ <div class="k">Section six</div>
  <div class="rule"></div>
  <h2>What happens next.</h2>
 
@@ -481,6 +523,50 @@ footer .gmark{height:78px;width:auto}
  }
  input.addEventListener('input',calc);
  chips.forEach(function(c){c.addEventListener('click',function(){input.value=c.dataset.v;calc();});});
+})();
+
+/*
+  The shipping calculator.
+
+  Deliberately does NOT claim the whole gap is the marketplace's cut. The tin and the
+  truck cost the same wherever the order comes from, and we do not know their freight,
+  so the copy separates the part that is real cost from the part that is somebody
+  else's share and lets the reader do the last step. Overstating this is the fastest
+  way to lose a man who knows exactly what his own boxes cost to send.
+
+  The payback line assumes a QUARTER of the orders move to the bakery's own page, not
+  all of them, because a marketplace introduces customers a website never would and the
+  honest case does not need the optimistic number.
+*/
+(function(){
+ var LIST=75.95, STORE=600, STORE_MO=51, SHARE=0.25;
+ var boxes=document.getElementById('boxes'), payout=document.getElementById('payout'),
+     out=document.getElementById('sout'), payN=document.getElementById('payN'),
+     keepN=document.getElementById('keepN'), payB=document.getElementById('payB'),
+     keepB=document.getElementById('keepB'), verdict=document.getElementById('sverdict'),
+     note=document.getElementById('snote');
+ if(!boxes) return;
+ function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+ function calc(){
+  var b=parseFloat(boxes.value), p=parseFloat(payout.value);
+  if(!(b>0)||!(p>0)||p>LIST){out.classList.remove('show');return;}
+  var paid=LIST*b*12, kept=p*b*12, gap=paid-kept;
+  payN.textContent=money(paid); keepN.textContent=money(kept);
+  payB.style.width='100%'; keepB.style.width=(kept/paid*100)+'%';
+  verdict.className='verdict';
+  verdict.innerHTML='<b>'+money(gap)+' a year passes through the middle.</b> Part of that is the tin and the truck, which cost the same whoever takes the order. The rest is the marketplace\u2019s share, and it is the only part of your shipping that you cannot price yourself.';
+  var moved=gap*SHARE, monthly=moved/12, net=monthly-STORE_MO;
+  if(net>0){
+   var payback=Math.ceil(STORE/net);
+   note.textContent='Move a quarter of those orders onto your own page and roughly '+money(moved)+
+    ' a year stops leaving. Against $600 and $51 a month, the store is even in month '+payback+
+    ' and ahead every month after it.';
+  }else{
+   note.textContent='At this volume the store is a convenience rather than a saving, and we would rather say so. It still puts the customer\u2019s email in your hands, which is the part that compounds.';
+  }
+  out.classList.add('show');
+ }
+ boxes.addEventListener('input',calc); payout.addEventListener('input',calc);
 })();
 </script>
 </body></html>

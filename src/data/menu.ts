@@ -304,6 +304,11 @@ export const sections: MenuSection[] = [
   {
     id: "drinks",
     title: "Coffee and Drinks",
+    /* Kevin, from the shop: the coffee is Starbucks, brewed here. Worth saying out
+       loud rather than leaving as three price lines, because "a donut and a coffee"
+       is the whole visit for most people and the coffee being real is a reason to
+       stay rather than take the bag to the car. */
+    blurb: "The coffee is Starbucks, brewed here, in three sizes.",
     items: [
       { name: "Starbucks Coffee, Short", price: 242 },
       { name: "Starbucks Coffee, Tall", price: 289 },
