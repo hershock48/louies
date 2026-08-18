@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MenuBrowser from "@/components/MenuBrowser";
+import { activeClosure, firstOpenAfter } from "@/lib/availability";
 import { PageHero } from "@/components/Ui";
 import { sections } from "@/data/menu";
 import { site, fullAddress } from "@/data/site";
@@ -28,9 +29,34 @@ export const metadata: Metadata = {
     "Everything Louie's Bakery makes, with what is in the case today. Nut rolls, fried cakes, long johns, cookies, pies, bread and old pan toffee.",
 };
 
-export default function MenuPage() {
+export default async function MenuPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  /*
+    The query string, rebuilt server side, so the first byte of HTML already shows what
+    the URL asked for. The homepage's main button is /menu?today=1.
+  */
+  const sp = await searchParams;
+  const initialSearch =
+    "?" +
+    new URLSearchParams(
+      Object.entries(sp).flatMap(([k, v]) =>
+        v === undefined ? [] : Array.isArray(v) ? v.map((x) => [k, x] as [string, string]) : [[k, v] as [string, string]],
+      ),
+    ).toString();
+
   // One clock, read on the server, handed to the client so hydration agrees.
   const now = localNow();
+  /*
+    A closure is a fact about the whole page, so it is read once here rather than by
+    each row. Without it the menu badged things "Today only" and the today filter
+    reported "47 of 61 being made this Wednesday" during a fortnight when the bakery was
+    shut and nothing was being made at all.
+  */
+  const closure = activeClosure(now.date);
+  const closed = closure !== null;
 
   return (
     <>
@@ -66,7 +92,22 @@ export default function MenuPage() {
           prices" is worse than the whitespace. */}
       </div>
 
-      <MenuBrowser sections={sections} now={now} />
+      {closure && (
+        <section className="border-b border-awning/10 bg-awning text-paper">
+          <div className="mx-auto max-w-6xl px-5 py-5 sm:px-8">
+            <p className="text-sm leading-relaxed">
+              <strong className="font-semibold">
+                Closed for {closure.reason.toLowerCase()}.
+              </strong>{" "}
+              Nothing is in the case until we are back on{" "}
+              {firstOpenAfter(closure.to).pretty}. Everything below is what we make when
+              we are open.
+            </p>
+          </div>
+        </section>
+      )}
+
+      <MenuBrowser sections={sections} now={now} closed={closed} initialSearch={initialSearch} />
 
     </>
   );

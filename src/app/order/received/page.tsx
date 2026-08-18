@@ -28,7 +28,13 @@ export default async function ReceivedPage({
   searchParams: Promise<{ state?: string }>;
 }) {
   const { state } = await searchParams;
-  const delivered = state === "sent";
+  const delivered = state === "sent" || state === "paid";
+  /*
+    Three outcomes, not two. "logged" is mail never configured; "failed" is a configured
+    mailbox that threw. Telling somebody email is switched off when in fact their order
+    bounced sends them away reassured about the wrong thing.
+  */
+  const failed = state === "failed";
 
   return (
     <>
@@ -54,7 +60,9 @@ export default async function ReceivedPage({
             <div className="space-y-4 text-lg leading-relaxed text-awning/85">
               <p>
                 <strong className="font-semibold text-awning">
-                  Your details are saved, but email from this site is not switched on yet,
+                  {failed
+                    ? "Your details are saved, but the email to the bakery did not go through,"
+                    : "Your details are saved, but email from this site is not switched on yet,"}
                 </strong>{" "}
                 so nobody at the bakery has been notified. That is on us, not on you.
               </p>

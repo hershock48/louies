@@ -1,96 +1,37 @@
-import { boxes } from "@/data/shipping";
 import { site } from "@/data/site";
 
 /**
- * THE SHIPPING FORM.
+ * The details half of the checkout: where the box goes, and who to reach.
  *
- * Until this existed, the demo's shipping page argued that the bakery should sell boxes
- * from its own site and then sent the visitor to Goldbelly to buy one, which is the
- * exact behavior the proposal criticizes. Now the order can be placed here.
- *
- * What it is: a server component rendering a plain form that posts to /api/ship. No
- * "use client", no state, no fetch, so it works with scripting off and adds nothing to
- * the bundle. Same pattern as OrderForm, deliberately, because two forms on one site
- * behaving differently is how one of them ends up broken.
- *
- * WHAT IT DOES NOT DO IS TAKE MONEY, and nothing on the page pretends otherwise. The
- * bakery rings for the card, which is how they take a shipped order today, and the
- * copy says so before anybody fills anything in. A checkout that looks like a checkout
- * and quietly does not charge is the specific dishonesty glaze.md forbids; paid
- * checkout is the store add-on in the proposal and this route is what it replaces.
- *
- * The box can arrive preselected from the card the visitor pressed (/shop?box=...),
- * which is why this takes `selected` rather than reading the query itself.
+ * A server component rendering a plain form that posts to /api/checkout, so the whole
+ * purchase works with JavaScript switched off. What happens on the other side depends
+ * on whether the bakery's payment key is set, and the copy under the button says which
+ * of the two it is rather than promising a card screen that may not appear. See the
+ * long note in src/app/api/checkout/route.ts.
  */
-export default function ShipForm({
-  selected,
-  error,
-}: {
-  selected?: string;
-  error?: boolean;
-}) {
+export default function CheckoutDetails({ error }: { error?: boolean }) {
   const field =
     "mt-1 w-full rounded-card border border-awning/20 bg-paper px-3 py-2.5 text-awning placeholder:text-awning/45 focus:border-brick focus:outline-none";
   const label = "block text-sm font-semibold text-awning";
+  const paying = Boolean(process.env.STRIPE_SECRET_KEY);
 
   return (
     <form
-      id="ship"
+      id="details"
       method="post"
-      action="/api/ship"
-      className="scroll-mt-[calc(var(--header-h)+1rem)] rounded-panel border border-awning/15 bg-paper-dim p-6 sm:p-8"
+      action="/api/checkout"
+      className="mt-10 scroll-mt-[calc(var(--header-h)+1rem)] rounded-panel border border-awning/15 bg-paper-dim p-6 sm:p-8"
     >
-      <h2 className="font-display text-xl font-bold text-awning">Send one from here</h2>
-      <p className="mt-2 text-awning/80">
-        Tell us the box and where it goes. We pack it {site.shipping.day} morning and
-        ring you for the card before it leaves, so nothing is charged until a person has
-        spoken to you.
-      </p>
+      <h2 className="font-display text-xl font-bold text-awning">Where it goes</h2>
 
       {error && (
         <p
           role="alert"
           className="mt-4 rounded-card border border-brick/40 bg-brick/10 px-4 py-3 text-sm font-semibold text-brick"
         >
-          Please fill in the box, where it is going, and a phone number we can reach you on.
+          Please fill in the delivery address and a phone number we can reach you on.
         </p>
       )}
-
-      <div className="mt-6 grid gap-4 sm:grid-cols-[2fr_1fr]">
-        <div>
-          <label className={label} htmlFor="box">
-            Which box
-          </label>
-          <select id="box" name="box" required defaultValue={selected ?? ""} className={field}>
-            <option value="" disabled>
-              Choose one
-            </option>
-            {boxes.map((b) => (
-              <option key={b.name} value={b.name}>
-                {b.name}, {b.size}
-                {b.comingSoon ? " (back in the fall)" : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className={label} htmlFor="quantity">
-            How many
-          </label>
-          <input
-            id="quantity"
-            name="quantity"
-            type="number"
-            min={1}
-            max={20}
-            defaultValue={1}
-            required
-            className={field}
-          />
-        </div>
-      </div>
-
-      <h3 className="mt-8 font-display text-lg font-bold text-awning">Where it goes</h3>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div>
@@ -173,7 +114,9 @@ export default function ShipForm({
         />
       </div>
 
-      <h3 className="mt-8 font-display text-lg font-bold text-awning">Who to ring for the card</h3>
+      <h3 className="mt-8 font-display text-lg font-bold text-awning">
+        {paying ? "Who to reach about the box" : "Who to ring for the card"}
+      </h3>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <div>
@@ -212,17 +155,29 @@ export default function ShipForm({
 
       {/* Honeypot, same as the order form. Hidden from people, irresistible to bots. */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
-        <label htmlFor="shipCompany">Company</label>
-        <input id="shipCompany" name="company" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="websiteUrl">Website</label>
+        <input id="websiteUrl" name="website_url" tabIndex={-1} autoComplete="off" />
       </div>
 
       <button type="submit" className="btn btn-dark mt-6">
-        Send it to the bakery
+        {paying ? "Pay and send it" : "Send this order to the bakery"}
       </button>
 
-      <p className="mt-4 text-sm text-awning/70">
-        Nothing is charged here. We ring for the card, and if the box cannot get there in
-        time we will say so before you pay anything. Or call the shop on{" "}
+      <p className="mt-4 text-sm leading-relaxed text-awning/70">
+        {paying ? (
+          <>
+            Payment is taken on a secure page hosted by our card processor. Your card
+            details never touch this website.
+          </>
+        ) : (
+          <>
+            <strong className="font-semibold text-awning">Nothing is charged here.</strong>{" "}
+            The order goes to the bakery and we ring you for the card before the box is
+            packed, which is how a shipped order has always worked here. Card payment on
+            this page is switched on the day the bakery says so.
+          </>
+        )}{" "}
+        Or call the shop on{" "}
         <a href={site.phoneHref} className="font-semibold text-brick underline underline-offset-2">
           {site.phone}
         </a>

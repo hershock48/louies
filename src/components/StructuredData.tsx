@@ -1,5 +1,5 @@
 import { site, fullAddress } from "@/data/site";
-import { week } from "@/data/hours";
+import { closures, week } from "@/data/hours";
 
 /**
  * Bakery schema. The old site had none of this, which is part of why a search for
@@ -18,6 +18,19 @@ export default function StructuredData() {
       opens: toIso(d.open as number),
       closes: toIso(d.close as number),
     }));
+
+  /*
+    Closures, in the field Google reads for them. Without this the markup went on
+    advertising 5:30am to 3pm through a fortnight when the door was locked, which is the
+    one place a wrong opening hour is repeated by somebody else's product.
+  */
+  const specialHours = closures.map((c) => ({
+    "@type": "OpeningHoursSpecification",
+    opens: "00:00",
+    closes: "00:00",
+    validFrom: c.from,
+    validThrough: c.to,
+  }));
 
   const data = {
     "@context": "https://schema.org",
@@ -39,6 +52,7 @@ export default function StructuredData() {
       addressCountry: "US",
     },
     openingHoursSpecification: openingHours,
+    ...(specialHours.length ? { specialOpeningHoursSpecification: specialHours } : {}),
     sameAs: [site.social.facebook, site.social.goldbelly, site.social.yelp, site.social.tripadvisor],
     aggregateRating: {
       "@type": "AggregateRating",

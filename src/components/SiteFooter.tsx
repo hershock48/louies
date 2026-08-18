@@ -57,11 +57,16 @@ export default function SiteFooter() {
                 Facebook
               </a>
             </li>
-            <li>
-              <a href={site.social.goldbelly} target="_blank" rel="noopener noreferrer" className="inline-block py-1.5 hover:text-wheat">
-                Goldbelly
-              </a>
-            </li>
+            {/*
+              The marketplace link is deliberately NOT here.
+
+              The site sells its own boxes now, from its own cart, at its own prices. A
+              footer link sending somebody to buy the same tin somewhere that takes a
+              share of it is a shop pointing at the stall reselling its own baking. It
+              stays in the structured data as a `sameAs`, which is how a search engine
+              learns the two listings are one business, and that costs the bakery
+              nothing.
+            */}
           </ul>
         </div>
       </div>

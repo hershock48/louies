@@ -6,7 +6,6 @@ import { statusFor } from "@/lib/availability";
 import { DAY_NAMES, type LocalNow } from "@/lib/time";
 import {
   getSearch,
-  getServerSearch,
   hydratedStore,
   setSearchParams,
   subscribeToSearch,
@@ -35,8 +34,15 @@ import type { MenuSection } from "@/data/menu";
 export default function MenuBrowser({
   sections,
   now,
+  closed = false,
+  initialSearch = "",
 }: {
   sections: MenuSection[];
+  /** True during a closure. Nothing is in the case, so the today filter matches
+   *  nothing and no row is badged "Today only". */
+  closed?: boolean;
+  /** The page's own query string, so the server renders what the URL asks for. */
+  initialSearch?: string;
   /*
     Passed in from the server rather than read here.
 
@@ -67,7 +73,14 @@ export default function MenuBrowser({
     it into useState inside an effect works, but it renders the wrong thing first and
     then corrects itself, which is the flicker you see on sites that do it that way.
   */
-  const search = useSyncExternalStore(subscribeToSearch, getSearch, getServerSearch);
+  /*
+    The server snapshot is the real query string, handed down from the page, not an
+    empty one. It used to be "", which meant the HTML for /menu?today=1 was the whole
+    unfiltered menu and the filter only appeared once JavaScript ran. With scripting off
+    it never appeared at all, and the homepage's main button points at exactly that URL,
+    so the site's headline promise quietly did nothing for anyone without JavaScript.
+  */
+  const search = useSyncExternalStore(subscribeToSearch, getSearch, () => initialSearch);
   const params = useMemo(() => new URLSearchParams(search), [search]);
   const query = params.get("q") ?? "";
   const todayOnly = params.get("today") === "1";
@@ -95,7 +108,7 @@ export default function MenuBrowser({
     return sections
       .map((section) => {
         const items = section.items.filter((item) => {
-          if (todayOnly && !statusFor(item.availability, now).today) return false;
+          if (todayOnly && !statusFor(item.availability, now, closed).today) return false;
           if (!q) return true;
           return (
             item.name.toLowerCase().includes(q) ||
@@ -106,7 +119,7 @@ export default function MenuBrowser({
         return { section, items };
       })
       .filter((g) => g.items.length > 0);
-  }, [sections, q, todayOnly, now]);
+  }, [sections, q, todayOnly, now, closed]);
 
   /*
     The count is announced politely, and politely means once the typing stops. Wired
@@ -290,6 +303,21 @@ export default function MenuBrowser({
       </nav>
 
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+        {/*
+          Without JavaScript the toggle above is not rendered, and the server now honours
+          ?today=1, so somebody arriving from the homepage button would be looking at a
+          filtered menu with no way back to the whole of it. A plain link is the way
+          back, and it only exists in the case where it is needed.
+        */}
+        {!ready && filtering && (
+          <p className="mb-8 text-sm text-awning/75">
+            Showing what is in the case today.{" "}
+            <a href="/menu" className="font-semibold text-brick underline underline-offset-2">
+              Show the whole menu
+            </a>
+          </p>
+        )}
+
         {visible.length === 0 ? (
           <div className="rounded-panel border border-awning/15 bg-paper-dim px-6 py-14 text-center">
             <p className="font-display text-xl font-bold text-awning">Nothing matches that.</p>
@@ -308,7 +336,7 @@ export default function MenuBrowser({
           </div>
         ) : (
           visible.map(({ section, items }) => (
-            <MenuList key={section.id} section={section} items={items} now={now} />
+            <MenuList closed={closed} key={section.id} section={section} items={items} now={now} />
           ))
         )}
 

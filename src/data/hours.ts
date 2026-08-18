@@ -53,6 +53,28 @@ export const closures: Closure[] = [
   // { from: "2026-07-04", to: "2026-07-20", reason: "Summer break" },
 ];
 
+/*
+  Closures are checked at module load, so a typo fails the build rather than the bakery.
+
+  The comparison in the availability engine is a string compare, which is exact and fast
+  on yyyy-mm-dd and silently useless on anything else: "2026-9-1" is a perfectly
+  reasonable thing to type and never matches any date, so the site would sail through
+  the closure insisting it was open until 3pm. That is precisely the bug this file
+  exists to make impossible, so it is caught here instead.
+*/
+for (const c of closures) {
+  const shape = /^\d{4}-\d{2}-\d{2}$/;
+  if (!shape.test(c.from) || !shape.test(c.to)) {
+    throw new Error(
+      `Closure "${c.reason}" has a date that is not yyyy-mm-dd: ${c.from} to ${c.to}. ` +
+        `Pad the month and the day, or the site will not notice this closure at all.`,
+    );
+  }
+  if (c.from > c.to) {
+    throw new Error(`Closure "${c.reason}" ends before it starts: ${c.from} to ${c.to}.`);
+  }
+}
+
 export const hoursSummary = [
   { label: "Tuesday to Saturday", value: "5:30am to 3pm" },
   { label: "Sunday and Monday", value: "Closed" },

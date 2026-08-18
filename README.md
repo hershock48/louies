@@ -75,17 +75,24 @@ src/data/menu.ts       the full case, with availability rules
 src/lib/time.ts        America/Detroit, via Intl, no date library
 src/lib/availability.ts  the engine
 src/lib/board.ts       what the homepage board shows
-src/data/shipping.ts   the five boxes they ship, and what the marketplace charges
+src/data/shipping.ts   the five boxes they ship, at their own prices
+src/lib/cart.ts        the cart: a cookie of slugs, no prices, no client bundle
 src/lib/mail.ts        SMTP, and the honest behavior when it is unconfigured
 src/app/api/order      the counter form endpoint, a plain POST with a 303 back
-src/app/api/ship       the same, for a box going somewhere
+src/app/api/cart       add, change and remove, as plain form posts
+src/app/api/checkout   Stripe hosted Checkout when configured, email order when not
+src/app/api/paid       where Stripe returns: verifies the session, clears the cart
 ```
 
 ## Still to build
 
-- **Phase two.** Build your dozen: pick twelve, choose a pickup window, pay with Stripe
-  hosted Checkout. `/order` describes it and takes phone orders for now.
-- **Phase three.** Shipping direct instead of through Goldbelly. `/shop` describes it.
+- **Phase two.** Build your dozen: pick twelve, choose a pickup window, pay online.
+  `/order` describes it and takes phone orders for now.
+- **Phase three is built and switched off.** `/shop` sells the five boxes from a real
+  cart and checkout. Set `STRIPE_SECRET_KEY` and the same checkout takes the card on a
+  hosted page; leave it unset and the order is emailed to the bakery and the customer is
+  told plainly that nobody has been charged. That second path is not a stub: it is how
+  the bakery takes a shipped order today.
 - **Phase four.** Photo cookie uploads, standing orders, and a small passcode-protected
   staff page for sold-out toggles and closures.
 
@@ -179,6 +186,15 @@ artifact it is meant to be. The second is what is specific to this bakery.
 - [ ] Decide what happens about **louiesbakery.com**, the unhyphenated spelling, which
       belongs to a different bakery and ranks for their name.
 
+## The cart, in one paragraph
+
+A cookie holds `slug:qty` pairs and nothing else. Prices are looked up from
+`src/data/shipping.ts` at render and again at checkout, so a tampered cookie can change
+what is in the box and never what it costs. Every mutation is a form POST with a 303
+back, so the whole purchase works with JavaScript off, and the cart adds no client
+JavaScript at all. `comingSoon` is enforced in `lib/cart.ts`, not only on the button:
+a disabled button is a suggestion, not a rule.
+
 ## Traps, named
 
 - **`/`, `/menu` and `/visit` are `force-dynamic` on purpose.** Their content depends
@@ -204,6 +220,16 @@ artifact it is meant to be. The second is what is specific to this bakery.
   each as an RSC request that never completed: eight seconds in, a phone still had an
   open GET, and the auditor called `/shop` unreachable at 390 while curl fetched it in
   15ms. `ButtonLink` takes the prop for this reason.
+- **`safeBack` compares origins, it does not test prefixes.** A prefix check let
+  `/\evil.com`, `/%0A/evil.com` and `/%09/evil.com` through, because `new URL()` treats a
+  backslash as a slash and strips tabs and newlines before parsing. Ask the parser.
+- **The Stripe path emails the bakery BEFORE redirecting to pay.** There is no webhook on
+  this build, so without that email a paid box would exist only as a Stripe payment
+  carrying the payer's own address, not the recipient's. The worst case is now an order
+  the bakery knows about that nobody completed, which is a phone call.
+- **`/shop/received?state=paid` is only reachable through `/api/paid`,** which asks Stripe
+  whether the session was actually paid. The query string used to be the only evidence,
+  which made it a shareable fake receipt and a lie to anybody whose payment failed.
 - **The order form is a server component posting to a route handler.** No client
   JavaScript is involved on the way in, which is why it works with scripting off. Do
   not "improve" it into a fetch with a spinner without keeping a working no-JS path.

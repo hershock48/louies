@@ -21,12 +21,15 @@ export default function MenuList({
   section,
   items,
   now,
+  closed = false,
 }: {
   section: MenuSection;
   /** Filtered subset from MenuBrowser. Falls back to the whole section. */
   items?: MenuSection["items"];
   /** The server's clock, so badges match between the two renders. See MenuBrowser. */
   now: LocalNow;
+  /** True during a closure, so no row claims to be in a case that is shut. */
+  closed?: boolean;
 }) {
   const rows = items ?? section.items;
 
@@ -43,7 +46,7 @@ export default function MenuList({
 
       <ul className="mt-6 divide-y divide-awning/10 border-y border-awning/10">
         {rows.map((item) => {
-          const s = statusFor(item.availability, now);
+          const s = statusFor(item.availability, now, closed);
           const dim = !s.today && !!item.availability;
 
           return (

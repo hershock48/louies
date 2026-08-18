@@ -23,16 +23,25 @@ export default async function ShipReceivedPage({
   searchParams: Promise<{ state?: string }>;
 }) {
   const { state } = await searchParams;
-  const delivered = state === "sent";
+  const delivered = state === "sent" || state === "paid";
+  /*
+    Three outcomes, not two. "logged" is mail never configured; "failed" is a configured
+    mailbox that threw. Telling somebody email is switched off when in fact their order
+    bounced sends them away reassured about the wrong thing.
+  */
+  const failed = state === "failed";
+  const paid = state === "paid";
 
   return (
     <>
       <PageHero
         eyebrow={delivered ? "Got it" : "Saved, but read this"}
         title={
-          delivered
-            ? "That is with the bakery."
-            : "We have your box. Please ring to finish it."
+          paid
+            ? "Paid, and the bakery has it."
+            : delivered
+              ? "That is with the bakery."
+              : "We have your box. Please ring to finish it."
         }
       />
 
@@ -41,21 +50,26 @@ export default async function ShipReceivedPage({
           {delivered ? (
             <div className="space-y-4 text-lg leading-relaxed text-awning/85">
               <p>
-                It landed in their inbox. Someone will ring you to take the card and
-                confirm what the shipping comes to before anything is packed.
+                {paid
+                  ? "Your card has been charged and a receipt is on its way from our card processor. The bakery has the order and the address."
+                  : "It landed in their inbox. Someone will ring you to take the card before anything is packed."}
               </p>
               <p>
                 Boxes are baked the night before and go out {site.shipping.day} morning on
                 the {site.shipping.carrier} truck. If your order lands after that truck
-                has gone, it waits for the next one, and they will tell you which week it
-                is on the call.
+                has gone it waits for the next one
+                {paid
+                  ? ", and the bakery will email you which week it is on."
+                  : ", and they will tell you which week it is on the call."}
               </p>
             </div>
           ) : (
             <div className="space-y-4 text-lg leading-relaxed text-awning/85">
               <p>
                 <strong className="font-semibold text-awning">
-                  Your box is saved, but email from this site is not switched on yet,
+                  {failed
+                    ? "Your box is saved, but the email to the bakery did not go through,"
+                    : "Your box is saved, but email from this site is not switched on yet,"}
                 </strong>{" "}
                 so nobody at the bakery has been notified. That is on us, not on you.
               </p>

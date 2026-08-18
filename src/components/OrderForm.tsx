@@ -103,11 +103,18 @@ export default function OrderForm({ error }: { error?: boolean }) {
         <textarea id="notes" name="notes" rows={2} className={field} />
       </div>
 
-      {/* Honeypot. Hidden from people, irresistible to bots, costs nothing and needs no
-          third-party captcha service. */}
+      {/*
+        Honeypot. Hidden from people, irresistible to bots, costs nothing and needs no
+        third-party captcha service.
+
+        NOT named "company". Chrome's address autofill will happily put an organization
+        into a field called company even with autoComplete="off", and a tripped honeypot
+        discards the order, so the one customer whose browser knows where they work
+        would have been the one customer whose order vanished.
+      */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
-        <label htmlFor="company">Company</label>
-        <input id="company" name="company" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="websiteUrl">Website</label>
+        <input id="websiteUrl" name="website_url" tabIndex={-1} autoComplete="off" />
       </div>
 
       <button type="submit" className="btn btn-dark mt-6">

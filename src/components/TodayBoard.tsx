@@ -1,7 +1,7 @@
 import Link from "next/link";
 import CarouselOven from "./CarouselOven";
 import { openState } from "@/lib/availability";
-import { buildBoard } from "@/lib/board";
+import { buildBoard, everydayItems } from "@/lib/board";
 import { localNow, DAY_NAMES } from "@/lib/time";
 
 /**
@@ -10,14 +10,18 @@ import { localNow, DAY_NAMES } from "@/lib/time";
  * The single most useful thing this site can do, and the thing the old one could not
  * do at all: say what is in the case, today, without anyone having to update it.
  *
- * Rendered on the server against Marshall time. The page is set to revalidate every
- * fifteen minutes in app/page.tsx, so "open until 3pm" turns into "closed for the day"
- * on its own.
+ * Rendered on the server against Marshall time, per request. app/page.tsx is
+ * force-dynamic for exactly this reason: a cached copy of "open until 3pm" is a lie
+ * from three in the afternoon onwards, and on a quiet site a cached page can age for
+ * days. See the note at the top of that file.
  */
 export default function TodayBoard({ compact = false }: { compact?: boolean }) {
   const now = localNow();
   const state = openState(now);
   const board = buildBoard(now);
+  // During a closure the board returns no "always" list, because nothing is in the
+  // case. The panel still names what is normally there for the week they reopen.
+  const everyday = everydayItems;
 
   return (
     <section
@@ -43,13 +47,20 @@ export default function TodayBoard({ compact = false }: { compact?: boolean }) {
           <p className="text-sm text-paper/80">{state.line}</p>
         </div>
 
+        {/*
+          The heading tracks the state of the door. On a Sunday, or in the middle of a
+          closure, "Sunday in the case" sat above a list of five things and a pill
+          reading Closed, which is a board describing a case nobody can walk up to.
+        */}
         <h2 id="board-heading" className="mt-5 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-          {DAY_NAMES[now.day]} in the case
+          {state.open ? `${DAY_NAMES[now.day]} in the case` : "When we open"}
         </h2>
 
         <div className={`mt-8 grid gap-8 ${compact ? "" : "md:grid-cols-3"}`}>
           <div>
-            <h3 className="signage text-xs text-gold">Today only</h3>
+            <h3 className="signage text-xs text-gold">
+              {state.open ? "Today only" : "Next time we are open"}
+            </h3>
             {board.today.length ? (
               <ul className="mt-3 space-y-2">
                 {board.today.map(({ item }) => (
@@ -64,10 +75,14 @@ export default function TodayBoard({ compact = false }: { compact?: boolean }) {
             ) : (
               <>
                 <p className="mt-3 text-paper/75">
-                  No specials today, so it is the everyday case:
+                  {board.closed
+                    ? "Nothing is in the case while we are shut. When we are back, this is what is here every day:"
+                    : state.open
+                      ? "No specials today, so it is the everyday case:"
+                      : "The door is shut right now. This is what is in the case whenever it is open:"}
                 </p>
                 <ul className="mt-3 space-y-1">
-                  {board.always.map((item) => (
+                  {(board.always.length ? board.always : everyday).map((item) => (
                     <li key={item.name} className="text-lg font-semibold">
                       {item.name}
                     </li>

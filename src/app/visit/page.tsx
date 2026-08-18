@@ -4,6 +4,7 @@ import TodayBoard from "@/components/TodayBoard";
 import MapEmbed from "@/components/MapEmbed";
 import { site, fullAddress, mapsUrl } from "@/data/site";
 import { week, formatMinutes } from "@/data/hours";
+import { activeClosure, firstOpenAfter } from "@/lib/availability";
 import { localNow } from "@/lib/time";
 
 /*
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
 
 export default function VisitPage() {
   const now = localNow();
+  const closure = activeClosure(now.date);
 
   return (
     <>
@@ -45,9 +47,23 @@ export default function VisitPage() {
         <div className="relative mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-2">
           <div>
             <SectionHeading eyebrow="Hours">Tuesday through Saturday.</SectionHeading>
+
+            {/*
+              The table below is the ordinary week and stays true all year. What it
+              cannot know is that the bakery is shut this fortnight, and a row reading
+              "Tuesday · Today · 5:30am to 3pm" directly under a board saying "Closed for
+              summer break" is the kind of contradiction that sends somebody driving.
+            */}
+            {closure && (
+              <p className="mt-6 rounded-card border border-brick/30 bg-brick/10 px-4 py-3 text-sm font-semibold leading-relaxed text-brick">
+                Closed for {closure.reason.toLowerCase()} until{" "}
+                {firstOpenAfter(closure.to).pretty}. These are the hours we keep the rest
+                of the year.
+              </p>
+            )}
             <dl className="mt-6 divide-y divide-awning/10 border-y border-awning/10">
               {week.map((d) => {
-                const today = d.day === now.day;
+                const today = d.day === now.day && !closure;
                 return (
                   <div
                     key={d.day}

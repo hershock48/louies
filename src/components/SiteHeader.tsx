@@ -17,6 +17,11 @@ const nav = [
   { href: "/menu", label: "Menu" },
   { href: "/order", label: "Order Ahead" },
   { href: "/shop", label: "Ship a Box" },
+  /* The cart. No count on the badge, deliberately: a number here would mean reading a
+     cookie in the root layout, which turns every static page on the site dynamic to
+     decorate a link. Adding a box lands you on the cart itself, so the count is where
+     it matters. */
+  { href: "/cart", label: "Your Box" },
   { href: "/cookies", label: "Photo Cookies" },
   { href: "/story", label: "Our Story" },
   { href: "/visit", label: "Visit" },

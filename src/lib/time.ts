@@ -53,6 +53,15 @@ export function addDays(date: string, n: number) {
   return d.toISOString().slice(0, 10);
 }
 
+/**
+ * Day of the week for a local yyyy-mm-dd, 0 = Sunday, matching `week` in data/hours.ts
+ * and the `days` arrays on menu items. Anchored at noon UTC like addDays, so no
+ * daylight-saving hour can push the date over a boundary.
+ */
+export function dayOfWeek(date: string) {
+  return new Date(`${date}T12:00:00Z`).getUTCDay();
+}
+
 export const DAY_NAMES = [
   "Sunday",
   "Monday",

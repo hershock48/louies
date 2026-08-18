@@ -15,7 +15,7 @@
  */
 
 import { closures, week, type DayHours } from "@/data/hours";
-import { localNow, type LocalNow } from "./time";
+import { addDays, dayOfWeek, localNow, type LocalNow } from "./time";
 
 export type Availability = {
   /** 0 = Sunday. Absent means every day they are open. */
@@ -47,6 +47,22 @@ function inSeason(season: Availability["season"], month: number) {
   return season === "fall-winter" ? cold : !cold;
 }
 
+/**
+ * The month it comes back, named.
+ *
+ * This used to say "Back in the fall", which is wrong for the whole of September: it is
+ * already fall, the eclair is still a month away, and somebody reading the row would
+ * reasonably go and ask for one. The warm-half version was worse, telling people in
+ * March that something was back in the spring while they were standing in it. A month
+ * cannot be argued with.
+ */
+function seasonReturn(season: Exclude<Availability["season"], undefined>, month: number) {
+  const names = ["", "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+  const back = season === "fall-winter" ? 10 : 5;
+  return (back - month + 12) % 12 === 1 ? "Back next month" : `Back in ${names[back]}`;
+}
+
 function dayLabel(days: number[]) {
   const names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   if (days.length === 1) return names[days[0]];
@@ -63,15 +79,25 @@ function nextDayWord(days: number[], today: number) {
   return null;
 }
 
-export function statusFor(a: Availability | undefined, now: LocalNow = localNow()): ItemStatus {
-  if (!a) return { today: true, badge: null, note: null };
+export function statusFor(
+  a: Availability | undefined,
+  now: LocalNow = localNow(),
+  /**
+   * True while the bakery is shut for a closure. Nothing is in the case, so no row may
+   * say "Today only" and the today filter on the menu must match nothing. The rotation
+   * itself is still described, because "in the case on Wednesdays" stays true through a
+   * fortnight in July.
+   */
+  closed = false,
+): ItemStatus {
+  if (!a) return { today: !closed, badge: null, note: null };
 
   if (a.occasional) {
     return { today: false, badge: "Now and then", note: "Made when the mood strikes. Watch for it." };
   }
 
   if (!inSeason(a.season, now.month)) {
-    const label = a.season === "fall-winter" ? "Back in the fall" : "Back in the spring";
+    const label = seasonReturn(a.season!, now.month);
     return {
       today: false,
       badge: label,
@@ -79,6 +105,14 @@ export function statusFor(a: Availability | undefined, now: LocalNow = localNow(
         a.season === "fall-winter"
           ? "Made from fall through early spring."
           : "Made through the warmer months.",
+    };
+  }
+
+  if (closed && a.days) {
+    return {
+      today: false,
+      badge: dayLabel(a.days),
+      note: `In the case on ${dayLabel(a.days)} once we are back.`,
     };
   }
 
@@ -103,7 +137,14 @@ export function statusFor(a: Availability | undefined, now: LocalNow = localNow(
     return { today: false, badge: "By order", note: "Not usually in the case. Give us a call." };
   }
 
-  return { today: true, badge: a.days ? "Today only" : null, note: null };
+  return {
+    today: !closed,
+    badge: a.days ? "Today only" : null,
+    // The Cream Horn is a Wednesday item you can also order any other day, and that
+    // second half used to vanish on Wednesdays: the one day somebody is most likely to
+    // be reading the row.
+    note: a.byOrder ? "Any other day, by order." : null,
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -137,30 +178,78 @@ function prettyDate(iso: string) {
   });
 }
 
+/* ------------------------------------------------------------------ */
+/* Closures                                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The closure covering a date, choosing the one that runs LATEST where ranges overlap.
+ *
+ * Overlap is not hypothetical: "closed the 1st to the 5th", then a week later "make
+ * that the 10th", used to resolve to whichever was typed first, so the site announced
+ * they were back five days before anybody was.
+ */
+export function activeClosure(date: string) {
+  const matches = closures.filter((c) => date >= c.from && date <= c.to);
+  if (matches.length === 0) return null;
+  return matches.reduce((latest, c) => (c.to > latest.to ? c : latest));
+}
+
+/**
+ * The first day after a closure ends on which the bakery is actually open. Skips the
+ * days they are shut anyway and any second closure that begins where this one ends.
+ */
+export function firstOpenAfter(lastClosedDate: string) {
+  let date = addDays(lastClosedDate, 1);
+  for (let i = 0; i < 400; i++) {
+    if (week[dayOfWeek(date)].open !== null && !activeClosure(date)) {
+      return { date, pretty: prettyDate(date) };
+    }
+    date = addDays(date, 1);
+  }
+  // Four hundred days of continuous closure is not a bakery, but a loop with no exit
+  // is a hung request, so it ends.
+  return { date, pretty: prettyDate(date) };
+}
+
+/**
+ * The next day they open, with its own opening time, skipping closures. Without the
+ * closure check this cheerfully told people on the third of July that the bakery opened
+ * tomorrow, on the first morning of a fortnight's shutdown.
+ */
+function nextOpen(now: LocalNow) {
+  for (let i = 1; i <= 21; i++) {
+    const date = addDays(now.date, i);
+    const d = week[dayOfWeek(date)];
+    if (d.open !== null && !activeClosure(date)) {
+      return { when: i === 1 ? "tomorrow" : d.label, at: fmt(d.open) };
+    }
+  }
+  return null;
+}
+
 export function openState(now: LocalNow = localNow()): OpenState {
   const today = week[now.day];
 
-  const closure = closures.find((c) => now.date >= c.from && now.date <= c.to);
+  const closure = activeClosure(now.date);
   if (closure) {
+    const back = firstOpenAfter(closure.to);
     return {
       open: false,
-      line: `Closed for ${closure.reason.toLowerCase()}. Back ${prettyDate(closure.to)}.`,
-      closure: { reason: closure.reason, until: prettyDate(closure.to) },
+      /*
+        "Back <the last closed day>" is what this said before, which had the bakery shut
+        and back on the same date, and that date was frequently a Monday: a day they
+        never open at all. It now names the first morning somebody will actually be
+        behind the counter, which is the only date a customer cares about.
+      */
+      line: `Closed for ${closure.reason.toLowerCase()}. Back ${back.pretty}.`,
+      closure: { reason: closure.reason, until: back.pretty },
       today,
     };
   }
 
-  /** The next day they open, with its own opening time rather than an assumed one. */
-  const nextOpenDay = () => {
-    for (let i = 1; i <= 7; i++) {
-      const d = week[(now.day + i) % 7];
-      if (d.open !== null) return { when: i === 1 ? "tomorrow" : d.label, at: fmt(d.open) };
-    }
-    return null;
-  };
-
   if (today.open === null || today.close === null) {
-    const next = nextOpenDay();
+    const next = nextOpen(now);
     return {
       open: false,
       line: next ? `Closed today. Open ${next.when} at ${next.at}.` : "Closed today.",
@@ -174,7 +263,7 @@ export function openState(now: LocalNow = localNow()): OpenState {
   }
 
   if (now.minutes >= today.close) {
-    const next = nextOpenDay();
+    const next = nextOpen(now);
     return {
       open: false,
       line: next ? `Closed for the day. Open ${next.when} at ${next.at}.` : "Closed for the day.",

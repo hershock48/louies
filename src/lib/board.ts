@@ -12,12 +12,15 @@
  */
 
 import { sections, type MenuItem } from "@/data/menu";
-import { statusFor } from "./availability";
+import { activeClosure, statusFor } from "./availability";
 import { localNow, type LocalNow } from "./time";
 
 export type BoardItem = { item: MenuItem; badge: string | null; note: string | null };
 
 export type Board = {
+  /** True while a closure is running. The board must not describe a case nobody can
+   *  walk up to. */
+  closed: boolean;
   today: BoardItem[];
   soon: BoardItem[];
   notice: BoardItem[];
@@ -25,7 +28,31 @@ export type Board = {
   always: MenuItem[];
 };
 
+/*
+  What is in the case whenever the door is open. Names, not size rows: this listed
+  "Large" on the homepage every day without a special, because the Old Pan Toffee
+  section prices a Small and a Large and the Large is marked popular. A row whose name
+  only makes sense under its section heading cannot go on a board.
+
+  Exported because the board still wants to name these while the bakery is shut, and
+  the alternative was calling buildBoard with a faked date to get the list back.
+*/
+const SIZE_ROWS = new Set(["Small", "Large", "Half Dozen", "Dozen"]);
+
+export const everydayItems: MenuItem[] = sections
+  .flatMap((s) => s.items)
+  .filter((i) => !i.availability && i.popular && !SIZE_ROWS.has(i.name))
+  .slice(0, 6);
+
 export function buildBoard(now: LocalNow = localNow()): Board {
+  /*
+    A closure emptied nothing before this line existed. On the eighth of July, in the
+    middle of a fortnight's shutdown, the board cheerfully listed "Cream Horn, today
+    only" directly underneath its own "Closed for summer break" heading. The bakery is
+    shut: there is no today.
+  */
+  const closed = activeClosure(now.date) !== null;
+
   const today: BoardItem[] = [];
   const soon: BoardItem[] = [];
   const notice: BoardItem[] = [];
@@ -53,10 +80,11 @@ export function buildBoard(now: LocalNow = localNow()): Board {
     named. No availability rules, marked popular, so they are in the case whenever the
     door is open.
   */
-  const always = sections
-    .flatMap((s) => s.items)
-    .filter((i) => !i.availability && i.popular)
-    .slice(0, 6);
+  if (closed) {
+    // Nothing is in the case today. What is coming back and what needs notice are still
+    // true, and still useful to somebody planning the week they reopen.
+    return { closed, today: [], soon: soon.slice(0, 4), notice, always: [] };
+  }
 
-  return { today, soon: soon.slice(0, 4), notice, always };
+  return { closed, today, soon: soon.slice(0, 4), notice, always: everydayItems };
 }
