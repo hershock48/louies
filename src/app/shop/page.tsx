@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
 import CallHint from "@/components/CallHint";
 import { site } from "@/data/site";
-import { boxes } from "@/data/shipping";
+import { boxes, shippedReviews } from "@/data/shipping";
 import { money } from "@/lib/money";
 
 export const metadata: Metadata = {
@@ -36,51 +36,85 @@ export default function ShopPage() {
           </SectionHeading>
 
           {/*
-            The box grid. Contents and price render the moment src/data/shipping.ts has
-            them; until then each card carries what the thing is and how it survives a
-            truck, which is the part of a shipping page people actually read.
+            THE FIVE BOXES THEY ACTUALLY SELL, from their own Goldbelly listing.
+
+            The price shown is the marketplace price, labeled as one, because it is the
+            only price that exists today and pretending otherwise would leave a customer
+            guessing. What it is NOT is the price this page will charge when the bakery
+            sells direct: see the note under the grid and the long comment in
+            src/data/shipping.ts.
           */}
-          <ul className="mt-10 grid gap-6 md:grid-cols-3">
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {boxes.map((b) => (
               <li
                 key={b.name}
                 className="flex flex-col rounded-panel border border-awning/12 bg-paper-dim p-6"
               >
-                <h3 className="font-display text-xl font-bold text-awning">{b.name}</h3>
-                <p className="mt-2 text-awning/75">{b.body}</p>
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="font-display text-xl font-bold text-awning">{b.name}</h3>
+                  <span className="flex-none text-xs font-bold uppercase tracking-wider text-brick">
+                    {b.size}
+                  </span>
+                </div>
 
-                {b.contents && b.contents.length > 0 && (
-                  <ul className="mt-4 space-y-1 text-sm text-awning/75">
-                    {b.contents.map((line) => (
-                      <li key={line}>{line}</li>
-                    ))}
-                  </ul>
-                )}
+                <p className="mt-2 text-awning/75">{b.body}</p>
 
                 <p className="mt-4 border-t border-awning/12 pt-4 text-sm leading-relaxed text-awning/70">
                   <span className="font-semibold text-awning">How it travels.</span>{" "}
                   {b.travels}
                 </p>
 
-                {b.price !== undefined && (
-                  <p className="mt-4 text-sm font-semibold tabular-nums text-brick">
-                    {money(b.price)} plus shipping
-                  </p>
-                )}
+                <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  {b.price !== undefined ? (
+                    <p className="text-sm font-semibold tabular-nums text-brick">
+                      {money(b.price)} shipped
+                    </p>
+                  ) : (
+                    b.marketplacePrice !== undefined && (
+                      <p className="text-sm tabular-nums text-awning/75">
+                        <span className="font-semibold text-brick">
+                          {money(b.marketplacePrice)}
+                        </span>{" "}
+                        shipped, through our Goldbelly listing
+                      </p>
+                    )
+                  )}
+                  {b.comingSoon && (
+                    <span className="rounded-full border border-brick/30 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-brick">
+                      Back in the fall
+                    </span>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
 
           {/*
-            Said out loud rather than papered over. The client reads this page too, and
-            "we did not have your numbers so we left them out" is a better sentence than
-            a made-up price sitting under a photograph of their own baking.
+            Said out loud rather than papered over, and the client reads this page too.
+            A shipped price is a real decision the bakery has to make, not a number a
+            web studio picks for them.
           */}
-          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-awning/70">
-            Prices are set with the bakery against a real {site.shipping.carrier} rate,
-            so none are shown here yet. A shipped price is not a counter price with
-            postage added, and it is not a marketplace price either.
+          <p className="mt-8 max-w-3xl text-sm leading-relaxed text-awning/70">
+            Those are marketplace prices, with the freight and the marketplace&rsquo;s
+            share both inside them. Ordering straight from this page is next on the list,
+            and what a box costs here is ours to set against a real{" "}
+            {site.shipping.carrier} rate.
           </p>
+
+          {/* Two verbatim verified-purchase reviews. A shipping page needs a review
+              about shipping, and nothing we could write beats "not one cookie broke". */}
+          <ul className="mt-10 grid gap-6 border-t border-awning/12 pt-10 md:grid-cols-2">
+            {shippedReviews.map((r) => (
+              <li key={r.quote}>
+                <blockquote className="font-display text-lg font-bold leading-snug text-awning">
+                  &ldquo;{r.quote}&rdquo;
+                </blockquote>
+                <p className="mt-2 text-sm text-awning/65">
+                  {r.who}, {r.where}
+                </p>
+              </li>
+            ))}
+          </ul>
 
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <PhaseNote
