@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
 import CallHint from "@/components/CallHint";
 import { site } from "@/data/site";
+import { boxes } from "@/data/shipping";
+import { money } from "@/lib/money";
 
 export const metadata: Metadata = {
   title: "Ship a Box",
@@ -19,21 +21,6 @@ export const metadata: Metadata = {
  * rather than as the main event, and the homepage leads with the shop, not the truck.
  */
 export default function ShopPage() {
-  const travelers = [
-    {
-      name: "Old Pan Toffee",
-      body: "The best traveler we make. Broken by hand, keeps for weeks, and arrives exactly as it left.",
-    },
-    {
-      name: "Pecan Crisps",
-      body: "The 1952 recipe. Sturdy enough for a box and unlike anything you can buy where you live.",
-    },
-    {
-      name: "Nut Rolls",
-      body: "The reason most people click. Baked Monday night and on a truck by Tuesday morning so they arrive as close to fresh as a nut roll can.",
-    },
-  ];
-
   return (
     <>
       <PageHero
@@ -48,14 +35,52 @@ export default function ShopPage() {
             Some things ship better than others, and we will tell you which.
           </SectionHeading>
 
+          {/*
+            The box grid. Contents and price render the moment src/data/shipping.ts has
+            them; until then each card carries what the thing is and how it survives a
+            truck, which is the part of a shipping page people actually read.
+          */}
           <ul className="mt-10 grid gap-6 md:grid-cols-3">
-            {travelers.map((t) => (
-              <li key={t.name} className="rounded-panel border border-awning/12 bg-paper-dim p-6">
-                <h3 className="font-display text-xl font-bold text-awning">{t.name}</h3>
-                <p className="mt-2 text-awning/75">{t.body}</p>
+            {boxes.map((b) => (
+              <li
+                key={b.name}
+                className="flex flex-col rounded-panel border border-awning/12 bg-paper-dim p-6"
+              >
+                <h3 className="font-display text-xl font-bold text-awning">{b.name}</h3>
+                <p className="mt-2 text-awning/75">{b.body}</p>
+
+                {b.contents && b.contents.length > 0 && (
+                  <ul className="mt-4 space-y-1 text-sm text-awning/75">
+                    {b.contents.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+
+                <p className="mt-4 border-t border-awning/12 pt-4 text-sm leading-relaxed text-awning/70">
+                  <span className="font-semibold text-awning">How it travels.</span>{" "}
+                  {b.travels}
+                </p>
+
+                {b.price !== undefined && (
+                  <p className="mt-4 text-sm font-semibold tabular-nums text-brick">
+                    {money(b.price)} plus shipping
+                  </p>
+                )}
               </li>
             ))}
           </ul>
+
+          {/*
+            Said out loud rather than papered over. The client reads this page too, and
+            "we did not have your numbers so we left them out" is a better sentence than
+            a made-up price sitting under a photograph of their own baking.
+          */}
+          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-awning/70">
+            Prices are set with the bakery against a real {site.shipping.carrier} rate,
+            so none are shown here yet. A shipped price is not a counter price with
+            postage added, and it is not a marketplace price either.
+          </p>
 
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <PhaseNote
