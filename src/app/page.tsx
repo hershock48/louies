@@ -217,7 +217,7 @@ export default function HomePage() {
               says. &ldquo;So, yeah, I&rsquo;ve been here my entire life.&rdquo;
             </p>
             <p className="mt-4 font-serif text-lg leading-relaxed text-paper/85">
-              Same recipes, same corner, same oven.
+              Same recipes, same building, same oven.
             </p>
             <div className="mt-8">
               <ButtonLink href="/story" variant="ghost">

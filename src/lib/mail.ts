@@ -29,6 +29,27 @@ export type OrderInquiry = {
   notes: string;
 };
 
+/**
+ * A box going somewhere. Same pipeline as an order, different shape, because a shipped
+ * order needs an address and a date and an order for the counter does not.
+ */
+export type ShipInquiry = {
+  box: string;
+  quantity: string;
+  /** Who it goes to, and where. */
+  to: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  arriveBy: string;
+  gift: string;
+  /** Who is sending it, and how the bakery reaches them for payment. */
+  name: string;
+  phone: string;
+  email: string;
+};
+
 export type SendResult =
   | { delivered: true }
   | { delivered: false; reason: "unconfigured" | "failed" };
@@ -50,6 +71,62 @@ export function summarize(o: OrderInquiry) {
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+export function summarizeShip(o: ShipInquiry) {
+  return [
+    `Box:    ${o.quantity} x ${o.box}`,
+    `To:     ${o.to}`,
+    `        ${o.address}`,
+    `        ${o.city}, ${o.state} ${o.zip}`,
+    o.arriveBy ? `Arrive: ${o.arriveBy}` : null,
+    o.gift ? `Gift:   ${o.gift}` : null,
+    `From:   ${o.name}`,
+    `Phone:  ${o.phone}`,
+    o.email ? `Email:  ${o.email}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+/**
+ * The shipping request, on exactly the same terms as the order form: it succeeds for
+ * the visitor whatever the mail plumbing is doing, and when nothing was sent the
+ * confirmation page says so rather than thanking them for nothing.
+ *
+ * It takes no payment, and the page never implies it did. The bakery rings for the
+ * card, which is how they take a shipped order today. Paid checkout is the store
+ * add-on, quoted separately, and when it lands this route is what it replaces.
+ */
+export async function sendShipInquiry(o: ShipInquiry): Promise<SendResult> {
+  const body = summarizeShip(o);
+
+  if (!configured()) {
+    console.info("[ship-inquiry] mail not configured, payload follows:\n" + body);
+    return { delivered: false, reason: "unconfigured" };
+  }
+
+  try {
+    const nodemailer = (await import("nodemailer")).default;
+    const transport = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT ?? 587),
+      secure: Number(process.env.SMTP_PORT ?? 587) === 465,
+      auth: { user: process.env.SMTP_USER!, pass: process.env.SMTP_PASS! },
+    });
+
+    await transport.sendMail({
+      from: `"Louie's Bakery website" <${process.env.SMTP_USER}>`,
+      to: process.env.ORDER_TO!,
+      replyTo: o.email || undefined,
+      subject: `Shipping request from ${o.name} to ${o.city}, ${o.state}`,
+      text: body,
+    });
+    return { delivered: true };
+  } catch (err) {
+    console.error("[ship-inquiry] send failed, payload follows:\n" + body, err);
+    return { delivered: false, reason: "failed" };
+  }
 }
 
 export async function sendOrderInquiry(o: OrderInquiry): Promise<SendResult> {

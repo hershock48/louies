@@ -7,7 +7,7 @@ import { site } from "@/data/site";
 export const metadata: Metadata = {
   title: "Our Story",
   description:
-    "Louis Bagi opened Louie's Bakery in November 1952. Three generations later, his grandson still runs the same recipes on the same corner of Michigan Avenue.",
+    "Louis Bagi opened Louie's Bakery in November 1952. Three generations later, his grandson still runs the same recipes in the same building on Michigan Avenue.",
 };
 
 /**
@@ -39,7 +39,7 @@ export default function StoryPage() {
               eighties and died in 2002 at eighty-eight, by which point his children were
               running it, and by now his grandson is. {site.people.baker} is our
               {site.people.bakerRole} and the third generation of this family to do this job
-              on this corner. He grew up in the building: there are photographs of him as a
+              in this building. He grew up in it: there are photographs of him as a
               small child standing in it.
             </p>
             <p>
@@ -114,7 +114,7 @@ export default function StoryPage() {
               It is also almost never switched off. In Jason&rsquo;s words: &ldquo;It takes so
               long to heat up. It&rsquo;s easier to just turn it down to, like, 200 and let it
               sit, as opposed to try to build it back up to 400 or 500.&rdquo; Which means the
-              oven on this corner has been warm, give or take, since 1952.
+              oven at 144 W. Michigan has been warm, give or take, since 1952.
             </p>
             <div className="mt-8">
               <ButtonLink href="/visit" variant="ghost">

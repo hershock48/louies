@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
+import ShipForm from "@/components/ShipForm";
 import CallHint from "@/components/CallHint";
 import { site } from "@/data/site";
 import { boxes, shippedReviews } from "@/data/shipping";
@@ -20,7 +21,14 @@ export const metadata: Metadata = {
  * confirm it. So shipping is framed here as something for people who left Marshall
  * rather than as the main event, and the homepage leads with the shop, not the truck.
  */
-export default function ShopPage() {
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ box?: string; error?: string }>;
+}) {
+  const { box, error } = await searchParams;
+  const selected = boxes.find((b) => b.name === box)?.name;
+
   return (
     <>
       <PageHero
@@ -85,6 +93,18 @@ export default function ShopPage() {
                     </span>
                   )}
                 </div>
+
+                {/* Straight to the form with this box already chosen. A plain link, so
+                    it works with scripting off and can be opened in a new tab. */}
+                <div className="mt-5">
+                  <ButtonLink
+                    href={`/shop?box=${encodeURIComponent(b.name)}#ship`}
+                    variant="dark"
+                    prefetch={false}
+                  >
+                    Send this one
+                  </ButtonLink>
+                </div>
               </li>
             ))}
           </ul>
@@ -118,22 +138,22 @@ export default function ShopPage() {
 
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <PhaseNote
-              heading="Shipping direct is on the way"
+              heading="Three ways to get a box out the door"
               cta={
                 <>
-                  <ButtonLink href={site.social.goldbelly} variant="dark" external>
-                    Order on Goldbelly
-                  </ButtonLink>
                   <ButtonLink href={site.phoneHref} variant="dark">
                     Call {site.phone}
+                  </ButtonLink>
+                  <ButtonLink href={site.social.goldbelly} variant="dark" external>
+                    Or order on Goldbelly
                   </ButtonLink>
                 </>
               }
               footnote={<CallHint />}
             >
               <p>
-                Boxes can go out today, either by calling the shop or through our Goldbelly
-                listing. Ordering straight from this page is next on the list.
+                The form on this page, the telephone, or our Goldbelly listing. Paying by
+                card on this page, without the call, is the next piece of work.
               </p>
             </PhaseNote>
 
@@ -151,6 +171,17 @@ export default function ShopPage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/*
+        THE PART THAT WAS MISSING. The page argued for selling boxes from their own site
+        and then handed the visitor to a marketplace, which is the behaviour the proposal
+        criticises. Now a box can be ordered here.
+      */}
+      <section className="grain relative isolate bg-paper-dim">
+        <div className="relative mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+          <ShipForm selected={selected} error={error === "missing"} />
         </div>
       </section>
     </>

@@ -75,8 +75,10 @@ src/data/menu.ts       the full case, with availability rules
 src/lib/time.ts        America/Detroit, via Intl, no date library
 src/lib/availability.ts  the engine
 src/lib/board.ts       what the homepage board shows
+src/data/shipping.ts   the five boxes they ship, and what the marketplace charges
 src/lib/mail.ts        SMTP, and the honest behavior when it is unconfigured
-src/app/api/order      the form endpoint, a plain POST with a 303 back
+src/app/api/order      the counter form endpoint, a plain POST with a 303 back
+src/app/api/ship       the same, for a box going somewhere
 ```
 
 ## Still to build
@@ -98,8 +100,9 @@ artifact it is meant to be. The second is what is specific to this bakery.
       every route. Also run at 320 and 768: zero.
 - [x] Zero console errors, zero 4xx, on every route.
 - [x] `grep -rn PLACEHOLDER` returns five hits, all of them on the list below.
-- [~] Every form actually submitted and confirmed arriving in a real inbox. **The order
-      form exists and was submitted end to end with JavaScript disabled**, landing on
+- [~] Every form actually submitted and confirmed arriving in a real inbox. **Both forms
+      exist and were submitted end to end with JavaScript disabled**, the counter order
+      and a box to Tucson, landing on
       `/order/received?state=logged` with the full payload in the server log. Delivery
       is unconfirmed because SMTP is unset: set `SMTP_*` and `ORDER_TO` in Vercel and
       send one real test. Until then the confirmation page says plainly that nobody has
@@ -114,7 +117,7 @@ artifact it is meant to be. The second is what is specific to this bakery.
       order, mobile drawer traps focus and closes on Escape.
 - [x] LCP under 2.5s and CLS under 0.1 on a throttled mobile profile. Measured at 390px
       on Slow 4G with a 4x CPU slowdown, median of three runs:
-      `/` **2116ms / 0.000**, `/menu` **828ms / 0.018**, `/story` **796ms / 0.000**.
+      `/` **2104ms / 0.000**, `/menu` **788ms / 0.028**, `/story` **800ms / 0.000**.
       The homepage has under 400ms of headroom and its LCP element is the hero
       photograph, so anything added to that image spends the margin.
 - [ ] Total JavaScript under 150KB compressed. **180KB on `/`, 184KB on `/menu`,
@@ -196,6 +199,11 @@ artifact it is meant to be. The second is what is specific to this bakery.
   off the right edge of a 390px screen.
 - **Unavailable menu rows must not use `opacity`.** It multiplies through every child
   and took 60 rows below AA. The badge carries the meaning; the row is tinted instead.
+- **Links back to the page you are on with a different query need `prefetch={false}`.**
+  The five "Send this one" buttons point at `/shop?box=...`, and the router prefetched
+  each as an RSC request that never completed: eight seconds in, a phone still had an
+  open GET, and the auditor called `/shop` unreachable at 390 while curl fetched it in
+  15ms. `ButtonLink` takes the prop for this reason.
 - **The order form is a server component posting to a route handler.** No client
   JavaScript is involved on the way in, which is why it works with scripting off. Do
   not "improve" it into a fetch with a spinner without keeping a working no-JS path.

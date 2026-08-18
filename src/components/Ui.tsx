@@ -74,11 +74,24 @@ export function ButtonLink({
   children,
   variant = "primary",
   external = false,
+  prefetch,
 }: {
   href: string;
   children: React.ReactNode;
   variant?: "primary" | "ghost" | "dark";
   external?: boolean;
+  /**
+   * Off for links back into the page you are already on with a different query.
+   *
+   * MEASURED, not a preference. The five "Send this one" buttons on /shop point at
+   * /shop?box=... , and the router prefetches every one of them as an RSC request the
+   * moment they enter the viewport. Those requests never complete: eight seconds in,
+   * a phone still had an open GET for the first of them, which is why the auditor
+   * reported /shop unreachable at 390 while curl fetched it in 15 milliseconds. A
+   * prefetch that never finishes is a socket held open on a phone for a page the
+   * visitor is already looking at.
+   */
+  prefetch?: false;
 }) {
   const cls = `btn btn-${variant}`;
   if (external) {
@@ -89,7 +102,7 @@ export function ButtonLink({
     );
   }
   return (
-    <Link href={href} className={cls}>
+    <Link href={href} className={cls} prefetch={prefetch}>
       {children}
     </Link>
   );

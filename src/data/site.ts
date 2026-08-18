@@ -13,7 +13,7 @@ export const site = {
   shortName: "Louie's",
   tagline: "A Marshall tradition since 1952.",
   blurb:
-    "Fried cakes, nut rolls and pies, out front by 5:30 in the morning. Same family, same recipes, same corner of Michigan Avenue since 1952.",
+    "Fried cakes, nut rolls and pies, out front by 5:30 in the morning. Same family, same recipes, same block of Michigan Avenue since 1952.",
   established: 1952,
 
   /** Their current domain. The hyphen is painted on the window. See the README. */

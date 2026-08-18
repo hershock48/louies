@@ -1,0 +1,82 @@
+import type { Metadata } from "next";
+import { ButtonLink, PageHero } from "@/components/Ui";
+import CallHint from "@/components/CallHint";
+import { site } from "@/data/site";
+
+export const metadata: Metadata = {
+  title: "Shipping request sent",
+  description: "Your box request has gone to Louie's Bakery in Marshall, Michigan.",
+  robots: { index: false },
+};
+
+/**
+ * Same two messages as the order confirmation, and the same rule: they must not look
+ * alike. `sent` means it is in the bakery's inbox. `logged` means mail is not switched
+ * on yet, the request was kept and logged, and nobody has been pinged, which is a
+ * sentence this page says out loud rather than dressing up as a thank you.
+ *
+ * Neither version says anything about payment having been taken, because none was.
+ */
+export default async function ShipReceivedPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ state?: string }>;
+}) {
+  const { state } = await searchParams;
+  const delivered = state === "sent";
+
+  return (
+    <>
+      <PageHero
+        eyebrow={delivered ? "Got it" : "Saved, but read this"}
+        title={
+          delivered
+            ? "That is with the bakery."
+            : "We have your box. Please ring to finish it."
+        }
+      />
+
+      <section className="grain relative isolate bg-paper">
+        <div className="relative mx-auto max-w-2xl px-5 py-16 sm:px-8 sm:py-24">
+          {delivered ? (
+            <div className="space-y-4 text-lg leading-relaxed text-awning/85">
+              <p>
+                It landed in their inbox. Someone will ring you to take the card and
+                confirm what the shipping comes to before anything is packed.
+              </p>
+              <p>
+                Boxes are baked the night before and go out {site.shipping.day} morning on
+                the {site.shipping.carrier} truck. If your order lands after that truck
+                has gone, it waits for the next one, and they will tell you which week it
+                is on the call.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4 text-lg leading-relaxed text-awning/85">
+              <p>
+                <strong className="font-semibold text-awning">
+                  Your box is saved, but email from this site is not switched on yet,
+                </strong>{" "}
+                so nobody at the bakery has been notified. That is on us, not on you.
+              </p>
+              <p>
+                Please ring the shop. They can take the address and the card in about two
+                minutes, and it is the fastest way regardless.
+              </p>
+            </div>
+          )}
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <ButtonLink href={site.phoneHref} variant="dark">
+              Call {site.phone}
+            </ButtonLink>
+            <ButtonLink href="/shop" variant="dark">
+              Back to the boxes
+            </ButtonLink>
+          </div>
+          <CallHint />
+        </div>
+      </section>
+    </>
+  );
+}
