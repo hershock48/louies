@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Glazed Web × Louie's Bakery · Proposal</title>
+<meta name="description" content="A website proposal for Louie's Bakery in Marshall, Michigan. Every claim links to the evidence.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Glazed Web">
+<meta property="og:url" content="https://louies.glazedweb.com/">
+<meta property="og:title" content="Is your website still on vacation?">
+<meta property="og:description" content="A website proposal for Louie's Bakery, where every claim links to the proof.">
+<meta property="og:image" content="https://louies.glazedweb.com/pitch/louies/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Is your website still on vacation? A proposal from Glazed Web.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Is your website still on vacation?">
+<meta name="twitter:description" content="A website proposal for Louie's Bakery, where every claim links to the proof.">
+<meta name="twitter:image" content="https://louies.glazedweb.com/pitch/louies/og.jpg">
+<meta name="theme-color" content="#FDF6EC">
+<link rel="icon" type="image/png" sizes="256x256" href="/pitch/louies/icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/pitch/louies/apple-touch-icon.png">
+<style>
+:root{
+ --paper:#FDF6EC; --paper2:#FFF7EA; --card:#FFFDF8;
+ --ink:#2B1E16; --ink2:#201712; --body:#6B5747; --mute:#7A6753; --line:#E8DCC8;
+ --pink:#E84D8A; --pink-d:#CE3672; --pink-t:#FCE7F0;
+ --green:#BFE07A; --green-b:#A9D65C; --green-d:#467C3D; --green-t:#F1F8DC;
+ --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ --serif:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--body);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4,.k,.btn,nav,th,.num,.chip{font-family:var(--sans)}
+.k{font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--green-d)}
+h2{font-size:clamp(30px,4.4vw,48px);font-weight:800;color:var(--ink);letter-spacing:-1.6px;line-height:1.08;margin:10px 0 14px}
+h3{font-size:19px;font-weight:800;color:var(--ink);margin:34px 0 10px;letter-spacing:-.4px}
+p{margin:0 0 14px}
+strong{color:var(--ink);font-weight:600}
+a{color:#C9356F}
+.rule{height:3px;width:52px;background:var(--pink);border-radius:2px;margin:0 0 18px}
+section{padding:60px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+
+/* header */
+header{position:sticky;top:0;z-index:60;background:rgba(253,246,236,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand .gl{height:34px;width:auto;display:block}
+.brand .bw{font-family:var(--sans);font-weight:800;font-size:19px;color:var(--ink);letter-spacing:-.6px;line-height:1.1}
+.brand .bw span{font-weight:350;color:var(--mute)}
+.brand span{font-size:.72rem;color:var(--mute);font-style:italic}
+nav{display:flex;gap:20px;font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase}
+nav a{color:var(--mute);text-decoration:none}
+nav a:hover{color:var(--pink-d)}
+@media(max-width:720px){nav{display:none}.brand span{display:none}}
+
+/* hero */
+.hero{padding:66px 0 54px;text-align:left}
+.hero .mark{height:92px;width:auto;margin-bottom:24px;display:block}
+.hero h1{font-family:var(--sans);font-size:clamp(38px,5.5vw,60px);font-weight:800;color:var(--ink);letter-spacing:-2px;line-height:1.04}
+.hero h1 em{font-style:normal;color:var(--pink)}
+.hero .sub{font-size:1.12rem;color:var(--body);margin-top:20px;max-width:31em}
+.forwho{margin-top:26px;font-family:var(--sans);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);line-height:1.9}
+.forwho b{color:var(--ink)}
+
+/* tldr */
+.tldr{background:var(--ink);color:#F6EFE4;border-radius:16px;padding:26px 26px 22px;margin-top:38px}
+.tldr .k{color:var(--green)}
+.demo .k{color:var(--green)}
+.tldr ul{list-style:none;margin:14px 0 0}
+.tldr li{display:flex;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.1);font-size:.97rem;line-height:1.5}
+.tldr li:first-child{border-top:0}
+.tldr .n{font-family:var(--sans);font-weight:800;color:var(--green);flex:0 0 auto;font-size:.8rem;padding-top:3px}
+.tldr b{color:#fff}
+
+/* claim cards */
+.claim{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin:12px 0;transition:border-color .16s,transform .16s}
+.claim:hover{border-color:var(--pink);transform:translateY(-1px)}
+.claim h4{font-family:var(--sans);font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:5px;letter-spacing:-.01em}
+.claim p{font-size:.95rem;margin:0}
+.claim .verify{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-family:var(--sans);font-size:.71rem;font-weight:700;
+ letter-spacing:.1em;text-transform:uppercase;color:var(--pink-d);text-decoration:none;border:1.5px solid var(--pink);
+ padding:7px 13px;border-radius:999px;transition:all .16s}
+.claim .verify:hover{background:var(--pink);color:#fff}
+.claim .verify.plain{border-color:var(--line);color:var(--mute);cursor:default}
+.claim .verify.plain:hover{background:transparent;color:var(--mute)}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:.83em;color:var(--mute)}
+
+/* calculator */
+.calc{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:26px;margin:22px 0}
+.calc label{display:block;font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:9px}
+.inputrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.money{display:flex;align-items:center;background:var(--paper);border:2px solid var(--line);border-radius:11px;padding:4px 14px;transition:border-color .16s}
+.money:focus-within{border-color:var(--pink)}
+.money span{font-family:var(--sans);font-size:1.3rem;font-weight:800;color:var(--mute)}
+.money input{border:0;background:transparent;font-family:var(--sans);font-size:1.45rem;font-weight:800;color:var(--ink);width:110px;padding:9px 6px;outline:none}
+.money em{font-style:normal;font-family:var(--sans);font-size:.8rem;color:var(--mute)}
+.presets{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 14px;font-size:.78rem;font-weight:700;color:var(--body);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--pink);color:var(--pink-d)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.out{margin-top:22px;padding-top:20px;border-top:2px dashed var(--line);display:none}
+.out.show{display:block}
+.bars{display:grid;gap:12px;margin-bottom:16px}
+.bar .lab{display:flex;justify-content:space-between;font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--body);margin-bottom:5px}
+.bar .lab b{color:var(--ink);font-size:.95rem}
+.bar .track{height:26px;background:var(--paper);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.bar .fill{height:100%;border-radius:6px;transition:width .5s cubic-bezier(.3,.8,.3,1)}
+.bar.stay .fill{background:repeating-linear-gradient(45deg,#E9D9C0,#E9D9C0 7px,#DECBAE 7px,#DECBAE 14px)}
+.bar.us .fill{background:linear-gradient(90deg,var(--green),var(--green-d))}
+.verdict{background:var(--green-t);border:1.5px solid var(--green);border-radius:12px;padding:15px 17px;font-size:.98rem;line-height:1.5}
+.verdict.neg{background:var(--pink-t);border-color:var(--pink)}
+.verdict b{color:var(--ink)}
+.calcnote{font-size:.82rem;color:var(--mute);margin-top:13px;line-height:1.5}
+
+/* compare table */
+.cmp{width:100%;border-collapse:collapse;margin:16px 0;font-size:.93rem}
+.cmp th{font-family:var(--sans);text-align:left;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;
+ padding:0 10px 9px 0;border-bottom:2px solid var(--ink);color:var(--ink);vertical-align:bottom}
+.cmp td{padding:12px 10px 12px 0;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+.cmp td:first-child{font-weight:700;color:var(--ink);width:24%;font-family:var(--sans);font-size:.86rem}
+.cmp td:nth-child(2){width:36%;color:var(--mute)}
+.cmp td:nth-child(3){width:40%}
+.tick{color:var(--green-d);font-weight:800}
+
+/* price */
+.pricebox{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+.pricebox>div{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:20px}
+.pricebox .n{font-family:var(--sans);font-size:2rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1}
+.pricebox .l{font-size:.85rem;color:var(--mute);margin-top:7px;line-height:1.4}
+@media(max-width:600px){.pricebox{grid-template-columns:1fr}}
+
+/* demo cta */
+.demo{background:linear-gradient(135deg,#201712,#3A2416);color:#F6EFE4;border-radius:18px;padding:32px;margin:22px 0;text-align:center}
+.demo .k{color:var(--green)}
+.demo h3{color:#fff;margin:10px 0 8px;font-size:1.4rem}
+.demo p{color:#D8CBBA;font-size:.98rem;max-width:34em;margin:0 auto 20px}
+.demo a{display:inline-block;background:var(--pink-d);color:#fff;font-family:var(--sans);font-weight:700;font-size:.82rem;box-shadow:0 6px 16px -6px rgba(206,54,114,.55);
+ letter-spacing:.09em;text-transform:uppercase;padding:15px 30px;border-radius:999px;text-decoration:none;transition:all .18s}
+.demo a:hover{background:var(--green);color:var(--ink);transform:translateY(-2px)}
+
+/* steps */
+.step{display:flex;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:0}
+.step .no{font-family:var(--sans);font-weight:800;font-size:.78rem;color:#fff;background:var(--pink);width:28px;height:28px;
+ border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.step h4{font-family:var(--sans);font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:4px}
+.step p{font-size:.95rem;margin:0}
+
+footer{background:var(--ink);color:#B9A894;padding:44px 0;font-size:.86rem;margin-top:20px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer .gl-foot{height:62px;width:auto;opacity:.95}
+footer b{color:#F6EFE4;display:block;font-family:var(--sans);font-size:.95rem;margin-bottom:4px}
+footer .bw{display:block;font-weight:800;color:#F6EFE4;letter-spacing:-.6px;margin-bottom:5px}
+footer .bw span{font-weight:350;color:#A6907F}
+footer a{color:var(--green)}
+.conf{font-size:.72rem;color:#7A6A58;margin-top:14px;letter-spacing:.04em}
+.note{font-size:.85rem;color:var(--mute);font-style:italic;line-height:1.5}
+
+/* --- the mark, and its drip, lifted from glazedweb.com --- */
+.gmark{display:block;overflow:visible}
+.gmark .goo{transform-box:fill-box;transform-origin:50% 0;animation:breathe 6s ease-in-out infinite}
+.gmark .wob1,.gmark .wob2,.gmark .wob3,.gmark .wobB{transform-box:fill-box;transform-origin:50% 0}
+.gmark .wob1{animation:sagg 3.8s ease-in-out -.6s infinite}
+.gmark .wob2{animation:sagg 4.9s ease-in-out -2.1s infinite}
+.gmark .wob3{animation:sagg 4.3s ease-in-out -1.3s infinite}
+.gmark .wobB{animation:sagg 5.6s ease-in-out -3s infinite}
+.gmark .string{transform-box:fill-box;transform-origin:50% 0;animation:stringy 3.4s cubic-bezier(.55,.1,.8,.5) infinite}
+.gmark .droplet{transform-box:fill-box;transform-origin:center;animation:fall 3.4s cubic-bezier(.5,.08,.85,.6) infinite}
+.gmark .droplet2{transform-box:fill-box;transform-origin:center;animation:fall2 5.1s cubic-bezier(.5,.08,.85,.6) -2.4s infinite}
+@keyframes breathe{0%,to{transform:scaleY(1)}50%{transform:scaleY(1.02)}}
+@keyframes sagg{0%,to{transform:scaleY(1) scaleX(1)}50%{transform:scaleY(1.07) scaleX(.98)}}
+@keyframes stringy{0%{transform:scaleY(.1);opacity:0}25%{transform:scaleY(.8);opacity:1}60%{transform:scaleY(1.7);opacity:.85}80%{transform:scaleY(2.4);opacity:0}to{transform:scaleY(.1);opacity:0}}
+@keyframes fall{0%{transform:translateY(-16px) scaleY(1.5) scaleX(.7);opacity:0}22%{transform:translateY(-8px) scaleY(1.2) scaleX(.85);opacity:1}60%{transform:translateY(10px) scale(1);opacity:1}to{transform:translateY(38px) scaleY(1.15) scaleX(.9);opacity:0}}
+@keyframes fall2{0%{transform:translateY(-10px) scaleY(1.4) scaleX(.75);opacity:0}25%{transform:translateY(-4px) scale(1);opacity:1}65%{transform:translateY(8px) scale(1);opacity:1}to{transform:translateY(26px) scale(1);opacity:0}}
+@media (prefers-reduced-motion:reduce){
+ .gmark .goo,.gmark .wob1,.gmark .wob2,.gmark .wob3,.gmark .wobB,
+ .gmark .string,.gmark .droplet,.gmark .droplet2{animation:none}
+}
+.brand .gmark{height:38px;width:auto;margin-bottom:-6px}
+.hero .gmark{height:112px;width:auto;margin-bottom:26px}
+footer .gmark{height:78px;width:auto}
+.conf{color:#D8CBBA}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+ <a class="brand" href="#top" aria-label="Glazed Web">
+  <svg class="gmark gl" viewBox="0 0 200 250" overflow="visible" aria-hidden="true"><defs><linearGradient id="dgGrad" x1="0" y1="92" x2="0" y2="165" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#5FA850"></stop><stop offset="100%" stop-color="#43813A"></stop></linearGradient><linearGradient id="lgGrad" x1="0" y1="92" x2="0" y2="215" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#D9EDA0"></stop><stop offset="55%" stop-color="#BFE07A"></stop><stop offset="100%" stop-color="#A3CE55"></stop></linearGradient><radialGradient id="pinkGrad" cx="40%" cy="34%" r="75%"><stop offset="0%" stop-color="#F887B2"></stop><stop offset="55%" stop-color="#E84D8A"></stop><stop offset="100%" stop-color="#CE3672"></stop></radialGradient><linearGradient id="creepGrad" x1="0" y1="90" x2="0" y2="124" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E3F2B0"></stop><stop offset="100%" stop-color="#C3E181"></stop></linearGradient></defs><g class="goo"><g fill="url(#dgGrad)"><ellipse cx="100" cy="110" rx="38" ry="15"></ellipse><path class="wobB" d="M 86 100 C 86 116, 87 130, 88 142 C 88 148, 91 149, 92 142 C 93 130, 92 114, 92 100 Z"></path><path d="M 114 100 C 114 112, 115 124, 116 134 C 116 140, 119 141, 120 134 C 121 124, 120 110, 120 100 Z"></path></g><g fill="url(#lgGrad)"><path class="wob1" d="M 64 100 C 63 120, 65 138, 66 152 C 66 164, 68 172, 74 173 C 80 172, 83 165, 82 154 C 84 136, 85 116, 86 100 Z"></path><path class="wob2" d="M 92 100 C 91 128, 93 152, 94 172 C 94 188, 97 199, 104 200 C 111 199, 114 190, 112 174 C 113 150, 114 124, 114 100 Z"></path><path class="wob3" d="M 120 100 C 119 116, 120 130, 121 142 C 121 152, 123 159, 129 160 C 134 159, 137 153, 135 144 C 136 130, 137 114, 137 100 Z"></path></g></g><path class="string" d="M 104 199 L 104 209" stroke="#BFE07A" stroke-width="2.5" stroke-linecap="round" fill="none"></path><g class="droplet"><circle cx="104" cy="213" r="7" fill="#BFE07A"></circle><circle cx="102" cy="211" r="2" fill="#F1F8DC" opacity="0.9"></circle></g><circle class="droplet2" cx="74" cy="186" r="4.5" fill="#BFE07A"></circle><circle cx="100" cy="70" r="52" fill="url(#pinkGrad)"></circle><path d="M 56 98 A 52 52 0 0 0 144 98 C 142 94, 138 92, 134 94 C 130 97, 129 102, 125 104 C 119 106, 116 98, 110 96 C 104 94, 103 102, 98 105 C 93 107, 90 100, 84 97 C 78 95, 76 100, 71 102 C 66 103, 62 100, 56 98 Z" fill="url(#creepGrad)"></path><path d="M 68 106 A 42 42 0 0 0 84 116" fill="none" stroke="#F1F8DC" stroke-width="4" stroke-linecap="round" opacity="0.85"></path><path d="M 97 144 Q 103 151 109 144" fill="none" stroke="#55974A" stroke-width="4" stroke-linecap="round"></path><g stroke="#F1F8DC" fill="none" stroke-linecap="round"><path d="M 97 128 C 96 148, 97 166, 100 182" stroke-width="4.5" opacity="0.85"></path><path d="M 69 118 C 68 132, 70 146, 71 156" stroke-width="3.5" opacity="0.8"></path><path d="M 124 114 C 123 124, 125 138, 126 148" stroke-width="3.5" opacity="0.8"></path></g><circle cx="100" cy="192" r="2.5" fill="#F1F8DC" opacity="0.9"></circle><circle cx="100" cy="72" r="13" fill="#FDF6EC"></circle><circle cx="100" cy="72" r="13" fill="none" stroke="#C22F6B" stroke-width="3" opacity="0.3"></circle><path class="sheen" d="M 62 46 A 44 44 0 0 1 82 28" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"></path><circle class="sheen" cx="92" cy="26" r="3.5" fill="#FFFFFF"></circle></svg>
+  <span class="bw">glazed<span>web</span></span>
+ </a>
+ <nav>
+  <a href="#found">Findings</a><a href="#own">Ownership</a><a href="#build">The site</a><a href="#cost">Cost</a><a href="#next">Next</a>
+ </nav>
+</div></header>
+<div class="hero" id="top"><div class="wrap">
+ <svg class="gmark mark" viewBox="0 0 200 250" overflow="visible" aria-hidden="true"><defs><linearGradient id="dgGrad" x1="0" y1="92" x2="0" y2="165" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#5FA850"></stop><stop offset="100%" stop-color="#43813A"></stop></linearGradient><linearGradient id="lgGrad" x1="0" y1="92" x2="0" y2="215" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#D9EDA0"></stop><stop offset="55%" stop-color="#BFE07A"></stop><stop offset="100%" stop-color="#A3CE55"></stop></linearGradient><radialGradient id="pinkGrad" cx="40%" cy="34%" r="75%"><stop offset="0%" stop-color="#F887B2"></stop><stop offset="55%" stop-color="#E84D8A"></stop><stop offset="100%" stop-color="#CE3672"></stop></radialGradient><linearGradient id="creepGrad" x1="0" y1="90" x2="0" y2="124" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E3F2B0"></stop><stop offset="100%" stop-color="#C3E181"></stop></linearGradient></defs><g class="goo"><g fill="url(#dgGrad)"><ellipse cx="100" cy="110" rx="38" ry="15"></ellipse><path class="wobB" d="M 86 100 C 86 116, 87 130, 88 142 C 88 148, 91 149, 92 142 C 93 130, 92 114, 92 100 Z"></path><path d="M 114 100 C 114 112, 115 124, 116 134 C 116 140, 119 141, 120 134 C 121 124, 120 110, 120 100 Z"></path></g><g fill="url(#lgGrad)"><path class="wob1" d="M 64 100 C 63 120, 65 138, 66 152 C 66 164, 68 172, 74 173 C 80 172, 83 165, 82 154 C 84 136, 85 116, 86 100 Z"></path><path class="wob2" d="M 92 100 C 91 128, 93 152, 94 172 C 94 188, 97 199, 104 200 C 111 199, 114 190, 112 174 C 113 150, 114 124, 114 100 Z"></path><path class="wob3" d="M 120 100 C 119 116, 120 130, 121 142 C 121 152, 123 159, 129 160 C 134 159, 137 153, 135 144 C 136 130, 137 114, 137 100 Z"></path></g></g><path class="string" d="M 104 199 L 104 209" stroke="#BFE07A" stroke-width="2.5" stroke-linecap="round" fill="none"></path><g class="droplet"><circle cx="104" cy="213" r="7" fill="#BFE07A"></circle><circle cx="102" cy="211" r="2" fill="#F1F8DC" opacity="0.9"></circle></g><circle class="droplet2" cx="74" cy="186" r="4.5" fill="#BFE07A"></circle><circle cx="100" cy="70" r="52" fill="url(#pinkGrad)"></circle><path d="M 56 98 A 52 52 0 0 0 144 98 C 142 94, 138 92, 134 94 C 130 97, 129 102, 125 104 C 119 106, 116 98, 110 96 C 104 94, 103 102, 98 105 C 93 107, 90 100, 84 97 C 78 95, 76 100, 71 102 C 66 103, 62 100, 56 98 Z" fill="url(#creepGrad)"></path><path d="M 68 106 A 42 42 0 0 0 84 116" fill="none" stroke="#F1F8DC" stroke-width="4" stroke-linecap="round" opacity="0.85"></path><path d="M 97 144 Q 103 151 109 144" fill="none" stroke="#55974A" stroke-width="4" stroke-linecap="round"></path><g stroke="#F1F8DC" fill="none" stroke-linecap="round"><path d="M 97 128 C 96 148, 97 166, 100 182" stroke-width="4.5" opacity="0.85"></path><path d="M 69 118 C 68 132, 70 146, 71 156" stroke-width="3.5" opacity="0.8"></path><path d="M 124 114 C 123 124, 125 138, 126 148" stroke-width="3.5" opacity="0.8"></path></g><circle cx="100" cy="192" r="2.5" fill="#F1F8DC" opacity="0.9"></circle><circle cx="100" cy="72" r="13" fill="#FDF6EC"></circle><circle cx="100" cy="72" r="13" fill="none" stroke="#C22F6B" stroke-width="3" opacity="0.3"></circle><path class="sheen" d="M 62 46 A 44 44 0 0 1 82 28" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"></path><circle class="sheen" cx="92" cy="26" r="3.5" fill="#FFFFFF"></circle></svg>
+ <div class="k">Website proposal · Louie's Bakery</div>
+ <h1>Is your website<br>still on vacation?<br><em>It thinks it&rsquo;s July.</em></h1>
+ <p class="sub">We went through louies-bakery.com page by page, and then we built the site we would put in its place. It is live right now. Everything in this letter links to the proof.</p>
+ <div class="forwho">
+  Prepared by <b>Kevin Hershock · Glazed Web</b><br>
+  Marshall, Michigan · August 2026<br>
+  <b>Every claim below links to the evidence.</b>
+ </div>
+</div></div>
+<section id="found"><div class="wrap">
+ <div class="k">Section one</div>
+ <div class="rule"></div>
+ <h2>What we found.</h2>
+
+ <div class="tldr">
+  <div class="k">The short version</div>
+  <ul>
+   <li><span class="n">01</span><span>Your homepage has been telling customers you are <b>closed on vacation</b> since July. It still says it today.</span></li>
+   <li><span class="n">02</span><span>Your team page introduces <b>three people who do not exist</b>, with Latin filler where their lives should be.</span></li>
+   <li><span class="n">03</span><span>Your testimonials page has <b>no testimonials on it</b>. Seventy-four years of goodwill lives on Facebook instead.</span></li>
+   <li><span class="n">04</span><span>The address customers actually type, <b>louiesbakery.com</b>, is a bakery in Pennsylvania.</span></li>
+  </ul>
+ </div>
+
+ <div class="claim">
+  <h4>The site says you are closed. You are open.</h4>
+  <p>The banner on your homepage reads, verbatim: <span class="mono">"we are on vacation july4-july20. we RESUME NORMAL BUSINESS HOURS JULY 21 AT 5:30AM."</span> We checked it again the day this letter was written, August 18. A month past the date, it is still the first thing a visitor reads, and every day it costs you the customer who believed it.</p>
+  <a class="verify" href="https://www.louies-bakery.com/" target="_blank" rel="noopener">See it live ↗</a>
+ </div>
+
+ <div class="claim">
+  <h4>Your team page staffs the bakery with people who are not real</h4>
+  <p><span class="mono">/team</span> introduces "Bobby Rangler," "Lindsey Mckevin" and "Sarah Rangler," each described by the same sentence of Latin placeholder text. Your actual story, a third generation of one family on one corner since 1952, is the best thing you own, and this page replaces it with lorem ipsum.</p>
+  <a class="verify" href="https://www.louies-bakery.com/team" target="_blank" rel="noopener">See it live ↗</a>
+ </div>
+
+ <div class="claim">
+  <h4>A testimonials page with no testimonials</h4>
+  <p><span class="mono">/testimonials</span> contains a heading and a link that says "772 MORE REVIEWS ON OUR FACEBOOK PAGE." The reviews themselves, the ones that say things like "I can't eat doughnuts from a grocery store anymore," live on websites other people own.</p>
+  <a class="verify" href="https://www.louies-bakery.com/testimonials" target="_blank" rel="noopener">See it live ↗</a>
+ </div>
+
+ <div class="claim">
+  <h4>The footer says 2019, and the only video is not Marshall</h4>
+  <p>The copyright line reads <span class="mono">"Louie's Bakery © 2019"</span>. The homepage's one piece of motion is an AI-generated clip of a giant nut roll floating down a big-city street, glass towers and yellow cabs, a place your bakery has never been.</p>
+  <a class="verify" href="https://www.louies-bakery.com/" target="_blank" rel="noopener">See it live ↗</a>
+ </div>
+
+ <div class="claim">
+  <h4>The menu contradicts itself</h4>
+  <p>The pastries line reads <span class="mono">"$2.10 cash discount $0.60"</span>. The sixty cents belongs to the donut-hole row above it. Small on its own; together with the rest, it reads as a site nobody can safely touch.</p>
+  <a class="verify" href="https://www.louies-bakery.com/menu" target="_blank" rel="noopener">See it live ↗</a>
+ </div>
+
+ <div class="claim">
+  <h4>The name customers type belongs to somebody else</h4>
+  <p><span class="mono">louiesbakery.com</span>, without the hyphen, is a family bakery in Emmaus, Pennsylvania. Anyone who types the obvious spelling of your name lands on their case, not yours. A rebuild cannot fix that by itself, but proper local search work narrows how often it happens, and it is worth knowing.</p>
+  <a class="verify" href="https://louiesbakery.com/" target="_blank" rel="noopener">See it live ↗</a>
+ </div>
+
+ <p class="note" style="margin-top:20px">These are symptoms, not the disease. The disease is a rented website that is awkward to change, so for six years nobody has changed it.</p>
+</div></section>
+<section id="own"><div class="wrap">
+ <div class="k">Section two</div>
+ <div class="rule"></div>
+ <h2>The part that matters most.</h2>
+
+ <h3>What you have now</h3>
+ <p>Your site runs on a Mopro subscription. Their link sits in your footer. You pay monthly for a website that froze in 2019, and if you ever stop paying, there is nothing to keep: the platform, the templates and the hosting are theirs.</p>
+
+ <div class="demo" style="text-align:left;background:var(--card);color:var(--body);border:2px solid var(--green)">
+  <div class="k" style="color:var(--green-d)">What we would do instead</div>
+  <h3 style="color:var(--ink);margin-top:8px">You own it. All of it.</h3>
+  <p style="color:var(--body);margin:0">When the build fee is paid, the site is yours in writing: design, source code, content, accounts. The domain is registered in your name. Month to month after launch, thirty days' notice, no penalty. If you ever leave, you take everything with you, working.</p>
+ </div>
+
+ <h3>And the site knows what day it is</h3>
+ <p>The stale vacation banner is not a typo somebody forgot. It is what happens when opening hours are a sentence a person has to remember to edit. On the site we built, open and closed are <strong>computed from the clock in Marshall</strong>. A vacation is one dated line; when the date passes, the site moves on by itself. The bug on your homepage today is not fixed on the new site. It is impossible.</p>
+
+ <h3>Three questions worth asking any web vendor</h3>
+ <p><strong>1.</strong> If we stop paying you, what do we keep? <strong>2.</strong> Can we see the price of every added service before it is added? <strong>3.</strong> Whose name is the domain registered in? Our answers are: everything, yes, and yours. Ask Mopro the same three.</p>
+</div></section>
+<section id="build"><div class="wrap">
+ <div class="k">Section three</div>
+ <div class="rule"></div>
+ <h2>What we built.</h2>
+ <p>Not what we would build. What we built, on our own time, before asking you for anything, because showing beats describing.</p>
+
+ <div class="demo">
+  <div class="k">The demo is live right now</div>
+  <h3 style="margin-top:8px"><a href="/demo" target="_blank" rel="noopener">louies.glazedweb.com/demo</a></h3>
+  <p style="margin:0">Open it on your phone. That is where your customers are.</p>
+ </div>
+
+ <h3>What is in it</h3>
+ <p><strong>A board that answers "what's in the case today."</strong> Your rotation already has rules: chocolate drops on Wednesdays, lemon jelly on Saturdays, eclairs in the cold months, photo cookies on two days' notice. The site knows them all, so the homepage says what is in the case this morning without anyone updating anything, ever.</p>
+ <p><strong>A menu people can use.</strong> All sixty-one things you make, searchable, with a one-tap "in the case today" filter, and it prints onto four clean pages for the church-hall and office orders. Your cash discount is finally explained in a sentence instead of confusing every line.</p>
+ <p><strong>Your story, told with real people.</strong> Louie, 1952, the carousel oven that never fully goes off, and Jason's own words. The invented staff are gone.</p>
+ <p><strong>Your reviews, on your site.</strong> "Best Damn Doughnuts Ever" belongs on your homepage, not three clicks away on someone else's.</p>
+ <p><strong>An order form that works at 9pm.</strong> Your counter closes at 3. The form takes the dozen, the pie order and the photo-cookie request while you sleep, and it reaches you by email. Next phases, when you want them: paying online for pickup, and shipping nut rolls from your own site instead of giving Goldbelly its cut.</p>
+ <p><strong>And the hat.</strong> Open the demo and watch your logo for a second. We think Louie would have smiled.</p>
+</div></section>
+<section id="cost"><div class="wrap">
+ <div class="k">Section four</div>
+ <div class="rule"></div>
+ <h2>What it costs.</h2>
+
+ <div class="pricebox">
+  <div><div class="n">$1,900</div><div class="l">One-time build. Everything described above, finished and launched on louies-bakery.com. Half to start, half on launch.</div></div>
+  <div><div class="n">$99<span style="font-size:1rem;color:var(--mute)">/mo</span></div><div class="l">Hosting, SSL, security, backups, domain renewal, and ongoing content edits. Price changes? Closures? Send a text.</div></div>
+ </div>
+ <p>That is <strong>$3,088</strong> across the first twelve months, then <strong>$1,188 a year</strong>. Online payment for pickup orders and ship-it-yourself are quoted separately when you want them, and nothing is ever added to your bill before you approve it.</p>
+
+ <h3>How that compares to staying put</h3>
+ <p>We are not going to guess at your Mopro bill. Put your own number in and the math does itself. It runs entirely on this page; nothing is sent anywhere.</p>
+
+ <div class="calc">
+  <div class="inputrow">
+   <label for="rate">Your current monthly, in dollars</label>
+   <input id="rate" type="number" inputmode="decimal" min="0" step="1" placeholder="e.g. 149">
+  </div>
+  <div class="presets">
+   <span class="chip" data-v="99">$99</span>
+   <span class="chip" data-v="149">$149</span>
+   <span class="chip" data-v="199">$199</span>
+   <span class="chip" data-v="299">$299</span>
+  </div>
+  <div class="out" id="out">
+   <div class="bars">
+    <div class="bar stay"><div class="lab"><span>Five more years of what you have</span><b id="stayN">&ndash;</b></div><div class="track"><div class="fill" id="stayB" style="width:0"></div></div></div>
+    <div class="bar us"><div class="lab"><span>Rebuild + five years with Glazed</span><b id="usN">$7,840</b></div><div class="track"><div class="fill" id="usB" style="width:0"></div></div></div>
+   </div>
+   <div class="verdict" id="verdict"></div>
+   <p class="calcnote" id="cnote"></p>
+  </div>
+ </div>
+</div></section>
+<section id="next"><div class="wrap">
+ <div class="k">Section five</div>
+ <div class="rule"></div>
+ <h2>What happens next.</h2>
+
+ <div class="step"><div class="no">1</div><div><h4>Look at the demo</h4><p>Ten minutes at <a href="/demo" target="_blank" rel="noopener">louies.glazedweb.com/demo</a>, on your phone, over coffee. It cost you nothing and it obligates you to nothing. If it is not right, that is useful to hear too.</p></div></div>
+ <div class="step"><div class="no">2</div><div><h4>Text or call Kevin</h4><p>One conversation. Bring the questions, especially the skeptical ones. <a href="https://glazedweb.com" target="_blank" rel="noopener">glazedweb.com</a> · hello@glazedweb.com</p></div></div>
+
+ <h3>What we'd need from you</h3>
+ <p>Your real logo file, from whoever printed your shirts or made your sign. Half a morning with a camera in the bakery: the case at opening, the oven turning, nut rolls up close. Your actual closure dates for the year. And four small menu facts to confirm, starting with whether that pastry price is really sixty cents.</p>
+ <p class="note">The demo was built from public information and your own published menu. Anything we got wrong, we fix before launch, which is rather the point of owning a site somebody can actually edit.</p>
+</div></section>
+<footer><div class="wrap">
+ <div>
+  <span class="bw" style="font-size:21px">glazed<span>web</span></span> Kevin Hershock · Marshall, Michigan<br>
+  <a href="https://glazedweb.com" target="_blank" rel="noopener">glazedweb.com</a> · hello@glazedweb.com
+  <div class="conf">Prepared for Louie's Bakery · August 2026 · Valid 60 days</div>
+ </div>
+ <svg class="gmark gl-foot" viewBox="0 0 200 250" overflow="visible" aria-hidden="true"><defs><linearGradient id="dgGrad" x1="0" y1="92" x2="0" y2="165" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#5FA850"></stop><stop offset="100%" stop-color="#43813A"></stop></linearGradient><linearGradient id="lgGrad" x1="0" y1="92" x2="0" y2="215" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#D9EDA0"></stop><stop offset="55%" stop-color="#BFE07A"></stop><stop offset="100%" stop-color="#A3CE55"></stop></linearGradient><radialGradient id="pinkGrad" cx="40%" cy="34%" r="75%"><stop offset="0%" stop-color="#F887B2"></stop><stop offset="55%" stop-color="#E84D8A"></stop><stop offset="100%" stop-color="#CE3672"></stop></radialGradient><linearGradient id="creepGrad" x1="0" y1="90" x2="0" y2="124" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E3F2B0"></stop><stop offset="100%" stop-color="#C3E181"></stop></linearGradient></defs><g class="goo"><g fill="url(#dgGrad)"><ellipse cx="100" cy="110" rx="38" ry="15"></ellipse><path class="wobB" d="M 86 100 C 86 116, 87 130, 88 142 C 88 148, 91 149, 92 142 C 93 130, 92 114, 92 100 Z"></path><path d="M 114 100 C 114 112, 115 124, 116 134 C 116 140, 119 141, 120 134 C 121 124, 120 110, 120 100 Z"></path></g><g fill="url(#lgGrad)"><path class="wob1" d="M 64 100 C 63 120, 65 138, 66 152 C 66 164, 68 172, 74 173 C 80 172, 83 165, 82 154 C 84 136, 85 116, 86 100 Z"></path><path class="wob2" d="M 92 100 C 91 128, 93 152, 94 172 C 94 188, 97 199, 104 200 C 111 199, 114 190, 112 174 C 113 150, 114 124, 114 100 Z"></path><path class="wob3" d="M 120 100 C 119 116, 120 130, 121 142 C 121 152, 123 159, 129 160 C 134 159, 137 153, 135 144 C 136 130, 137 114, 137 100 Z"></path></g></g><path class="string" d="M 104 199 L 104 209" stroke="#BFE07A" stroke-width="2.5" stroke-linecap="round" fill="none"></path><g class="droplet"><circle cx="104" cy="213" r="7" fill="#BFE07A"></circle><circle cx="102" cy="211" r="2" fill="#F1F8DC" opacity="0.9"></circle></g><circle class="droplet2" cx="74" cy="186" r="4.5" fill="#BFE07A"></circle><circle cx="100" cy="70" r="52" fill="url(#pinkGrad)"></circle><path d="M 56 98 A 52 52 0 0 0 144 98 C 142 94, 138 92, 134 94 C 130 97, 129 102, 125 104 C 119 106, 116 98, 110 96 C 104 94, 103 102, 98 105 C 93 107, 90 100, 84 97 C 78 95, 76 100, 71 102 C 66 103, 62 100, 56 98 Z" fill="url(#creepGrad)"></path><path d="M 68 106 A 42 42 0 0 0 84 116" fill="none" stroke="#F1F8DC" stroke-width="4" stroke-linecap="round" opacity="0.85"></path><path d="M 97 144 Q 103 151 109 144" fill="none" stroke="#55974A" stroke-width="4" stroke-linecap="round"></path><g stroke="#F1F8DC" fill="none" stroke-linecap="round"><path d="M 97 128 C 96 148, 97 166, 100 182" stroke-width="4.5" opacity="0.85"></path><path d="M 69 118 C 68 132, 70 146, 71 156" stroke-width="3.5" opacity="0.8"></path><path d="M 124 114 C 123 124, 125 138, 126 148" stroke-width="3.5" opacity="0.8"></path></g><circle cx="100" cy="192" r="2.5" fill="#F1F8DC" opacity="0.9"></circle><circle cx="100" cy="72" r="13" fill="#201712"></circle><circle cx="100" cy="72" r="13" fill="none" stroke="#C22F6B" stroke-width="3" opacity="0.3"></circle><path class="sheen" d="M 62 46 A 44 44 0 0 1 82 28" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"></path><circle class="sheen" cx="92" cy="26" r="3.5" fill="#FFFFFF"></circle></svg>
+</div></footer>
+<script>
+(function(){
+ var BUILD=1900, MO=99, YEARS=5, MONTHS=YEARS*12;
+ var OURS=BUILD+MO*MONTHS;             /* 7,840 */
+ var input=document.getElementById('rate'), out=document.getElementById('out'),
+     stayN=document.getElementById('stayN'), usN=document.getElementById('usN'),
+     stayB=document.getElementById('stayB'), usB=document.getElementById('usB'),
+     verdict=document.getElementById('verdict'), cnote=document.getElementById('cnote'),
+     chips=[].slice.call(document.querySelectorAll('.chip'));
+ function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+ function calc(){
+  var r=parseFloat(input.value);
+  if(!(r>0)){out.classList.remove('show');chips.forEach(function(c){c.classList.remove('on')});return;}
+  var stay=r*MONTHS, max=Math.max(stay,OURS);
+  stayN.textContent=money(stay); usN.textContent=money(OURS);
+  stayB.style.width=(stay/max*100)+'%'; usB.style.width=(OURS/max*100)+'%';
+  var diff=stay-OURS;
+  if(diff>0){
+   verdict.className='verdict';
+   verdict.innerHTML='<b>Rebuilding saves you '+money(diff)+' over five years</b>, and you own the site at the end of it, instead of renting one.';
+  }else if(Math.abs(diff)<250){
+   verdict.className='verdict';
+   verdict.innerHTML='<b>It is essentially a wash over five years</b>: near-identical spend, except one path ends with you owning your website and the other doesn’t.';
+  }else{
+   verdict.className='verdict neg';
+   verdict.innerHTML='<b>Staying put is '+money(-diff)+' cheaper over five years.</b> We would rather tell you that than talk you past it. The rebuild still buys you ownership, a site built this decade, and no lock-in, but on money alone, at this rate, it does not pay for itself in five years.';
+  }
+  var save=r-MO;
+  if(save>0){
+   var payback=Math.ceil(BUILD/save);
+   cnote.textContent='That is '+money(save)+' less every month, so the build pays for itself in month '+payback+
+    (payback>MONTHS?', which is beyond the five\u2011year window above.':'.');
+  }else{
+   cnote.textContent='Our monthly is '+money(MO-r)+' higher than yours, so the case here rests on ownership rather than on the monthly line.';
+  }
+  out.classList.add('show');
+  chips.forEach(function(c){c.classList.toggle('on', parseFloat(c.dataset.v)===r);});
+ }
+ input.addEventListener('input',calc);
+ chips.forEach(function(c){c.addEventListener('click',function(){input.value=c.dataset.v;calc();});});
+})();
+</script>
+</body></html>

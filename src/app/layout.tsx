@@ -73,7 +73,9 @@ export const metadata: Metadata = {
     title: `${site.name} | A Marshall tradition since 1952`,
     description:
       "Nut rolls, fried cakes and pies, baked overnight and out front by 5:30 in the morning. Same family, same recipes, since 1952.",
-    images: [{ url: "/photos/storefront-night.jpg", width: 1600, height: 1200, alt: `${site.name} on W. Michigan Ave` }],
+    // A composed 1200x630 card, per glaze/link-cards.md, replacing the raw 1600x1200
+    // photograph: the logo and location sit inside the center 630 band that iOS crops to.
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: `${site.name} on W. Michigan Ave` }],
   },
   alternates: { canonical: "/" },
   other: { "geo.placename": fullAddress },
