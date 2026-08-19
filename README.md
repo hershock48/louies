@@ -139,7 +139,16 @@ artifact it is meant to be. The second is what is specific to this bakery.
 - [x] Every route has its own title and meta description, including the 404.
 - [ ] `og:image` absolute on an origin that serves it. Resolves to the deployment via
       `VERCEL_PROJECT_PRODUCTION_URL`, so it is only correct once deployed. **Fetch it
-      on the deployed URL and confirm a 200.**
+      on the deployed URL and confirm a 200.** Two things that broke this and are worth
+      not re-breaking: `robots.txt` said `Disallow: /` to everyone including
+      `facebookexternalhit`, which obeys it, so a link pasted into Messenger drew no
+      card at all; and the metadata origin fell back to the bakery's own domain, which
+      told Facebook the canonical page was their old Mopro site, so it scraped that
+      instead and found no image. The social crawlers are allowed by name now and the
+      fallbacks are deployment hostnames.
+- [ ] **The pitch page's `og:image` is hardcoded to `https://louies.glazedweb.com/...`,**
+      because a static file cannot know what host is serving it. That host has to be
+      attached to the Vercel project or the proposal previews without a picture.
 - [x] Canonical points at louies-bakery.com, never a `.vercel.app` host.
 - [x] `Bakery` structured data, a `LocalBusiness` subtype, with hours and address.
 - [x] `sitemap.xml` and `robots.txt` present, and this host is `noindex`.

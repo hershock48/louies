@@ -30,18 +30,29 @@ const newsreader = Newsreader({
 });
 
 /*
-  Where absolute URLs in the metadata point.
+  WHERE ABSOLUTE URLS IN THE METADATA POINT.
 
-  This was hardcoded to site.url, the bakery's own domain, so every link preview of the
-  spec build asked louies-bakery.com for an image it does not have. On Vercel this now
-  resolves to wherever it is actually deployed; site.url is the fallback and becomes
-  correct on the day the site is theirs.
+  Every link preview depends on this. og:image has to be an absolute URL that the
+  scraper can actually fetch, and og:url is the address Facebook treats as the canonical
+  one for the card it draws.
+
+  The order matters and the last resort is the point of the change. It used to end at
+  site.url, the bakery's own domain, which while this is a spec build is the OLD Mopro
+  site: a share of our demo told Facebook "the canonical page is louies-bakery.com",
+  Facebook went and scraped that instead, found no og:image on it, and drew a card with
+  no picture. The link looked broken and the fault was here.
+
+  So the fallbacks are deployment hostnames now, and the bakery's domain is used only
+  when it is explicitly configured, which is the day the site is theirs and the sentence
+  above stops being true.
 */
 const origin = process.env.NEXT_PUBLIC_SITE_URL
   ? process.env.NEXT_PUBLIC_SITE_URL
   : process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : site.url;
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
 
 export const viewport: Viewport = {
   // Paints the browser chrome on a phone to match the header instead of leaving a
