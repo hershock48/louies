@@ -15,7 +15,7 @@
  */
 
 import { closures, week, type DayHours } from "@/data/hours";
-import { addDays, dayOfWeek, localNow, type LocalNow } from "./time";
+import { addDays, clock as fmt, DAY_NAMES, dayOfWeek, localNow, type LocalNow } from "./time";
 
 export type Availability = {
   /** 0 = Sunday. Absent means every day they are open. */
@@ -64,17 +64,19 @@ function seasonReturn(season: Exclude<Availability["season"], undefined>, month:
 }
 
 function dayLabel(days: number[]) {
-  const names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  if (days.length === 1) return names[days[0]];
-  return days.slice(0, -1).map((d) => names[d]).join(", ") + " and " + names[days[days.length - 1]];
+  if (days.length === 1) return DAY_NAMES[days[0]];
+  return (
+    days.slice(0, -1).map((d) => DAY_NAMES[d]).join(", ") +
+    " and " +
+    DAY_NAMES[days[days.length - 1]]
+  );
 }
 
 /** The next date on which a day-limited item is back, as a friendly word. */
 function nextDayWord(days: number[], today: number) {
-  const names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   for (let i = 1; i <= 7; i++) {
     const d = (today + i) % 7;
-    if (days.includes(d)) return i === 1 ? "tomorrow" : names[d];
+    if (days.includes(d)) return i === 1 ? "tomorrow" : DAY_NAMES[d];
   }
   return null;
 }
@@ -97,7 +99,7 @@ export function statusFor(
   }
 
   if (!inSeason(a.season, now.month)) {
-    const label = seasonReturn(a.season!, now.month);
+    const label = seasonReturn(a.season === "fall-winter" ? "fall-winter" : "spring-summer", now.month);
     return {
       today: false,
       badge: label,
@@ -160,13 +162,6 @@ export type OpenState = {
   today: DayHours;
 };
 
-function fmt(m: number) {
-  const hour = Math.floor(m / 60);
-  const min = m % 60;
-  const suffix = hour >= 12 ? "pm" : "am";
-  const display = hour % 12 === 0 ? 12 : hour % 12;
-  return min === 0 ? `${display}${suffix}` : `${display}:${String(min).padStart(2, "0")}${suffix}`;
-}
 
 function prettyDate(iso: string) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -213,16 +208,26 @@ export function firstOpenAfter(lastClosedDate: string) {
 }
 
 /**
- * The next day they open, with its own opening time, skipping closures. Without the
- * closure check this cheerfully told people on the third of July that the bakery opened
- * tomorrow, on the first morning of a fortnight's shutdown.
+ * The next day they open: the date, the weekday, a friendly word for it and the hour.
+ *
+ * Exported because two different questions need the same answer and were computing it
+ * separately. The status line asks it to say "open tomorrow at 5:30am". The board asks
+ * it because at four in the afternoon on a Wednesday, listing the Wednesday-only cream
+ * horns under a heading about the next time we open is a promise nobody can keep: what
+ * a reader wants after closing time is what will be in the case when they can next
+ * walk in, which is a different day's answer entirely.
+ *
+ * Skips closures as well as the days they are shut anyway. Without that, on the third
+ * of July this cheerfully said "open tomorrow", on the first morning of a fortnight's
+ * shutdown.
  */
-function nextOpen(now: LocalNow) {
+export function nextOpenDay(now: LocalNow) {
   for (let i = 1; i <= 21; i++) {
     const date = addDays(now.date, i);
-    const d = week[dayOfWeek(date)];
+    const day = dayOfWeek(date);
+    const d = week[day];
     if (d.open !== null && !activeClosure(date)) {
-      return { when: i === 1 ? "tomorrow" : d.label, at: fmt(d.open) };
+      return { date, day, when: i === 1 ? "tomorrow" : d.label, label: d.label, at: fmt(d.open) };
     }
   }
   return null;
@@ -249,7 +254,7 @@ export function openState(now: LocalNow = localNow()): OpenState {
   }
 
   if (today.open === null || today.close === null) {
-    const next = nextOpen(now);
+    const next = nextOpenDay(now);
     return {
       open: false,
       line: next ? `Closed today. Open ${next.when} at ${next.at}.` : "Closed today.",
@@ -263,7 +268,7 @@ export function openState(now: LocalNow = localNow()): OpenState {
   }
 
   if (now.minutes >= today.close) {
-    const next = nextOpen(now);
+    const next = nextOpenDay(now);
     return {
       open: false,
       line: next ? `Closed for the day. Open ${next.when} at ${next.at}.` : "Closed for the day.",

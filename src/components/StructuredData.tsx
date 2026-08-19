@@ -11,12 +11,12 @@ import { closures, week } from "@/data/hours";
  */
 export default function StructuredData() {
   const openingHours = week
-    .filter((d) => d.open !== null && d.close !== null)
+    .flatMap((d) => (d.open === null || d.close === null ? [] : [{ ...d, open: d.open, close: d.close }]))
     .map((d) => ({
       "@type": "OpeningHoursSpecification",
       dayOfWeek: `https://schema.org/${["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][d.day]}`,
-      opens: toIso(d.open as number),
-      closes: toIso(d.close as number),
+      opens: toIso(d.open),
+      closes: toIso(d.close),
     }));
 
   /*

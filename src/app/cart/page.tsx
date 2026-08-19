@@ -174,11 +174,16 @@ export default async function CartPage({
               </ul>
 
               {/*
-                Read out after every change. Each quantity press is a form post and a
-                fresh page, so there is no client-side update to announce: this line is
-                the announcement, and it is also just useful to look at.
+                NOT a live region, deliberately.
+
+                Every change here is a form post and a fresh page, and a live region
+                that is present at load rather than inserted afterwards is not announced
+                by most screen readers: it would have been an aria-live that never
+                fired. What does work on a new page is a heading a screen reader meets
+                on the way down, so this is plain text stating the state the page
+                arrived in.
               */}
-              <p role="status" className="sr-only">
+              <p className="sr-only">
                 {lines.length} {lines.length === 1 ? "box" : "boxes"} in your order,{" "}
                 {money(total)} including shipping.
               </p>

@@ -350,4 +350,10 @@ export const sections: MenuSection[] = [
  * 4. Small and large pecan rolls carry the same price on the old menu. Probably a typo.
  */
 
-export const allItems = sections.flatMap((s) => s.items);
+/**
+ * The photo cookie price, exported because /cookies is a whole page about one menu row
+ * and was printing 368 twice in its own markup. A price that exists in two files is a
+ * price that will be right in one of them.
+ */
+export const photoCookiePrice =
+  sections.flatMap((s) => s.items).find((i) => i.name === "Photo Cookies")?.price ?? 368;

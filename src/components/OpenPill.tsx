@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { openState } from "@/lib/availability";
+import { clock } from "@/lib/time";
 
 /**
  * "Open until 3pm."
@@ -11,7 +12,7 @@ import { openState } from "@/lib/availability";
  * customer standing on the sidewalk at 2:45pm had to scroll to find out whether it was
  * worth walking in.
  *
- * Computed in the browser, not on the server. The commerce pages are fully static, so a
+ * Computed in the browser, not on the server. Several pages are prerendered, so a
  * server-rendered pill on those would freeze at build time and cheerfully tell somebody
  * at nine at night that the bakery is open. Rendering nothing until mount costs one
  * frame and is always right.
@@ -66,10 +67,5 @@ export default function OpenPill({
 function shorten(state: ReturnType<typeof openState>) {
   if (!state.open) return "Closed";
   const close = state.today.close;
-  if (close === null) return "Open";
-  const hour = Math.floor(close / 60);
-  const min = close % 60;
-  const suffix = hour >= 12 ? "pm" : "am";
-  const display = hour % 12 === 0 ? 12 : hour % 12;
-  return `Open till ${display}${min ? `:${String(min).padStart(2, "0")}` : ""}${suffix}`;
+  return close === null ? "Open" : `Open till ${clock(close)}`;
 }

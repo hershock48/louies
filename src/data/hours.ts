@@ -80,10 +80,5 @@ export const hoursSummary = [
   { label: "Sunday and Monday", value: "Closed" },
 ];
 
-export function formatMinutes(m: number) {
-  const hour = Math.floor(m / 60);
-  const min = m % 60;
-  const suffix = hour >= 12 ? "pm" : "am";
-  const display = hour % 12 === 0 ? 12 : hour % 12;
-  return min === 0 ? `${display}${suffix}` : `${display}:${String(min).padStart(2, "0")}${suffix}`;
-}
+/** Kept as a name the pages already import. The implementation lives with time. */
+export { clock as formatMinutes } from "@/lib/time";

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero, SectionHeading, ButtonLink, PhaseNote } from "@/components/Ui";
 import CallHint from "@/components/CallHint";
-import { money } from "@/data/menu";
+import { money, photoCookiePrice } from "@/data/menu";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default function CookiesPage() {
       <PageHero
         eyebrow="No extra charge"
         title="Any picture you like, printed on a cookie."
-        intro={`${money(368)} each, the same as any other decorated cookie. Give us two days and we will put almost anything on it.`}
+        intro={`${money(photoCookiePrice)} each, the same as any other decorated cookie. Give us two days and we will put almost anything on it.`}
       />
 
       <section className="grain relative isolate bg-paper">
@@ -87,7 +87,7 @@ export default function CookiesPage() {
               <div className="mt-8 rounded-panel border border-awning/15 bg-awning p-6 text-paper sm:p-8">
                 <h2 className="font-display text-xl font-bold">The price</h2>
                 <p className="mt-3 text-3xl font-extrabold tabular-nums text-wheat">
-                  {money(368)}
+                  {money(photoCookiePrice)}
                 </p>
                 <p className="mt-4 text-sm text-paper/75">
                   Per cookie, whatever the picture. The printing genuinely does not cost

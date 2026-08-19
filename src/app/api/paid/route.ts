@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     // Somebody arrived here without a session. Nothing is claimed and nothing is
     // cleared: they are shown the page that says the bakery has the order but no money
     // has moved, which is the safe half-truth of the two.
-    return to("logged");
+    return to("unconfigured");
   }
 
   try {
@@ -43,11 +43,11 @@ export async function GET(request: NextRequest) {
     const session = (await res.json()) as { payment_status?: string };
     if (!res.ok || session.payment_status !== "paid") {
       console.warn("[paid] session not paid:", id, session.payment_status ?? res.status);
-      return to("logged");
+      return to("unconfigured");
     }
   } catch (err) {
     console.error("[paid] could not verify the session with Stripe", err);
-    return to("logged");
+    return to("unconfigured");
   }
 
   const response = to("paid");

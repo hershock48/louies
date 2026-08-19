@@ -37,7 +37,7 @@ export default function StoryPage() {
             <p>
               He kept it there for fifty years. Louie worked in this building into his late
               eighties and died in 2002 at eighty-eight, by which point his children were
-              running it, and by now his grandson is. {site.people.baker} is our
+              running it, and by now his grandson is. {site.people.baker} is our{" "}
               {site.people.bakerRole} and the third generation of this family to do this job
               in this building. He grew up in it: there are photographs of him as a
               small child standing in it.

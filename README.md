@@ -3,8 +3,10 @@
 A Glazed Web rebuild of [louies-bakery.com](https://www.louies-bakery.com/), the family
 bakery at 144 W. Michigan Ave in Marshall, Michigan, open since November 1952.
 
-**Status: spec build, phase one.** The site is complete and deliberately not indexed.
-No checkout is wired yet.
+**Status: spec build.** The site is complete and deliberately not indexed. The shop
+sells the five shipped boxes from a real cart and checkout; card payment is switched on
+by setting `STRIPE_SECRET_KEY`, and with it unset the checkout emails the order and says
+plainly that nothing has been charged.
 
 ## What this is
 
@@ -106,7 +108,7 @@ artifact it is meant to be. The second is what is specific to this bakery.
 - [x] Zero accessibility violations from `glaze/scripts/audit.mjs` at 390 and 1440 on
       every route. Also run at 320 and 768: zero.
 - [x] Zero console errors, zero 4xx, on every route.
-- [x] `grep -rn PLACEHOLDER` returns five hits, all of them on the list below.
+- [x] `grep -rn PLACEHOLDER` returns seven hits across five files, every one on the list below, all of them on the list below.
 - [~] Every form actually submitted and confirmed arriving in a real inbox. **Both forms
       exist and were submitted end to end with JavaScript disabled**, the counter order
       and a box to Tucson, landing on
@@ -215,11 +217,6 @@ a disabled button is a suggestion, not a rule.
   off the right edge of a 390px screen.
 - **Unavailable menu rows must not use `opacity`.** It multiplies through every child
   and took 60 rows below AA. The badge carries the meaning; the row is tinted instead.
-- **Links back to the page you are on with a different query need `prefetch={false}`.**
-  The five "Send this one" buttons point at `/shop?box=...`, and the router prefetched
-  each as an RSC request that never completed: eight seconds in, a phone still had an
-  open GET, and the auditor called `/shop` unreachable at 390 while curl fetched it in
-  15ms. `ButtonLink` takes the prop for this reason.
 - **`safeBack` compares origins, it does not test prefixes.** A prefix check let
   `/\evil.com`, `/%0A/evil.com` and `/%09/evil.com` through, because `new URL()` treats a
   backslash as a slash and strips tabs and newlines before parsing. Ask the parser.
@@ -252,8 +249,8 @@ a disabled button is a suggestion, not a rule.
 ## Credits
 
 Photographs from Louie's Bakery's own Goldbelly listing, at the full size the listing
-holds: the storefront is 2400x1800 there and the site now uses it rather than the 1400px
-copy it started with. That listing carries no product photography, which is why the hero
+holds: the storefront is 2400x1800 there and the copy in this repo is 2048 wide, rather than
+the 1400px one it started with. That listing carries no product photography, which is why the hero
 is still the building and not a nut roll. History from the WWMT feature
 "Louie's Bakery has been serving Marshall for nearly 75 years", the Choose Marshall
 directory, and the bakery's own copy.

@@ -86,6 +86,18 @@ export async function POST(request: NextRequest) {
     email: field("email"),
   };
 
+  /*
+    Validated BEFORE either path, not inside the fallback.
+
+    It used to be checked only on the email path, so with Stripe configured a form
+    missing a house number sailed past, skipped the notification email (which is
+    conditional on the same check) and sent the customer to pay. That is the one
+    outcome this route exists to prevent: a charge the bakery never hears about.
+  */
+  if (missingDetails(inquiry)) {
+    return NextResponse.redirect(new URL("/cart?error=missing#details", request.url), 303);
+  }
+
   const key = process.env.STRIPE_SECRET_KEY;
 
   if (key) {
@@ -135,7 +147,7 @@ export async function POST(request: NextRequest) {
       body.set(`line_items[${i}][price_data][product_data][name]`, `${l.box.name}, ${l.box.size}`);
       body.set(
         `line_items[${i}][price_data][product_data][description]`,
-        "Shipping included. Baked the night before and sent on the Tuesday truck.",
+        `Shipping included. Baked the night before and sent on the ${site.shipping.day} truck.`,
       );
     });
 
@@ -148,9 +160,7 @@ export async function POST(request: NextRequest) {
       the bakery knows about that nobody completed, which is a phone call. The other way
       round, the worst case is a paid box nobody bakes.
     */
-    if (!missingDetails(inquiry)) {
-      await sendShipInquiry({ ...inquiry, gift: pendingNote(inquiry.gift) });
-    }
+    await sendShipInquiry({ ...inquiry, gift: pendingNote(inquiry.gift) });
 
     try {
       const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
@@ -180,10 +190,6 @@ export async function POST(request: NextRequest) {
     The honest path. Everything the bakery needs to pack and post the box, in an email,
     with the customer told plainly that nobody has taken any money.
   */
-  if (missingDetails(inquiry)) {
-    return NextResponse.redirect(new URL("/cart?error=missing#details", request.url), 303);
-  }
-
   const result = await sendShipInquiry(inquiry);
   const total = cartTotal(lines);
   console.info(

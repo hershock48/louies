@@ -15,7 +15,8 @@ export const metadata: Metadata = {
  * on yet, the request was kept and logged, and nobody has been pinged, which is a
  * sentence this page says out loud rather than dressing up as a thank you.
  *
- * Neither version says anything about payment having been taken, because none was.
+ * Only the paid branch says money moved, and it is only reachable through /api/paid,
+ * which asks Stripe whether the session was really paid before this page loads.
  */
 export default async function ShipReceivedPage({
   searchParams,
@@ -25,9 +26,16 @@ export default async function ShipReceivedPage({
   const { state } = await searchParams;
   const delivered = state === "sent" || state === "paid";
   /*
-    Three outcomes, not two. "logged" is mail never configured; "failed" is a configured
-    mailbox that threw. Telling somebody email is switched off when in fact their order
-    bounced sends them away reassured about the wrong thing.
+    Four states, and each says a different sentence, because they mean different things
+    to the person reading and to whoever has to fix it:
+
+      sent          in the bakery's inbox
+      paid          the card went through and the order is with them
+      unconfigured  mail was never switched on, so nobody has been notified
+      failed        mail was switched on and the send threw
+
+    They come in on the query string from the redirect. Not a secret, not worth a
+    session for.
   */
   const failed = state === "failed";
   const paid = state === "paid";

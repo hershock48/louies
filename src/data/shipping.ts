@@ -13,7 +13,7 @@
  *
  * PLACEHOLDER: every figure needs Jason's sign-off before launch, together with what
  * the freight actually costs him, because the price includes the shipping and the
- * margin lives in the difference. See the README checklist.
+ * margin lives in the difference.
  *
  * The product photographs are the bakery's own, used with permission (Kevin, August
  * 2026), and are not in the repo yet. Add them to `photo` and the cards render them.
@@ -33,8 +33,11 @@ export type Box = {
   price?: number;
   /** Public path, once the product photography is in the repo. */
   photo?: string;
-  /** On the listing but not yet buyable. Renders as a heads-up rather than a button. */
+  /** On the listing but not yet buyable. Renders as a heads-up rather than a button,
+   *  and is enforced in lib/cart.ts so a cookie cannot buy one either. */
   comingSoon?: boolean;
+  /** When it comes back, in the bakery's words. Shown wherever comingSoon is. */
+  backWhen?: string;
 };
 
 export const boxes: Box[] = [
@@ -80,6 +83,7 @@ export const boxes: Box[] = [
     travels: "Iced flat and packed tight, which is what makes a decorated cookie shippable at all.",
     price: 8595,
     comingSoon: true,
+    backWhen: "Back in the fall",
   },
 ];
 

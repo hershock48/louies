@@ -62,6 +62,20 @@ export function dayOfWeek(date: string) {
   return new Date(`${date}T12:00:00Z`).getUTCDay();
 }
 
+/**
+ * Minutes past midnight as a person says it. 330 -> "5:30am", 900 -> "3pm".
+ *
+ * One implementation. There were three: this one, `formatMinutes` in data/hours.ts and
+ * `shorten` inside OpenPill, and they did not agree about whether to print ":00".
+ */
+export function clock(m: number) {
+  const hour = Math.floor(m / 60);
+  const min = m % 60;
+  const suffix = hour >= 12 ? "pm" : "am";
+  const display = hour % 12 === 0 ? 12 : hour % 12;
+  return min === 0 ? `${display}${suffix}` : `${display}:${String(min).padStart(2, "0")}${suffix}`;
+}
+
 export const DAY_NAMES = [
   "Sunday",
   "Monday",

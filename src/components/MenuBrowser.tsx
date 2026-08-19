@@ -46,9 +46,8 @@ export default function MenuBrowser({
   /*
     Passed in from the server rather than read here.
 
-    Calling localNow() on both sides looks equivalent and is not: the page is static
-    with a fifteen minute revalidate, so the server's HTML was produced at some earlier
-    moment and the client's first render happens now. Cross a day boundary, or an
+    Calling localNow() on both sides looks equivalent and is not: the server renders at
+    one instant and the client hydrates at another. Cross a day boundary, or an
     opening time, and the two disagree about whether the cream horns are back tomorrow
     or on Wednesday. React then throws a hydration mismatch, which is the uncaught
     React #418 the studio auditor caught on this page.
@@ -268,7 +267,16 @@ export default function MenuBrowser({
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search the case"
                 aria-label="Search the menu"
-                className="h-11 w-full rounded-full border border-awning/20 bg-paper-dim pl-9 pr-10 text-sm text-awning placeholder:text-awning/50 focus:border-brick focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+                /*
+                  NO `focus:outline-none` HERE, and it is not an oversight that it is
+                  missing. It was here, and it beat the site's own :focus-visible ring
+                  for the one control a keyboard user reaches first on this page,
+                  leaving a border going from grey to brown as the entire signal.
+                  Adding outline utilities back on top does not fix it either: they set
+                  the width and the colour, and the thing that had been switched off was
+                  the style. Letting the global rule apply is the fix.
+                */
+                className="h-11 w-full rounded-full border border-awning/20 bg-paper-dim pl-9 pr-10 text-sm text-awning placeholder:text-awning/50 focus:border-brick [&::-webkit-search-cancel-button]:hidden"
               />
               {/* Firefox gives type=search no clear control at all, and a touch target
                   beats a keyboard shortcut on a phone either way. */}

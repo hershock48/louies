@@ -8,7 +8,7 @@ import { money } from "@/lib/money";
 export const metadata: Metadata = {
   title: "Ship a Box",
   description:
-    "Nut rolls, old pan toffee and pecan crisps, boxed in Marshall and sent anywhere. Baked Monday night, on the truck Tuesday.",
+    "Nut rolls, tins and fritters, boxed in Marshall and sent anywhere. Baked the night before and out on the truck the next morning.",
 };
 
 /**
@@ -26,7 +26,7 @@ export default function ShopPage() {
       <PageHero
         eyebrow="For everyone who moved away"
         title="A box of Marshall, sent wherever you ended up."
-        intro={`Baked Monday night, on the ${site.shipping.carrier} truck ${site.shipping.day} morning, on a porch by the middle of the week.`}
+        intro={`Baked the night before, on the ${site.shipping.carrier} truck ${site.shipping.day} morning, on a porch by the middle of the week.`}
       />
 
       <section className="grain relative isolate bg-paper">
@@ -50,6 +50,17 @@ export default function ShopPage() {
                 key={b.name}
                 className="flex flex-col rounded-panel border border-awning/12 bg-paper-dim p-6"
               >
+                {b.photo && (
+                  /* eslint-disable-next-line @next/next/no-img-element -- straight from
+                     the bakery, no optimizer pass needed until the shoot happens */
+                  <img
+                    src={b.photo}
+                    alt={`${b.name}, ${b.size}`}
+                    className="mb-4 aspect-[4/3] w-full rounded-card object-cover"
+                    loading="lazy"
+                  />
+                )}
+
                 <div className="flex items-baseline justify-between gap-3">
                   <h3 className="font-display text-xl font-bold text-awning">{b.name}</h3>
                   <span className="flex-none text-xs font-bold uppercase tracking-wider text-brick">
@@ -71,9 +82,9 @@ export default function ShopPage() {
                       delivered to your door
                     </p>
                   )}
-                  {b.comingSoon && (
+                  {b.comingSoon && b.backWhen && (
                     <span className="rounded-full border border-brick/30 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-brick">
-                      Back in the fall
+                      {b.backWhen}
                     </span>
                   )}
                 </div>
@@ -85,7 +96,7 @@ export default function ShopPage() {
                   <input type="hidden" name="qty" value="1" />
                   <input type="hidden" name="back" value="/cart" />
                   <button type="submit" className="btn btn-dark" disabled={b.comingSoon}>
-                    {b.comingSoon ? "Back in the fall" : "Send this one"}
+                    {b.comingSoon ? (b.backWhen ?? "Not yet") : "Send this one"}
                   </button>
                 </form>
               </li>

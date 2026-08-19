@@ -100,8 +100,5 @@ export function cartLines(entries: CartEntry[]): CartLine[] {
     .filter((l): l is CartLine => l !== null);
 }
 
-export const cartCount = (entries: CartEntry[]) =>
-  entries.reduce((n, e) => n + e.qty, 0);
-
 export const cartTotal = (lines: CartLine[]) =>
   lines.reduce((n, l) => n + l.total, 0);

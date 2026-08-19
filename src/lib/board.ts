@@ -37,7 +37,7 @@ export type Board = {
   Exported because the board still wants to name these while the bakery is shut, and
   the alternative was calling buildBoard with a faked date to get the list back.
 */
-const SIZE_ROWS = new Set(["Small", "Large", "Half Dozen", "Dozen"]);
+const SIZE_ROWS = new Set(["Small", "Large"]);
 
 export const everydayItems: MenuItem[] = sections
   .flatMap((s) => s.items)

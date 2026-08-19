@@ -6,13 +6,13 @@ import { openState } from "@/lib/availability";
 /**
  * Sits next to a "call the shop" button and says whether anybody is there.
  *
- * Ordering, shipping and photo cookies all route to the telephone until checkout is
- * built. A phone number with no context is a coin toss: most of the people planning a
- * party order are doing it in the evening, when the bakery has been shut for six hours.
- * Saying so beats letting them ring out.
+ * Ordering and photo cookies route to the telephone, and so does shipping while card
+ * payment is switched off. A phone number with no context is a coin toss: most people
+ * planning a party order are doing it in the evening, when the bakery has been shut for
+ * six hours. Saying so beats letting them ring out.
  *
- * Client side for the same reason as OpenPill: these pages are fully static, so a
- * server-rendered answer would be frozen at build time.
+ * Client side for the same reason as OpenPill: several of the pages it appears on are
+ * prerendered, so a server-rendered answer would be frozen at build time.
  */
 export default function CallHint() {
   const [state, setState] = useState<ReturnType<typeof openState> | null>(null);

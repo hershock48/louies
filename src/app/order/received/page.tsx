@@ -30,9 +30,16 @@ export default async function ReceivedPage({
   const { state } = await searchParams;
   const delivered = state === "sent" || state === "paid";
   /*
-    Three outcomes, not two. "logged" is mail never configured; "failed" is a configured
-    mailbox that threw. Telling somebody email is switched off when in fact their order
-    bounced sends them away reassured about the wrong thing.
+    Four states, and each says a different sentence, because they mean different things
+    to the person reading and to whoever has to fix it:
+
+      sent          in the bakery's inbox
+      paid          the card went through and the order is with them
+      unconfigured  mail was never switched on, so nobody has been notified
+      failed        mail was switched on and the send threw
+
+    They come in on the query string from the redirect. Not a secret, not worth a
+    session for.
   */
   const failed = state === "failed";
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import CarouselOven from "./CarouselOven";
-import { openState } from "@/lib/availability";
+import { nextOpenDay, openState } from "@/lib/availability";
 import { buildBoard, everydayItems } from "@/lib/board";
 import { localNow, DAY_NAMES } from "@/lib/time";
 
@@ -18,10 +18,29 @@ import { localNow, DAY_NAMES } from "@/lib/time";
 export default function TodayBoard({ compact = false }: { compact?: boolean }) {
   const now = localNow();
   const state = openState(now);
-  const board = buildBoard(now);
-  // During a closure the board returns no "always" list, because nothing is in the
-  // case. The panel still names what is normally there for the week they reopen.
-  const everyday = everydayItems;
+
+  /*
+    WHICH DAY THE BOARD IS ABOUT.
+
+    While the door is open, today. While it is shut, the next day it will not be: at
+    four on a Wednesday afternoon the board used to head the Wednesday-only cream horns
+    with "next time we are open", which is Thursday, when there are none. A board is a
+    promise about a day, so it has to be built for the day it is describing.
+  */
+  /*
+    Careful with the half hour before opening. At 5:29 on a Tuesday the shop is shut and
+    the next opening is thirty-one minutes away, today: looking forward there would have
+    headed the board "Wednesday in the case" while a queue was forming on the sidewalk.
+    So the board only looks to another day once today is spent, or when today was never
+    an open day at all.
+  */
+  const beforeOpeningToday =
+    !state.closure && state.today.open !== null && now.minutes < state.today.open;
+  const back = state.open || beforeOpeningToday ? null : nextOpenDay(now);
+  const boardDay = back
+    ? { ...now, date: back.date, day: back.day, month: Number(back.date.slice(5, 7)) }
+    : now;
+  const board = buildBoard(boardDay);
 
   return (
     <section
@@ -53,13 +72,17 @@ export default function TodayBoard({ compact = false }: { compact?: boolean }) {
           reading Closed, which is a board describing a case nobody can walk up to.
         */}
         <h2 id="board-heading" className="mt-5 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-          {state.open ? `${DAY_NAMES[now.day]} in the case` : "When we open"}
+          {state.open
+            ? `${DAY_NAMES[now.day]} in the case`
+            : back
+              ? `${back.label} in the case`
+              : "In the case"}
         </h2>
 
         <div className={`mt-8 grid gap-8 ${compact ? "" : "md:grid-cols-3"}`}>
           <div>
             <h3 className="signage text-xs text-gold">
-              {state.open ? "Today only" : "Next time we are open"}
+              {state.open ? "Today only" : back ? `${back.label} only` : "In the case"}
             </h3>
             {board.today.length ? (
               <ul className="mt-3 space-y-2">
@@ -79,10 +102,10 @@ export default function TodayBoard({ compact = false }: { compact?: boolean }) {
                     ? "Nothing is in the case while we are shut. When we are back, this is what is here every day:"
                     : state.open
                       ? "No specials today, so it is the everyday case:"
-                      : "The door is shut right now. This is what is in the case whenever it is open:"}
+                      : `Nothing unusual ${back ? back.when : "next time"}, so it is the everyday case:`}
                 </p>
                 <ul className="mt-3 space-y-1">
-                  {(board.always.length ? board.always : everyday).map((item) => (
+                  {(board.always.length ? board.always : everydayItems).map((item) => (
                     <li key={item.name} className="text-lg font-semibold">
                       {item.name}
                     </li>

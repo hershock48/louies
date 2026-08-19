@@ -40,7 +40,7 @@ export default function HomePage() {
             The source is now the bakery's full-resolution original from their Goldbelly
             listing, 2048 wide, rather than the 1400px copy: same photograph, but the
             copy was being upscaled on every retina screen. The srcset ladder is capped
-            to 2048 in next.config.ts to match.
+            to 1920 in next.config.ts, which is the largest rendition worth its bytes.
           */
           sizes="(max-width: 1200px) 100vw, 1200px"
           quality={60}
@@ -249,7 +249,7 @@ export default function HomePage() {
               },
               {
                 title: "Send a box",
-                body: `Baked Monday night, on the ${site.shipping.carrier} truck ${site.shipping.day}, on a porch somewhere Wednesday. Our toffee and pecan crisps travel best.`,
+                body: `Baked the night before, on the ${site.shipping.carrier} truck ${site.shipping.day} morning, on a porch by the middle of the week. Our toffee and pecan crisps travel best.`,
                 href: "/shop",
                 cta: "Ship it",
               },

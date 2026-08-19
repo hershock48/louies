@@ -26,11 +26,6 @@ export function getSearch() {
   return window.location.search;
 }
 
-/** SSR and the first hydration render. No query string exists on the server. */
-export function getServerSearch() {
-  return "";
-}
-
 /** Set a value, or remove it by passing null. */
 export function setSearchParams(next: Record<string, string | null>) {
   const sp = new URLSearchParams(window.location.search);

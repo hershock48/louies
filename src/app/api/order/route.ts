@@ -61,9 +61,9 @@ export async function POST(request: NextRequest) {
     yet, please ring" are not the same sentence and must not look the same.
   */
   /*
-    Three states, not two. "logged" means mail was never configured; "failed" means it
-    was configured and the send threw, which is a different sentence to a customer and a
-    different job for the operator. Collapsing them told people email was switched off
+    Three states, not two. "unconfigured" means mail was never switched on; "failed"
+    means it was and the send threw. They are different sentences to a customer and
+    different jobs for whoever fixes it, and collapsing them told people email was off
     when in fact their order had bounced off a broken mailbox.
   */
   const state = result.delivered ? "sent" : result.reason;

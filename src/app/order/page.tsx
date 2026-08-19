@@ -38,8 +38,8 @@ export default async function OrderPage({
     },
     {
       n: "3",
-      title: "Pay and collect",
-      body: "Pay when you order, walk in, say your name, and it will be boxed and on the counter.",
+      title: "Collect and pay",
+      body: "We ring you back to confirm the time and what it comes to. Walk in, say your name, and it will be boxed on the counter.",
     },
   ];
 

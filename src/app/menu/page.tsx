@@ -86,10 +86,6 @@ export default async function MenuPage({
           intro="Baked before dawn, out front by half past five, and gone when it is gone. Anything we only make on certain days says so on the line."
         />
 
-      {/* This strip used to explain the two prices on every row. The bakery is on Square
-          now and the cash discount is gone, so there is one number per line and nothing
-          to explain. Deleted rather than reworded: a band of text that says "prices are
-          prices" is worse than the whitespace. */}
       </div>
 
       {closure && (
