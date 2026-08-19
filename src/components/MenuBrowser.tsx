@@ -161,25 +161,73 @@ export default function MenuBrowser({
   }, []);
 
   /* Scrollspy. Without it you lose your place in a list this long. */
-  useEffect(() => {
-    const headings = visible
-      .map((g) => document.getElementById(g.section.id))
-      .filter(Boolean) as HTMLElement[];
-    if (!headings.length) return;
+  /*
+    WHICH CHIP IS LIT, MEASURED RATHER THAN GUESSED.
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        const hit = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (hit) setActiveId(hit.target.id);
-      },
-      // The band sits just under the two sticky bars, so the active chip changes when a
-      // section reaches the top of the readable area rather than the top of the window.
-      { rootMargin: "-140px 0px -70% 0px", threshold: 0 },
-    );
-    headings.forEach((h) => io.observe(h));
-    return () => io.disconnect();
+    This was an IntersectionObserver watching a band defined as "-140px from the top,
+    -70% from the bottom", and it was wrong on any window shorter than about 800px.
+    Kevin found it on a laptop: clicking Old Pan Toffee scrolled to Old Pan Toffee and
+    lit Cupcakes and Squares.
+
+    The arithmetic of the failure. A section's scroll-margin puts its top about 221px
+    down the window, under both sticky bars. On a 900px window the band ran 140px to
+    270px, so 221 sat inside it and the right chip lit. On a 700px window the band ran
+    140px to 210px, so 221 fell past the bottom of it: the section being scrolled to
+    never intersected at all, and the only thing still touching the band was the section
+    above it, which stayed lit. A band expressed as a percentage of the window cannot be
+    relied on to contain a position expressed in pixels.
+
+    So no band. The active section is the LAST one whose top has passed the bottom of
+    the sticky bars, measured off the bar itself, which is the definition a reader would
+    give if you asked them. Recomputed on scroll behind a requestAnimationFrame, which
+    costs a handful of getBoundingClientRect calls on a list of eleven.
+
+    The bottom of the page is its own case: the last sections are short, so at maximum
+    scroll their tops may never reach the line, and the chip would stick on whatever
+    came before them. At the bottom, the last section is the one you are looking at.
+  */
+  useEffect(() => {
+    const ids = visible.map((g) => g.section.id);
+    if (!ids.length) return;
+
+    let frame = 0;
+    const compute = () => {
+      frame = 0;
+      const bar = navEl.current?.getBoundingClientRect().bottom ?? 0;
+      /*
+        Sixteen is the scroll-margin the sections carry (calc(header + subnav + 1rem)),
+        so a section that has just been jumped to sits exactly that far below the bar.
+        The line has to be BELOW that resting position or the section you just clicked
+        has not "passed" it and the chip stays one behind, which is the bug this whole
+        block replaced, reproduced faithfully by being four pixels too clever.
+      */
+      const line = bar + 24;
+
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+
+      const doc = document.documentElement;
+      const atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
+      if (atBottom) current = ids[ids.length - 1];
+
+      setActiveId(current);
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(compute);
+    };
+
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [visible]);
 
   /* Keep the active chip on screen. Eleven chips, two visible. */

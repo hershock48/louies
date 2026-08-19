@@ -237,6 +237,11 @@ a disabled button is a suggestion, not a rule.
   confirmation page says nobody was notified. Do not replace that with a generic
   thank-you: a stub that says "we got it" while sending nowhere is the specific thing
   glaze.md forbids.
+- **The menu's active chip is measured off the sticky bar, not an IntersectionObserver
+  band.** A band written as "-140px 0px -70%" contains a 221px section top on a 900px
+  window and misses it on a 700px one, so on a laptop, clicking a section scrolled to it
+  and lit the chip above it. The line is `navBottom + 24`, which must stay BELOW the
+  16px scroll-margin the sections rest at, or the chip sticks one behind again.
 - **`deviceSizes` stops at 1920 on purpose.** Next's default ladder ends at 3840, and a
   1440px screen at 2x rounds the hero's request up to it, so every retina desktop was
   being sold a quarter of a megabyte of upscaled photograph. Put 3840 back only when a
