@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ButtonLink, PageHero } from "@/components/Ui";
 import CallHint from "@/components/CallHint";
+import { cookies } from "next/headers";
+import { PAID_COOKIE } from "@/lib/cart";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -24,7 +26,13 @@ export default async function ShipReceivedPage({
   searchParams: Promise<{ state?: string }>;
 }) {
   const { state } = await searchParams;
-  const delivered = state === "sent" || state === "paid";
+  /*
+    Paid is a fact about a Stripe session, so it is read from the cookie /api/paid sets
+    after asking Stripe, never from the query string. Type ?state=paid into the address
+    bar and this page will not congratulate you.
+  */
+  const hasPaidCookie = (await cookies()).get(PAID_COOKIE)?.value === "1";
+  const delivered = state === "sent" || (state === "paid" && hasPaidCookie);
   /*
     Four states, and each says a different sentence, because they mean different things
     to the person reading and to whoever has to fix it:
@@ -38,7 +46,7 @@ export default async function ShipReceivedPage({
     session for.
   */
   const failed = state === "failed";
-  const paid = state === "paid";
+  const paid = state === "paid" && hasPaidCookie;
 
   return (
     <>

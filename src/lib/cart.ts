@@ -23,6 +23,13 @@ import { boxBySlug, type Box } from "@/data/shipping";
 
 export const CART_COOKIE = "lb_cart";
 
+/**
+ * Set by /api/paid once Stripe has confirmed a session, read by the confirmation page,
+ * and by nothing else. Ten minutes, httpOnly: it is the difference between a page that
+ * knows a payment happened and a page that has been told one did.
+ */
+export const PAID_COOKIE = "lb_paid";
+
 /** One box, and how many of it. */
 export type CartEntry = { slug: string; qty: number };
 

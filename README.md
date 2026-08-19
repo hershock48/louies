@@ -217,6 +217,17 @@ a disabled button is a suggestion, not a rule.
   off the right edge of a 390px screen.
 - **Unavailable menu rows must not use `opacity`.** It multiplies through every child
   and took 60 rows below AA. The badge carries the meaning; the row is tinted instead.
+- **A form value goes through `clean()` before it goes anywhere.** Newlines are
+  flattened, because `.trim()` only takes them off the ends and a name of
+  `Bob\r\nPhone: 000` forged a line inside the order record, which while SMTP is unset
+  IS the order. The length limit counts characters rather than UTF-16 units, because
+  `.slice()` cut an emoji in half and left a replacement character behind.
+- **`await request.formData()` is caught on all three routes.** A `text/plain` body is a
+  legal form encoding and used to throw, returning a blank 500 and losing the
+  submission.
+- **The paid confirmation is gated on a cookie `/api/paid` sets, not on `?state=paid`.**
+  The query string is a claim anybody can type, and the page believed it: a shareable
+  fake receipt, and a lie to a customer whose card had just declined.
 - **`safeBack` compares origins, it does not test prefixes.** A prefix check let
   `/\evil.com`, `/%0A/evil.com` and `/%09/evil.com` through, because `new URL()` treats a
   backslash as a slash and strips tabs and newlines before parsing. Ask the parser.

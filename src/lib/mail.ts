@@ -34,8 +34,12 @@ export type OrderInquiry = {
  * order needs an address and a date and an order for the counter does not.
  */
 export type ShipInquiry = {
+  /** Already carries its own per-line quantities: "3 x Nut Rolls; 1 x Signature Tin". */
   box: string;
+  /** Boxes in the order, all lines added up. A count, not a multiplier. */
   quantity: string;
+  /** What the customer owes, formatted. The person ringing for the card needs a figure. */
+  total?: string;
   /** Who it goes to, and where. */
   to: string;
   address: string;
@@ -75,7 +79,15 @@ export function summarize(o: OrderInquiry) {
 
 export function summarizeShip(o: ShipInquiry) {
   return [
-    `Box:    ${o.quantity} x ${o.box}`,
+    /*
+      NOT `${o.quantity} x ${o.box}`, which is what this said and which put the count in
+      front of a string that already had its own counts in it: a cart of three dozen nut
+      rolls and two fritters reached the bakery as "5 x 3 x Classic Nut Rolls (1 dozen);
+      2 x Apple & Raisin Fritters". A baker reading that packs fifteen dozen. It fired on
+      every order.
+    */
+    `Order:  ${o.box}`,
+    o.total ? `Total:  ${o.total}, shipping included. Nothing has been charged.` : null,
     `To:     ${o.to}`,
     `        ${o.address}`,
     `        ${o.city}, ${o.state} ${o.zip}`,

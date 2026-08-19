@@ -429,9 +429,9 @@ footer .gmark{height:78px;width:auto}
    <div class="inputrow">
     <div class="money"><span>$</span><input id="payout" type="number" inputmode="decimal" min="0" max="75.95" step="1" value="45"><em>per box</em></div>
     <div class="presets">
-     <span class="chip spay" data-p="38">Half</span>
+     <span class="chip spay" data-p="38">$38</span>
      <span class="chip spay" data-p="45">$45</span>
-     <span class="chip spay" data-p="53">Two thirds</span>
+     <span class="chip spay" data-p="53">$53</span>
      <span class="chip spay" data-p="60">$60</span>
     </div>
    </div>
@@ -536,7 +536,7 @@ footer .gmark{height:78px;width:auto}
  function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
  function calc(){
   var r=parseFloat(input.value);
-  if(!(r>0)){out.classList.remove('show');chips.forEach(function(c){c.classList.remove('on')});return;}
+  if(!(r>0)||r>100000){out.classList.remove('show');chips.forEach(function(c){c.classList.remove('on')});return;}
   var stay=r*MONTHS, max=Math.max(stay,OURS);
   stayN.textContent=money(stay); usN.textContent=money(OURS);
   stayB.style.width=(stay/max*100)+'%'; usB.style.width=(OURS/max*100)+'%';
@@ -551,13 +551,22 @@ footer .gmark{height:78px;width:auto}
    verdict.className='verdict neg';
    verdict.innerHTML='<b>Staying put is '+money(-diff)+' cheaper over five years.</b> We would rather tell you that than talk you past it. The rebuild still buys you ownership, a site built this decade, and no lock-in, but on money alone, at this rate, it does not pay for itself in five years.';
   }
+  /*
+    A pound of rounding. money() prints whole dollars while payback was computed from
+    the unrounded difference, so entering 99.0001 produced "that is $0 less every month,
+    so the build pays for itself in month 19000000". Anything under a dollar a month is
+    not a saving worth a sentence.
+  */
   var save=r-MO;
-  if(save>0){
+  if(save>=1){
    var payback=Math.ceil(BUILD/save);
    cnote.textContent='That is '+money(save)+' less every month, so the build pays for itself in month '+payback+
     (payback>MONTHS?', which is beyond the five\u2011year window above.':'.');
-  }else{
+  }else if(r>=MO+1){
    cnote.textContent='Our monthly is '+money(MO-r)+' higher than yours, so the case here rests on ownership rather than on the monthly line.';
+  }else{
+   /* Within a dollar either way. "$-0 higher" is what this said at 99.0001. */
+   cnote.textContent='That is the same monthly you pay now, so the case here rests on what you get for it and on owning it at the end.';
   }
   out.classList.add('show');
   chips.forEach(function(c){c.classList.toggle('on', parseFloat(c.dataset.v)===r);});
@@ -600,7 +609,7 @@ footer .gmark{height:78px;width:auto}
 
    The payback assumes only a QUARTER of orders move to the bakery's own page.
  */
- var LIST=75.95, STORE=600, STORE_MO=51, SHARE=0.25;
+ var LIST=75.95, STORE=600, STORE_MO=51, SHARE=0.25, SELLING_SHARE=0.5;
  var boxes=document.getElementById('boxes'), payout=document.getElementById('payout'),
      out=document.getElementById('sout'), payN=document.getElementById('payN'),
      keepN=document.getElementById('keepN'), payB=document.getElementById('payB'),
@@ -614,7 +623,21 @@ footer .gmark{height:78px;width:auto}
  function exact(n){return '$'+n.toFixed(2);}
  function calc(){
   var b=parseFloat(boxes.value), p=parseFloat(payout.value);
-  if(!(b>0)||!(p>0)||p>LIST){out.classList.remove('show');return;}
+  /*
+    A number input accepts scientific notation, so 1e308 boxes is a thing a person can
+    type, and it made this page say "$NaN a year goes to that other part" in a document
+    quoting a price. Bounded to numbers a bakery could mean.
+
+    The reset matters as much as the guard: the hint and the chips live outside the
+    output panel, so hiding the panel used to leave "that is 79 cents in every dollar"
+    on screen next to a number the reader had already replaced.
+  */
+  if(!(b>0)||b>100000||!(p>0)||p>LIST){
+   out.classList.remove('show');
+   hint.textContent='';
+   boxChips.concat(payChips).forEach(function(c){c.classList.remove('on');});
+   return;
+  }
   out.classList.add('show');
 
   /* One box first. */
@@ -635,12 +658,22 @@ footer .gmark{height:78px;width:auto}
    'the tin and the truck, which cost the same whoever takes the order. The rest is the '+
    'selling, and selling from your own page is the part you can do yourself.';
 
-  var moved=gap*SHARE, monthly=moved/12, net=monthly-STORE_MO;
+  /*
+    SELLING is the part of the gap that moving the order can recover. The tin and the
+    truck cost the same whoever takes it, and the verdict above says so, so taking a
+    quarter of the WHOLE gap as the saving contradicted the sentence directly above it
+    and made the payback month optimistic by a multiple. Half is the assumption, it is
+    stated on the page rather than buried here, and Jason can correct it in one sentence
+    on the phone because he is the one who buys the tins.
+  */
+  var selling=gap*SELLING_SHARE, moved=selling*SHARE, monthly=moved/12, net=monthly-STORE_MO;
   if(net>0){
    var payback=Math.ceil(STORE/net);
-   note.textContent='Move even a quarter of those boxes onto your own page and about '+
-    money(moved)+' a year stops leaving. Against $600 and $51 a month, the store pays for '+
-    'itself in month '+payback+' and earns after that.';
+   note.textContent='Say half of that is the tin and the truck. Move even a quarter of '+
+    'these boxes onto your own page and about '+money(moved)+' a year stops leaving. '+
+    'Against $600 and $51 a month, the store pays for itself in month '+payback+
+    ' and earns after that. Your real numbers beat our assumption: tell us and we will '+
+    'run it again.';
   }else{
    note.textContent='At this many boxes the store is a convenience rather than a saving, '+
     'and we would rather say so. It still puts the customer\u2019s email in your hands, '+

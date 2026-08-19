@@ -28,7 +28,9 @@ export default async function ReceivedPage({
   searchParams: Promise<{ state?: string }>;
 }) {
   const { state } = await searchParams;
-  const delivered = state === "sent" || state === "paid";
+  /* No payment path reaches this page: /order takes no money. "sent" is the only
+     state that means the bakery has it. */
+  const delivered = state === "sent";
   /*
     Four states, and each says a different sentence, because they mean different things
     to the person reading and to whoever has to fix it:

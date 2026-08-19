@@ -62,6 +62,16 @@ export default async function CartPage({
               here.
             </p>
           )}
+          {error === "blocked" && (
+            <p
+              role="alert"
+              className="mb-8 rounded-card border border-brick/40 bg-brick/10 px-4 py-3 text-sm font-semibold text-brick"
+            >
+              Something in that submission looked automated, so we stopped it. Your box
+              is still here. Try again, or ring the shop and we will take it over the
+              phone.
+            </p>
+          )}
           {error === "empty" && (
             <p
               role="alert"

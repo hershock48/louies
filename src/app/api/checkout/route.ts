@@ -1,5 +1,26 @@
 import { NextResponse, type NextRequest } from "next/server";
+
+/**
+ * A form value, made safe to write into a plain-text order record.
+ *
+ * Two things beyond trimming, both found by trying them:
+ *
+ * NEWLINES ARE FLATTENED. `.trim()` only removes them from the ends, so a name of
+ * "Bob\r\nPhone: 000" forged an extra line inside the record, and the person reading it
+ * cannot tell a typed "Phone:" from a real one. Nodemailer already folds CR and LF out
+ * of a subject, so this is not header injection; it is worse in a way, because the log
+ * IS the order while mail is unconfigured.
+ *
+ * THE LIMIT COUNTS CHARACTERS, NOT UNITS. `.slice(0, 2000)` cut an emoji in half and
+ * left a replacement character at the end of the record. Spreading the string first
+ * counts what a person would count.
+ */
+function clean(value: string, limit: number) {
+  const flat = value.replace(/[\r\n\t]+/g, " ").trim();
+  return [...flat].slice(0, limit).join("");
+}
 import { CART_COOKIE, cartLines, cartTotal, parseCart } from "@/lib/cart";
+import { money } from "@/lib/money";
 import { sendShipInquiry, type ShipInquiry } from "@/lib/mail";
 import { site } from "@/data/site";
 
@@ -30,9 +51,26 @@ import { site } from "@/data/site";
  * the bakery published. A tampered cookie can change what is in the box, never what it
  * costs.
  */
-/** The fields a box cannot be sent without. */
+/**
+ * The fields a box cannot be sent without, checked for shape as well as presence.
+ *
+ * The phone matters more here than anywhere else on the site: while card payment is
+ * off, the whole flow ends with the bakery ringing, so an order carrying "🥐" as a
+ * phone number is an order nobody can fulfil. The state and ZIP get the same treatment
+ * because they end up on a label, and the maxLength on the input is a suggestion the
+ * browser makes, not a rule a request has to follow.
+ */
 function missingDetails(i: ShipInquiry) {
-  return !i.to || !i.address || !i.city || !i.state || !i.zip || !i.name || !i.phone;
+  const digits = i.phone.replace(/\D/g, "");
+  return (
+    !i.to ||
+    !i.address ||
+    !i.city ||
+    !i.name ||
+    digits.length < 10 ||
+    !/^[A-Za-z]{2}$/.test(i.state) ||
+    !/^\d{5}(-\d{4})?$/.test(i.zip)
+  );
 }
 
 /** Marks the emailed copy of an order that is on its way to the card page. */
@@ -43,32 +81,47 @@ function pendingNote(gift: string) {
 }
 
 export async function POST(request: NextRequest) {
-  const form = await request.formData();
+  /*
+    A body that is not a form used to throw here and return a blank 500: no message, no
+    redirect, submission gone. text/plain is a legal form encoding, so this was
+    reachable without curl.
+  */
+  const form = await request.formData().catch(() => null);
+  if (!form) {
+    return NextResponse.redirect(new URL("/cart?error=missing#details", request.url), 303);
+  }
   // Strings only: a file part coerces to "[object File]", which passes a truthiness
   // check and reaches the bakery as somebody's name.
   const field = (k: string) => {
     const v = form.get(k);
-    return typeof v === "string" ? v.trim().slice(0, 300) : "";
+    return typeof v === "string" ? clean(v, 300) : "";
   };
-
-  // Honeypot: hidden from people, and unlike a "company" field it is not something a
-  // browser's address autofill will ever helpfully complete. Logged in full, because a
-  // false positive here is somebody's birthday present quietly deleted, and the log is
-  // the only place it could be rescued from.
-  if (field("website_url")) {
-    console.warn(
-      "[checkout] honeypot tripped, discarded. Payload:\n" +
-        [field("name"), field("phone"), field("email"), field("to"), field("address"),
-         `${field("city")}, ${field("state")} ${field("zip")}`, field("gift")]
-          .filter(Boolean).join("\n"),
-    );
-    return NextResponse.redirect(new URL("/shop/received?state=sent", request.url), 303);
-  }
 
   const entries = parseCart(request.cookies.get(CART_COOKIE)?.value);
   const lines = cartLines(entries);
   if (lines.length === 0) {
     return NextResponse.redirect(new URL("/cart?error=empty", request.url), 303);
+  }
+
+  /*
+    Honeypot, AFTER the cart is read rather than before it.
+
+    It exists so a false positive can be rescued from the log, and the one thing needed
+    to rescue an order, what was in the box, was the one thing not being logged. It also
+    used to answer with the same page a real order gets, which tells somebody whose
+    order was just discarded that it landed in the bakery's inbox. It now says the
+    honest thing, and leaves the cart alone so they can try again.
+  */
+  if (field("website_url")) {
+    console.warn(
+      "[checkout] honeypot tripped, discarded. Payload:\n" +
+        [
+          lines.map((l) => `${l.qty} x ${l.box.name}`).join("; "),
+          field("name"), field("phone"), field("email"), field("to"), field("address"),
+          `${field("city")}, ${field("state")} ${field("zip")}`, field("gift"),
+        ].filter(Boolean).join("\n"),
+    );
+    return NextResponse.redirect(new URL("/cart?error=blocked", request.url), 303);
   }
 
   const inquiry: ShipInquiry = {
@@ -84,6 +137,7 @@ export async function POST(request: NextRequest) {
     name: field("name"),
     phone: field("phone"),
     email: field("email"),
+    total: money(cartTotal(lines)),
   };
 
   /*

@@ -1,4 +1,24 @@
 import { NextResponse, type NextRequest } from "next/server";
+
+/**
+ * A form value, made safe to write into a plain-text order record.
+ *
+ * Two things beyond trimming, both found by trying them:
+ *
+ * NEWLINES ARE FLATTENED. `.trim()` only removes them from the ends, so a name of
+ * "Bob\r\nPhone: 000" forged an extra line inside the record, and the person reading it
+ * cannot tell a typed "Phone:" from a real one. Nodemailer already folds CR and LF out
+ * of a subject, so this is not header injection; it is worse in a way, because the log
+ * IS the order while mail is unconfigured.
+ *
+ * THE LIMIT COUNTS CHARACTERS, NOT UNITS. `.slice(0, 2000)` cut an emoji in half and
+ * left a replacement character at the end of the record. Spreading the string first
+ * counts what a person would count.
+ */
+function clean(value: string, limit: number) {
+  const flat = value.replace(/[\r\n\t]+/g, " ").trim();
+  return [...flat].slice(0, limit).join("");
+}
 import { CART_COOKIE, addToCart, applyChange, parseCart, serializeCart } from "@/lib/cart";
 
 /**
@@ -34,10 +54,18 @@ function safeBack(raw: string, request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const form = await request.formData();
+  /*
+    A body that is not a form used to throw here and return a blank 500: no message, no
+    redirect, submission gone. text/plain is a legal form encoding, so this was
+    reachable without curl.
+  */
+  const form = await request.formData().catch(() => null);
+  if (!form) {
+    return NextResponse.redirect(new URL("/shop", request.url), 303);
+  }
   const field = (k: string) => {
     const v = form.get(k);
-    return typeof v === "string" ? v.trim().slice(0, 120) : "";
+    return typeof v === "string" ? clean(v, 120) : "";
   };
 
   const slug = field("slug");

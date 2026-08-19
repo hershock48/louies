@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { CART_COOKIE } from "@/lib/cart";
+import { CART_COOKIE, PAID_COOKIE } from "@/lib/cart";
 
 /**
  * WHERE STRIPE SENDS PEOPLE BACK TO.
@@ -52,5 +52,23 @@ export async function GET(request: NextRequest) {
 
   const response = to("paid");
   response.cookies.set({ name: CART_COOKIE, value: "", path: "/", maxAge: 0 });
+  /*
+    The receipt is the cookie, not the query string.
+
+    "?state=paid" on its own was a claim anybody could make by typing the URL, and the
+    page believed it: it told whoever loaded it that their card had been charged. Worse
+    for the person it is actually about, because a customer whose payment failed and who
+    pressed back landed on a page congratulating them. This is set only here, only after
+    Stripe has confirmed the session was paid, and it lasts ten minutes: long enough to
+    reload the page, not long enough to be a receipt anybody keeps.
+  */
+  response.cookies.set({
+    name: PAID_COOKIE,
+    value: "1",
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 600,
+  });
   return response;
 }
