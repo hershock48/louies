@@ -18,6 +18,8 @@
  * The product photographs are the bakery's own, used with permission (Kevin, August
  * 2026), and are not in the repo yet. Add them to `photo` and the cards render them.
  */
+import { site } from "./site";
+
 export type Box = {
   /** Stable key for the cart cookie. Never change one of these casually: a live cart
    *  holding an old slug simply drops the line. */
@@ -33,6 +35,18 @@ export type Box = {
   price?: number;
   /** Public path, once the product photography is in the repo. */
   photo?: string;
+  /**
+   * Where this box is actually bought.
+   *
+   * The bakery is on a multi-year marketplace contract, so the checkout is not ours to
+   * take. What the site can do is stop hiding that shipping exists: put the boxes on
+   * their own page, in their own voice, and hand the buyer straight to the listing for
+   * that box rather than to a marketplace's front door and a search field.
+   *
+   * PLACEHOLDER: these are the merchant page for now. Each box wants its own product
+   * URL, which has to be copied off the listing, one tap each.
+   */
+  listingUrl?: string;
   /** On the listing but not yet buyable. Renders as a heads-up rather than a button,
    *  and is enforced in lib/cart.ts so a cookie cannot buy one either. */
   comingSoon?: boolean;
@@ -49,6 +63,7 @@ export const boxes: Box[] = [
     travels:
       "Baked the night before and on a truck the next morning, which is as close to fresh as a fried roll gets four states away.",
     price: 7595,
+    listingUrl: site.social.goldbelly,
   },
   {
     slug: "signature-tin",
@@ -57,6 +72,7 @@ export const boxes: Box[] = [
     body: "The tin with the bakery's own script on the lid, packed with what we are known for.",
     travels: "Sent in a tin because a tin is the only box that arrives the shape it left.",
     price: 7995,
+    listingUrl: site.social.goldbelly,
   },
   {
     slug: "fritters",
@@ -65,6 +81,7 @@ export const boxes: Box[] = [
     body: "Fried heavy and rough edged, apple and raisin through the whole of it.",
     travels: "Sturdy for something fried. They keep their edges.",
     price: 7995,
+    listingUrl: site.social.goldbelly,
   },
   {
     slug: "cookie-tin",
@@ -74,6 +91,7 @@ export const boxes: Box[] = [
     travels:
       "The one customers write about. “Not one cookie broke” is a review, not a promise we wrote.",
     price: 7995,
+    listingUrl: site.social.goldbelly,
   },
   {
     slug: "pumpkin-tin",
@@ -82,6 +100,7 @@ export const boxes: Box[] = [
     body: "The autumn tin. Cut, baked and iced as pumpkins, sixteen to a lid.",
     travels: "Iced flat and packed tight, which is what makes a decorated cookie shippable at all.",
     price: 8595,
+    listingUrl: site.social.goldbelly,
     comingSoon: true,
     backWhen: "Back in the fall",
   },

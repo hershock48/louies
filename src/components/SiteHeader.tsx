@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import OpenPill from "./OpenPill";
 import { site } from "@/data/site";
+import { directCheckout } from "@/lib/flags";
 
 /**
  * Labels are the plain thing each page does. "Order" on its own read as ambiguous next
@@ -17,11 +18,13 @@ const nav = [
   { href: "/menu", label: "Menu" },
   { href: "/order", label: "Order Ahead" },
   { href: "/shop", label: "Ship a Box" },
-  /* The cart. No count on the badge, deliberately: a number here would mean reading a
-     cookie in the root layout, which turns every static page on the site dynamic to
-     decorate a link. Adding a box lands you on the cart itself, so the count is where
-     it matters. */
-  { href: "/cart", label: "Your Box" },
+  /*
+    The cart appears only when the direct checkout is switched on. No count on the
+    badge either way: a number there would mean reading a cookie in the root layout,
+    which turns every static page on the site dynamic to decorate a link, and adding a
+    box lands you on the cart itself.
+  */
+  ...(directCheckout ? [{ href: "/cart", label: "Your Box" }] : []),
   { href: "/cookies", label: "Photo Cookies" },
   { href: "/story", label: "Our Story" },
   { href: "/visit", label: "Visit" },

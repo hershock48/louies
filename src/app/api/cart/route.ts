@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { directCheckout } from "@/lib/flags";
 
 /**
  * A form value, made safe to write into a plain-text order record.
@@ -54,6 +55,9 @@ function safeBack(raw: string, request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // Switched off with the rest of the direct checkout. See src/lib/flags.ts.
+  if (!directCheckout) return new NextResponse("Not found", { status: 404 });
+
   /*
     A body that is not a form used to throw here and return a blank 500: no message, no
     redirect, submission gone. text/plain is a legal form encoding, so this was

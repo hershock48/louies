@@ -5,6 +5,8 @@ import { PageHero, ButtonLink } from "@/components/Ui";
 import CheckoutDetails from "@/components/CheckoutDetails";
 import { CART_COOKIE, cartLines, cartTotal, parseCart } from "@/lib/cart";
 import { money } from "@/lib/money";
+import { notFound } from "next/navigation";
+import { directCheckout } from "@/lib/flags";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -29,6 +31,12 @@ export default async function CartPage({
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
+  /*
+    Not reachable while the direct checkout is off. A page that renders a cart the site
+    has no way to charge is worse than a 404: somebody would fill it in.
+  */
+  if (!directCheckout) notFound();
+
   const { error } = await searchParams;
   const entries = parseCart((await cookies()).get(CART_COOKIE)?.value);
   const lines = cartLines(entries);

@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { directCheckout } from "@/lib/flags";
 import { CART_COOKIE, PAID_COOKIE } from "@/lib/cart";
 
 /**
@@ -22,6 +23,9 @@ import { CART_COOKIE, PAID_COOKIE } from "@/lib/cart";
  * is the one place that is true.
  */
 export async function GET(request: NextRequest) {
+  // Switched off with the rest of the direct checkout. See src/lib/flags.ts.
+  if (!directCheckout) return new NextResponse("Not found", { status: 404 });
+
   const id = request.nextUrl.searchParams.get("session_id") ?? "";
   const key = process.env.STRIPE_SECRET_KEY;
 

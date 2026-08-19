@@ -3,6 +3,7 @@ import { PageHero, SectionHeading, ButtonLink } from "@/components/Ui";
 import CallHint from "@/components/CallHint";
 import { site } from "@/data/site";
 import { boxes, shippedReviews } from "@/data/shipping";
+import { directCheckout } from "@/lib/flags";
 import { money } from "@/lib/money";
 
 export const metadata: Metadata = {
@@ -89,16 +90,33 @@ export default function ShopPage() {
                   )}
                 </div>
 
-                {/* A form, not a link. Posts to /api/cart and redirects back, so
-                    adding a box works with scripting off like everything else here. */}
-                <form method="post" action="/api/cart" className="mt-5">
-                  <input type="hidden" name="slug" value={b.slug} />
-                  <input type="hidden" name="qty" value="1" />
-                  <input type="hidden" name="back" value="/cart" />
-                  <button type="submit" className="btn btn-dark" disabled={b.comingSoon}>
-                    {b.comingSoon ? (b.backWhen ?? "Not yet") : "Send this one"}
-                  </button>
-                </form>
+                {/*
+                  Where the box is bought. While the direct checkout is switched off,
+                  this hands the buyer to that box's own listing rather than to a
+                  marketplace's front page: they arrive at the thing they were looking
+                  at, which is the whole difference between a link that sells and a link
+                  that loses somebody in a search field.
+                */}
+                <div className="mt-5">
+                  {directCheckout ? (
+                    <form method="post" action="/api/cart">
+                      <input type="hidden" name="slug" value={b.slug} />
+                      <input type="hidden" name="qty" value="1" />
+                      <input type="hidden" name="back" value="/cart" />
+                      <button type="submit" className="btn btn-dark" disabled={b.comingSoon}>
+                        {b.comingSoon ? (b.backWhen ?? "Not yet") : "Send this one"}
+                      </button>
+                    </form>
+                  ) : b.comingSoon ? (
+                    <p className="text-sm font-semibold text-brick">
+                      {b.backWhen ?? "Back soon"}
+                    </p>
+                  ) : (
+                    <ButtonLink href={b.listingUrl ?? site.social.goldbelly} variant="dark" external>
+                      Send this one
+                    </ButtonLink>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
@@ -112,6 +130,7 @@ export default function ShopPage() {
             Every price includes the shipping. Boxes are packed the morning after they
             are baked and go out {site.shipping.day} on the {site.shipping.carrier}{" "}
             truck, which is what keeps a nut roll worth sending at all.
+            {!directCheckout && " Payment is handled by our shipping partner, and the button on each box takes you straight to it."}
           </p>
 
           {/* Two verbatim verified-purchase reviews. A shipping page needs a review
