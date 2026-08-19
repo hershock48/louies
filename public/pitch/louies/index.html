@@ -129,6 +129,18 @@ nav a:hover{color:var(--pink-d)}
 .verdict.neg{background:var(--pink-t);border-color:var(--pink)}
 .verdict b{color:var(--ink)}
 .calcnote{font-size:.82rem;color:var(--mute);margin-top:13px;line-height:1.5}
+/* One question at a time, and the answer to the first one visible while you answer
+   the second. Two bare number boxes with nothing between them was the confusing part. */
+.q label{margin-bottom:10px}
+.hint{font-size:.8rem;color:var(--mute);margin:9px 0 0}
+/* The per-box picture, which is the number a person can actually hold in their head.
+   A year is an abstraction; one box is a thing you just packed. */
+.onebox{background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:.95rem;line-height:1.55}
+.onebox b{color:var(--ink)}
+.onebox .split{display:flex;height:14px;border-radius:5px;overflow:hidden;margin-top:11px;border:1px solid var(--line)}
+.onebox .split i{display:block;height:100%}
+.onebox .split .keep{background:linear-gradient(90deg,var(--green),var(--green-d))}
+.onebox .split .gone{background:repeating-linear-gradient(45deg,#E9D9C0,#E9D9C0 7px,#DECBAE 7px,#DECBAE 14px)}
 
 /* compare table */
 .cmp{width:100%;border-collapse:collapse;margin:16px 0;font-size:.93rem}
@@ -396,18 +408,38 @@ footer .gmark{height:78px;width:auto}
  <p><strong>The demand is already there.</strong> Both reviews on your listing are the same woman in Tucson, buying twice, and what she wrote about was the packing: <span class="mono">"Not one cookie broke!"</span> She is 1,700 miles from a bakery whose website does not mention that it ships.</p>
 
  <h3>Your numbers, not ours</h3>
- <p>Only you know what you are paid on a box. Put it in and the page does the rest. Nothing is sent anywhere.</p>
+ <p>Two questions, and only you know the answers. Nothing is sent anywhere; the arithmetic happens on this page.</p>
 
  <div class="calc">
-  <div class="inputrow">
-   <label for="boxes">Boxes you ship in a month</label>
-   <input id="boxes" type="number" inputmode="decimal" min="0" step="1" placeholder="e.g. 20">
+  <div class="q">
+   <label for="boxes">1. Boxes you send in a normal month</label>
+   <div class="inputrow">
+    <div class="money"><input id="boxes" type="number" inputmode="numeric" min="0" step="1" value="20"><em>boxes</em></div>
+    <div class="presets">
+     <span class="chip sbox" data-b="10">10</span>
+     <span class="chip sbox" data-b="20">20</span>
+     <span class="chip sbox" data-b="50">50</span>
+     <span class="chip sbox" data-b="100">100</span>
+    </div>
+   </div>
   </div>
-  <div class="inputrow" style="margin-top:14px">
-   <label for="payout">What you receive on a $75.95 dozen</label>
-   <div class="money"><span>$</span><input id="payout" type="number" inputmode="decimal" min="0" step="1" placeholder="e.g. 45"><em>per box</em></div>
+
+  <div class="q" style="margin-top:20px">
+   <label for="payout">2. Of the $75.95 a customer pays, how much lands in your account?</label>
+   <div class="inputrow">
+    <div class="money"><span>$</span><input id="payout" type="number" inputmode="decimal" min="0" max="75.95" step="1" value="45"><em>per box</em></div>
+    <div class="presets">
+     <span class="chip spay" data-p="38">Half</span>
+     <span class="chip spay" data-p="45">$45</span>
+     <span class="chip spay" data-p="53">Two thirds</span>
+     <span class="chip spay" data-p="60">$60</span>
+    </div>
+   </div>
+   <p class="hint" id="pcthint"></p>
   </div>
-  <div class="out" id="sout">
+
+  <div class="out show" id="sout">
+   <div class="onebox" id="onebox"></div>
    <div class="bars">
     <div class="bar stay"><div class="lab"><span>What your customers pay in a year</span><b id="payN">&ndash;</b></div><div class="track"><div class="fill" id="payB" style="width:0"></div></div></div>
     <div class="bar us"><div class="lab"><span>What reaches the bakery</span><b id="keepN">&ndash;</b></div><div class="track"><div class="fill" id="keepB" style="width:0"></div></div></div>
@@ -500,7 +532,7 @@ footer .gmark{height:78px;width:auto}
      stayN=document.getElementById('stayN'), usN=document.getElementById('usN'),
      stayB=document.getElementById('stayB'), usB=document.getElementById('usB'),
      verdict=document.getElementById('verdict'), cnote=document.getElementById('cnote'),
-     chips=[].slice.call(document.querySelectorAll('.chip'));
+     chips=[].slice.call(document.querySelectorAll('#cost .chip'));
  function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
  function calc(){
   var r=parseFloat(input.value);
@@ -548,34 +580,79 @@ footer .gmark{height:78px;width:auto}
   honest case does not need the optimistic number.
 */
 (function(){
+ /*
+   THE SHIPPING CALCULATOR.
+
+   Rebuilt after Kevin read it and said the two boxes were not intuitive, which they
+   were not: two empty number fields, no help answering either, and nothing on screen
+   until both were filled. Now it opens already answered with plausible figures, so a
+   reader sees a working example first and corrects it second, which is a much easier
+   thing to be asked to do. Chips carry the two answers people reach for.
+
+   It leads with ONE BOX, because a year is an abstraction and a box is a thing you
+   just packed: you keep this much of the 75.95, this much goes to the tin, the truck
+   and the middle. The year, and the payback on the store, follow underneath.
+
+   It still does NOT claim the whole gap is commission. The tin and the truck are real
+   costs whoever takes the order, and the copy says so, because a man who ships boxes
+   knows exactly what a box and a label cost him and will stop reading the moment we
+   pretend otherwise.
+
+   The payback assumes only a QUARTER of orders move to the bakery's own page.
+ */
  var LIST=75.95, STORE=600, STORE_MO=51, SHARE=0.25;
  var boxes=document.getElementById('boxes'), payout=document.getElementById('payout'),
      out=document.getElementById('sout'), payN=document.getElementById('payN'),
      keepN=document.getElementById('keepN'), payB=document.getElementById('payB'),
      keepB=document.getElementById('keepB'), verdict=document.getElementById('sverdict'),
-     note=document.getElementById('snote');
+     note=document.getElementById('snote'), onebox=document.getElementById('onebox'),
+     hint=document.getElementById('pcthint'),
+     boxChips=[].slice.call(document.querySelectorAll('.chip.sbox')),
+     payChips=[].slice.call(document.querySelectorAll('.chip.spay'));
  if(!boxes) return;
  function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+ function exact(n){return '$'+n.toFixed(2);}
  function calc(){
   var b=parseFloat(boxes.value), p=parseFloat(payout.value);
   if(!(b>0)||!(p>0)||p>LIST){out.classList.remove('show');return;}
+  out.classList.add('show');
+
+  /* One box first. */
+  var gone=LIST-p, pct=Math.round(p/LIST*100);
+  hint.textContent='That is '+pct+' cents in every dollar the customer spends.';
+  onebox.innerHTML=
+   '<b>One box.</b> The customer pays '+exact(LIST)+'. You keep <b>'+exact(p)+
+   '</b>. The other <b>'+exact(gone)+'</b> pays for the tin, the truck and whoever sold it.'+
+   '<span class="split"><i class="keep" style="width:'+pct+'%"></i>'+
+   '<i class="gone" style="width:'+(100-pct)+'%"></i></span>';
+
+  /* Then the year. */
   var paid=LIST*b*12, kept=p*b*12, gap=paid-kept;
   payN.textContent=money(paid); keepN.textContent=money(kept);
   payB.style.width='100%'; keepB.style.width=(kept/paid*100)+'%';
   verdict.className='verdict';
-  verdict.innerHTML='<b>'+money(gap)+' a year passes through the middle.</b> Part of that is the tin and the truck, which cost the same whoever takes the order. The rest is the marketplace\u2019s share, and it is the only part of your shipping that you cannot price yourself.';
+  verdict.innerHTML='<b>'+money(gap)+' a year goes to that other part.</b> Some of it is '+
+   'the tin and the truck, which cost the same whoever takes the order. The rest is the '+
+   'selling, and selling from your own page is the part you can do yourself.';
+
   var moved=gap*SHARE, monthly=moved/12, net=monthly-STORE_MO;
   if(net>0){
    var payback=Math.ceil(STORE/net);
-   note.textContent='Move a quarter of those orders onto your own page and roughly '+money(moved)+
-    ' a year stops leaving. Against $600 and $51 a month, the store is even in month '+payback+
-    ' and ahead every month after it.';
+   note.textContent='Move even a quarter of those boxes onto your own page and about '+
+    money(moved)+' a year stops leaving. Against $600 and $51 a month, the store pays for '+
+    'itself in month '+payback+' and earns after that.';
   }else{
-   note.textContent='At this volume the store is a convenience rather than a saving, and we would rather say so. It still puts the customer\u2019s email in your hands, which is the part that compounds.';
+   note.textContent='At this many boxes the store is a convenience rather than a saving, '+
+    'and we would rather say so. It still puts the customer\u2019s email in your hands, '+
+    'which is the part that compounds.';
   }
-  out.classList.add('show');
+  boxChips.forEach(function(c){c.classList.toggle('on', parseFloat(c.dataset.b)===b);});
+  payChips.forEach(function(c){c.classList.toggle('on', parseFloat(c.dataset.p)===p);});
  }
  boxes.addEventListener('input',calc); payout.addEventListener('input',calc);
+ boxChips.forEach(function(c){c.addEventListener('click',function(){boxes.value=c.dataset.b;calc();});});
+ payChips.forEach(function(c){c.addEventListener('click',function(){payout.value=c.dataset.p;calc();});});
+ calc();
 })();
 </script>
 </body></html>
